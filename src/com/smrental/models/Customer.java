@@ -1,7 +1,5 @@
 package com.smrental.models;
 
-import java.sql.Time;
-
 public class Customer {
 	private CustomerType type;
 	private double timeEnterSystem;
