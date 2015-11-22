@@ -43,25 +43,40 @@ public class RVPs
 		this.checkInServiceTime = new Uniform(STCIMIN, STCIMAX, sd.cistm);
 		this.checkOutServiceTime = new Uniform(STCOMIN, STCOMAX, sd.costm);
 	}
-	
+
 	public double DuCT1(boolean customerIncrease) {
 		double nextArrival;
 		double mean;
-		if (this.model.getClock() <= 30) mean = T1_MEAN_1;
-		else if (this.model.getClock() <= 60) mean = T1_MEAN_2;
-		else if (this.model.getClock() <= 90) mean = T1_MEAN_3;
-		else if (this.model.getClock() <= 120) mean = T1_MEAN_4;
-		else if (this.model.getClock() <= 150) mean = T1_MEAN_5;
-		else if (this.model.getClock() <= 180) mean = T1_MEAN_6;
-		else if (this.model.getClock() <= 210) mean = T1_MEAN_7;
-		else if (this.model.getClock() <= 240) mean = T1_MEAN_8;
-		else mean = T1_MEAN_9;
+		if (this.model.getClock() <= 30) {
+			mean = customerIncrease? INCREASED_T1_MEAN_1 : T1_MEAN_1;
+		}
+		else if (this.model.getClock() <= 60) {
+			mean = customerIncrease? INCREASED_T1_MEAN_2 : T1_MEAN_2;
+		}
+		else if (this.model.getClock() <= 90) {
+			mean = customerIncrease? INCREASED_T1_MEAN_3 : T1_MEAN_3;
+		}
+		else if (this.model.getClock() <= 120) {
+			mean = customerIncrease? INCREASED_T1_MEAN_4 : T1_MEAN_4;
+		}
+		else if (this.model.getClock() <= 150) {
+			mean = customerIncrease? INCREASED_T1_MEAN_5 : T1_MEAN_5;
+		}
+		else if (this.model.getClock() <= 180) { 
+			mean = customerIncrease? INCREASED_T1_MEAN_6 : T1_MEAN_6;
+		}
+		else if (this.model.getClock() <= 210) {
+			mean = customerIncrease ? INCREASED_T1_MEAN_7 : T1_MEAN_7;
+		}
+		else if (this.model.getClock() <= 240) {
+			mean = customerIncrease ? INCREASED_T1_MEAN_8 : T1_MEAN_8;
+		}
+		else {
+			mean = customerIncrease? INCREASED_T1_MEAN_9 : T1_MEAN_9;
+		}
 		nextArrival = this.model.getClock()+ this.t1ArrDist.nextDouble(1.0/mean);
 		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-		}
-		if (customerIncrease) {
-			//TODO what about customer increase
 		}
 		return nextArrival;
 	}
@@ -69,21 +84,36 @@ public class RVPs
 	public double DuCT2(boolean customerIncrease) {
 		double nextArrival;
 		double mean;
-		if (this.model.getClock() <= 30) mean = T2_MEAN_1;
-		else if (this.model.getClock() <= 60) mean = T2_MEAN_2;
-		else if (this.model.getClock() <= 90) mean = T2_MEAN_3;
-		else if (this.model.getClock() <= 120) mean = T2_MEAN_4;
-		else if (this.model.getClock() <= 150) mean = T2_MEAN_5;
-		else if (this.model.getClock() <= 180) mean = T2_MEAN_6;
-		else if (this.model.getClock() <= 210) mean = T2_MEAN_7;
-		else if (this.model.getClock() <= 240) mean = T2_MEAN_8;
-		else mean = T2_MEAN_9;
+		if (this.model.getClock() <= 30) {
+			mean = customerIncrease? INCREASED_T2_MEAN_1 : T2_MEAN_1;
+		}
+		else if (this.model.getClock() <= 60) {
+			mean = customerIncrease? INCREASED_T2_MEAN_2 : T2_MEAN_2;
+		}
+		else if (this.model.getClock() <= 90) {
+			mean = customerIncrease? INCREASED_T2_MEAN_3 : T2_MEAN_3;
+		}
+		else if (this.model.getClock() <= 120) {
+			mean = customerIncrease? INCREASED_T2_MEAN_4 : T2_MEAN_4;
+		}
+		else if (this.model.getClock() <= 150) {
+			mean = customerIncrease? INCREASED_T2_MEAN_5 : T2_MEAN_5;
+		}
+		else if (this.model.getClock() <= 180) { 
+			mean = customerIncrease? INCREASED_T2_MEAN_6 : T2_MEAN_6;
+		}
+		else if (this.model.getClock() <= 210) {
+			mean = customerIncrease ? INCREASED_T2_MEAN_7 : T2_MEAN_7;
+		}
+		else if (this.model.getClock() <= 240) {
+			mean = customerIncrease ? INCREASED_T2_MEAN_8 : T2_MEAN_8;
+		}
+		else {
+			mean = customerIncrease? INCREASED_T2_MEAN_9 : T2_MEAN_9;
+		}
 		nextArrival = this.model.getClock()+ this.t2ArrDist.nextDouble(1.0/mean);
 		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-		}
-		if (customerIncrease) {
-			//TODO what about customer increase
 		}
 		return nextArrival;
 	}
@@ -91,21 +121,36 @@ public class RVPs
 	public double DuCCounter(boolean customerIncrease) {
 		double nextArrival;
 		double mean;
-		if (this.model.getClock() <= 30) mean = COUNTER_MEAN_1;
-		else if (this.model.getClock() <= 60) mean = COUNTER_MEAN_2;
-		else if (this.model.getClock() <= 90) mean = COUNTER_MEAN_3;
-		else if (this.model.getClock() <= 120) mean = COUNTER_MEAN_4;
-		else if (this.model.getClock() <= 150) mean = COUNTER_MEAN_5;
-		else if (this.model.getClock() <= 180) mean = COUNTER_MEAN_6;
-		else if (this.model.getClock() <= 210) mean = COUNTER_MEAN_7;
-		else if (this.model.getClock() <= 240) mean = COUNTER_MEAN_8;
-		else mean = COUNTER_MEAN_9;
+		if (this.model.getClock() <= 30) {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_1 : COUNTER_MEAN_1;
+		}
+		else if (this.model.getClock() <= 60) {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_2 : COUNTER_MEAN_2;
+		}
+		else if (this.model.getClock() <= 90) {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_3 : COUNTER_MEAN_3;
+		}
+		else if (this.model.getClock() <= 120) {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_4 : COUNTER_MEAN_4;
+		}
+		else if (this.model.getClock() <= 150) {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_5 : COUNTER_MEAN_5;
+		}
+		else if (this.model.getClock() <= 180) { 
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_6 : COUNTER_MEAN_6;
+		}
+		else if (this.model.getClock() <= 210) {
+			mean = customerIncrease ? INCREASED_COUNTER_MEAN_7 : COUNTER_MEAN_7;
+		}
+		else if (this.model.getClock() <= 240) {
+			mean = customerIncrease ? INCREASED_COUNTER_MEAN_8 : COUNTER_MEAN_8;
+		}
+		else {
+			mean = customerIncrease? INCREASED_COUNTER_MEAN_9 : COUNTER_MEAN_9;
+		}
 		nextArrival = this.model.getClock()+ this.counterArrDist.nextDouble(1.0/mean);
 		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-		}
-		if (customerIncrease) {
-			//TODO what about customer increase
 		}
 		return nextArrival;
 	}
