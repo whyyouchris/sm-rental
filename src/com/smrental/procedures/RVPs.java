@@ -1,11 +1,14 @@
-package smrental;
+package com.smrental.procedures;
+
+import static com.smrental.procedures.ArrivalConfig.*;
+
+import com.smrental.models.CustomerType;
 
 import cern.jet.random.Exponential;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister;
-
-import static smrental.ArrivalConfig.*;
-class RVPs 
+import smrental.SMRental;
+public class RVPs 
 {
 	
 	SMRental model;
@@ -22,7 +25,7 @@ class RVPs
 	private Uniform checkInServiceTime; // Check in customer service time distribution
 	private Uniform checkOutServiceTime;// Check out customer service time distribution
 
-	protected RVPs(SMRental model, Seeds sd) { 
+	public RVPs(SMRental model, Seeds sd) { 
 		this.model = model; 
 		// Set up distribution functions
 
@@ -54,9 +57,12 @@ class RVPs
 		else if (this.model.getClock() <= 240) mean = T1_MEAN_8;
 		else mean = T1_MEAN_9;
 		nextArrival = this.model.getClock()+ this.t1ArrDist.nextDouble(1.0/mean);
-		if (nextArrival > this.model.closingTime)
+		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-		
+		}
+		if (customerIncrease) {
+			//TODO what about customer increase
+		}
 		return nextArrival;
 	}
 
@@ -73,9 +79,12 @@ class RVPs
 		else if (this.model.getClock() <= 240) mean = T2_MEAN_8;
 		else mean = T2_MEAN_9;
 		nextArrival = this.model.getClock()+ this.t2ArrDist.nextDouble(1.0/mean);
-		if (nextArrival > this.model.closingTime)
+		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-		
+		}
+		if (customerIncrease) {
+			//TODO what about customer increase
+		}
 		return nextArrival;
 	}
 	
@@ -92,9 +101,12 @@ class RVPs
 		else if (this.model.getClock() <= 240) mean = COUNTER_MEAN_8;
 		else mean = COUNTER_MEAN_9;
 		nextArrival = this.model.getClock()+ this.counterArrDist.nextDouble(1.0/mean);
-		if (nextArrival > this.model.closingTime)
+		if (nextArrival > this.model.closingTime) {
 			nextArrival = -1.0;
-
+		}
+		if (customerIncrease) {
+			//TODO what about customer increase
+		}
 		return nextArrival;
 	}
 

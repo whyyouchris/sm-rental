@@ -3,6 +3,15 @@ package smrental;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.smrental.models.Counter;
+import com.smrental.models.Customer;
+import com.smrental.models.Van;
+import com.smrental.procedures.DVPs;
+import com.smrental.procedures.RVPs;
+import com.smrental.procedures.Seeds;
+import com.smrental.procedures.UDPs;
+import com.smrental.utils.Parameters;
+
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 import simulationModelling.SequelActivity;
@@ -11,29 +20,27 @@ import simulationModelling.SequelActivity;
 // The Simulation model Class
 public class SMRental extends AOSimulationModel
 {
-	// Constants available from Constants class
-	/* Parameter */
-    // Define the parameters
 	private boolean traceFlag;
-	protected double startingTime;
-	protected double closingTime;
+	public final double startingTime;
+	public final double closingTime;
+	public final Parameters params; // experiment parameters
 
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
-	protected Counter rgCounter = new Counter();
-	protected List<Customer>[] qCustomerLines = new LinkedList[4];
-	protected List<Van>[] qVanLines = new LinkedList[4];
+	public final Counter rgCounter = new Counter();
+	public final List<Customer>[] qCustomerLines = new LinkedList[4];
+	public final List<Van>[] qVanLines = new LinkedList[4];
 	
 	/* Input Variables */
 	// Define any Independent Input Varaibles here
 	
 	// References to RVP and DVP objects
-	protected RVPs rvp;  // Reference to rvp object - object created in constructor
-	protected DVPs dvp = new DVPs(this);  // Reference to dvp object
-	protected UDPs udp = new UDPs(this);
+	public final RVPs rvp;  // Reference to rvp object - object created in constructor
+	public final DVPs dvp = new DVPs(this);  // Reference to dvp object
+	public final UDPs udp = new UDPs(this);
 
 	// Output object
 	protected Output output = new Output(this);
@@ -43,10 +50,12 @@ public class SMRental extends AOSimulationModel
 
 
 	// Constructor
-	public SMRental(double t0time, double tftime, Seeds sd, boolean traceFlag) {
+	public SMRental(double t0time, double tftime, Seeds sd, Parameters params, boolean traceFlag) {
 		this.traceFlag = traceFlag;
 		this.startingTime = t0time;
 		this.closingTime = tftime;
+		
+		this.params = params;
 	
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);

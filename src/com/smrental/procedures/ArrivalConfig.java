@@ -1,4 +1,4 @@
-package smrental;
+package com.smrental.procedures;
 
 public class ArrivalConfig {
 	// Customer arrival times for Terminal 1

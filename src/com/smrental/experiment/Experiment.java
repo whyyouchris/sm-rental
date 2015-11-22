@@ -1,12 +1,17 @@
+package com.smrental.experiment;
 // File: Experiment.java
 // Description:
+
+import com.smrental.models.VanType;
+import com.smrental.procedures.Seeds;
+import com.smrental.utils.Parameters;
 
 import cern.jet.random.engine.*;
 import smrental.*;
 
 // Main Method: Experiments
 // 
-class Experiment
+public class Experiment
 {
 
    
@@ -24,9 +29,20 @@ class Experiment
        // Loop for NUMRUN simulation runs for each case
        // Case 1
        System.out.println(" Case 1");
+       int typeOfVan = VanType.SEAT12.getSeats();
+       int numberOfAgents = 10;
+       int numberOfVans = 10;
+       boolean customerIncrease = false;
        for(i=0 ; i < NUMRUNS ; i++)
        {
-          smRental = new SMRental(startTime,endTime,sds[i], true);
+    	  Parameters params = new Parameters.Builder()
+    			 .typeOfVan(typeOfVan)
+    			 .numberOfAgents(numberOfAgents)
+    			 .numberOfVans(numberOfVans)
+    			 .customerIncrease(customerIncrease)
+    			 .build();
+    			 
+          smRental = new SMRental(startTime,endTime,sds[i], params, true);
           smRental.runSimulation();
           // See examples for hints on collecting output
           // and developping code for analysis

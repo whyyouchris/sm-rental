@@ -1,6 +1,6 @@
-package smrental;
+package com.smrental.models;
 
-import utils.FixedSizeList;
+import com.smrental.utils.FixedSizeList;
 
 public class Van {
 	public final int capacity;

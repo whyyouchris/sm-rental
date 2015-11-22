@@ -1,4 +1,4 @@
-package smrental;
+package com.smrental.procedures;
 
 import cern.jet.random.engine.RandomSeedGenerator;
 

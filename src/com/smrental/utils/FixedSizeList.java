@@ -1,4 +1,4 @@
-package utils;
+package com.smrental.utils;
 
 import java.util.ArrayList;
 
