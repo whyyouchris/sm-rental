@@ -1,10 +1,10 @@
-package simModel;
+package smrental;
 
 class Output 
 {
-	ModelName model;
+	SMRental model;
 	
-	protected Output(ModelName md) { model = md; }
+	protected Output(SMRental md) { model = md; }
     // Use OutputSequence class to define Trajectory and Sample Sequences
     // Trajectory Sequences
 

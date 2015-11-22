@@ -1,11 +1,11 @@
-package simModel;
+package smrental;
 
 class DVPs 
 {
-	ModelName model;  // for accessing the clock
+	SMRental model;  // for accessing the clock
 	
 	// Constructor
-	protected DVPs(ModelName model) { this.model = model; }
+	protected DVPs(SMRental model) { this.model = model; }
 
 	// Translate deterministic value procedures into methods
         /* -------------------------------------------------

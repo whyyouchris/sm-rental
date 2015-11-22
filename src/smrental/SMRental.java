@@ -1,4 +1,7 @@
-package simModel;
+package smrental;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
@@ -6,18 +9,24 @@ import simulationModelling.SequelActivity;
 
 //
 // The Simulation model Class
-public class ModelName extends AOSimulationModel
+public class SMRental extends AOSimulationModel
 {
 	// Constants available from Constants class
 	/* Parameter */
-        // Define the parameters
+    // Define the parameters
+	private boolean traceFlag;
+	protected double startingTime;
+	protected double closingTime;
 
 	/*-------------Entity Data Structures-------------------*/
 	/* Group and Queue Entities */
 	// Define the reference variables to the various 
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
-
+	protected Counter rgCounter = new Counter();
+	protected List<Customer>[] qCustomerLines = new LinkedList[4];
+	protected List<Van>[] qVanLines = new LinkedList[4];
+	
 	/* Input Variables */
 	// Define any Independent Input Varaibles here
 	
@@ -34,10 +43,11 @@ public class ModelName extends AOSimulationModel
 
 
 	// Constructor
-	public ModelName(double t0time, double tftime, /*define other args,*/ Seeds sd)
-	{
-		// Initialise parameters here
-		
+	public SMRental(double t0time, double tftime, Seeds sd, boolean traceFlag) {
+		this.traceFlag = traceFlag;
+		this.startingTime = t0time;
+		this.closingTime = tftime;
+	
 		// Create RVP object with given seed
 		rvp = new RVPs(this,sd);
 		
@@ -64,15 +74,16 @@ public class ModelName extends AOSimulationModel
 		// Check preconditions of Interruptions in Extended Activities
 	}
 	
+	@Override
 	public void eventOccured()
 	{
-		//this.showSBL();
-		// Can add other debug code to monitor the status of the system
-		// See examples for suggestions on setup logging
-
-		// Setup an updateTrjSequences() method in the Output class
-		// and call here if you have Trajectory Sets
-		// updateTrjSequences() 
+		if(this.traceFlag)
+		{
+			System.out.println(
+					String.format("Clock: {0}",
+							getClock()));
+			 showSBL();			
+		}
 	}
 
 	// Standard Procedure to start Sequel Activities with no parameters

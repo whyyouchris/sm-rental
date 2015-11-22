@@ -1,11 +1,11 @@
-package simModel;
+package smrental;
 
 class UDPs 
 {
-	ModelName model;  // for accessing the clock
+	SMRental model;  // for accessing the clock
 	
 	// Constructor
-	protected UDPs(ModelName model) { this.model = model; }
+	protected UDPs(SMRental model) { this.model = model; }
 
 	// Translate User Defined Procedures into methods
     /*-------------------------------------------------

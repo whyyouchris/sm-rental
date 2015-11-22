@@ -1,13 +1,13 @@
-package simModel;
+package smrental;
 
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction
 {
-	ModelName model;
+	SMRental model;
 	
 	// Constructor
-	protected Initialise(ModelName model) { this.model = model; }
+	protected Initialise(SMRental model) { this.model = model; }
 
 	double [] ts = { 0.0, -1.0 }; // -1.0 ends scheduling
 	int tsix = 0;  // set index to first entry.

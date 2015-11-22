@@ -1,4 +1,4 @@
-package simModel;
+package smrental;
 
 class Constants 
 {
