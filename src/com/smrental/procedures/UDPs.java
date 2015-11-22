@@ -76,6 +76,7 @@ public class UDPs
 	/**
 	 * This function will find the first customer that both his accompany passengers
 	 * and himself can board the van based on the position in customer line from given location
+	 * !!!This method will not remove customer form the customer line
 	 * @param location
 	 * @return customer - Optional<Customer>
 	 */

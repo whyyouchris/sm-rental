@@ -1,18 +1,21 @@
 package com.smrental.models;
 
-import com.smrental.utils.FixedSizeList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Van {
 	public final int id;
 	public final int capacity;
-	private FixedSizeList<Customer> onBoardCustomers;
+	private int numOfSeatTaken;
+	private List<Customer> onBoardCustomers;
 	private VanStatus status;
 	
 
 	public Van(int id, int capacity) {
 		this.id = id;
 		this.capacity = capacity;
-		this.onBoardCustomers = new FixedSizeList<>(capacity);
+		this.onBoardCustomers = new ArrayList<>(capacity);
+		this.numOfSeatTaken = 0;
 	}
 
 	public void boardCustomer(Customer icCustomer) {
@@ -32,6 +35,10 @@ public class Van {
 	}
 	
 	public int getNumberOfCustomerOnBoard() {
-		return this.onBoardCustomers.size();
+		return numOfSeatTaken;
+	}
+
+	public void setNumberOfCustomerOnBoard(int num) {
+		this.numOfSeatTaken = num;
 	}
 }
