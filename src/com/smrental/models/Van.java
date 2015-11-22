@@ -3,12 +3,14 @@ package com.smrental.models;
 import com.smrental.utils.FixedSizeList;
 
 public class Van {
+	public final int id;
 	public final int capacity;
 	private FixedSizeList<Customer> onBoardCustomers;
 	private VanStatus status;
 	
 
-	public Van(int capacity) {
+	public Van(int id, int capacity) {
+		this.id = id;
 		this.capacity = capacity;
 		this.onBoardCustomers = new FixedSizeList<>(capacity);
 	}

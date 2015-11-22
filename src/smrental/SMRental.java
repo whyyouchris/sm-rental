@@ -31,7 +31,9 @@ public class SMRental extends AOSimulationModel
 	// entities with scope Set and Unary
 	// Objects can be created here or in the Initialise Action
 	public final Counter rgCounter = new Counter();
+	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
+	@SuppressWarnings("unchecked")
 	public final List<Van>[] qVanLines = new LinkedList[4];
 	
 	/* Input Variables */
@@ -43,7 +45,7 @@ public class SMRental extends AOSimulationModel
 	public final UDPs udp = new UDPs(this);
 
 	// Output object
-	protected Output output = new Output(this);
+	protected Output output = new Output();
 	
 	// Output values - define the public methods that return values
 	// required for experimentation.
@@ -75,7 +77,7 @@ public class SMRental extends AOSimulationModel
 	/*
 	 * Testing preconditions
 	 */
-	protected void testPreconditions(Behaviour behObj)
+	@Override protected void testPreconditions(Behaviour behObj)
 	{
 		reschedule (behObj);
 		// Check preconditions of Conditional Activities
@@ -83,8 +85,7 @@ public class SMRental extends AOSimulationModel
 		// Check preconditions of Interruptions in Extended Activities
 	}
 	
-	@Override
-	public void eventOccured()
+	@Override public void eventOccured()
 	{
 		if(this.traceFlag)
 		{

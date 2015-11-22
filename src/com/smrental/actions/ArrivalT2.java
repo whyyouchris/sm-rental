@@ -2,9 +2,9 @@ package com.smrental.actions;
 
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerType;
+import com.smrental.models.Location;
 
 import simulationModelling.ScheduledAction;
-import smrental.Location;
 import smrental.SMRental;
 
 public class ArrivalT2 extends ScheduledAction{
