@@ -30,4 +30,8 @@ public class Van {
 	public void setStatus(VanStatus status) {
 		this.status = status;
 	}
+	
+	public int getNumberOfCustomerOnBoard() {
+		return this.onBoardCustomers.size();
+	}
 }

@@ -45,7 +45,7 @@ public class SMRental extends AOSimulationModel
 	public final UDPs udp = new UDPs(this);
 
 	// Output object
-	protected Output output = new Output();
+	public final Output output = new Output();
 	
 	// Output values - define the public methods that return values
 	// required for experimentation.

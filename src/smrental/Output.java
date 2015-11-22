@@ -1,6 +1,6 @@
 package smrental;
 
-class Output 
+public class Output 
 {
 	// SSOVs
 	public int numOfServed;
