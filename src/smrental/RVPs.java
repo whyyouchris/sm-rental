@@ -141,15 +141,22 @@ class RVPs
 		}
 		return boardingTime;
 	}
-	
+
+	/**
+	 * This method return the total exiting time 
+	 * of the customer and additional customers  
+	 * 
+	 * @param numberOfPassengers
+	 * @return double - exitingTime
+	 */
 	public double exitingTime(int numberOfPassengers) {
-		double boardingTime = 0;
+		double exitingTime = 0;
 		// Customer himself should also be considered as an passenger
 		numberOfPassengers++;
 		while (numberOfPassengers>0) {
-			boardingTime += this.exitingTimeDist.nextDouble();
+			exitingTime += this.exitingTimeDist.nextDouble();
 			numberOfPassengers--;
 		}
-		return boardingTime;
+		return exitingTime;
 	}
 }
