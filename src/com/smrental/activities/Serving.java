@@ -9,6 +9,8 @@ import com.smrental.models.CustomerType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
+import static smrental.Constants.ACCEPTABLE_CHECK_IN_TIME;
+
 public class Serving extends ConditionalActivity {
 
 	private static final int COUNTER_WAIT_FOR_SERVING = CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal();
@@ -44,7 +46,7 @@ public class Serving extends ConditionalActivity {
 		this.model.rgCounter.removeGrp(this.icCustomer);
 		double customerServiceTime = this.model.getClock() - this.icCustomer.getTimeEnterSystem();
 		if (this.icCustomer.getType() == CustomerType.CHECK_IN
-				&& customerServiceTime < 20) {
+				&& customerServiceTime < ACCEPTABLE_CHECK_IN_TIME) {
 			this.model.output.numOfSatistifiedCustomer++;
 		}
 		if (this.icCustomer.getType() == CustomerType.CHECK_OUT) {

@@ -1,6 +1,4 @@
 package com.smrental.experiment;
-// File: Experiment.java
-// Description:
 
 import com.smrental.models.VanType;
 import com.smrental.procedures.Seeds;
@@ -9,8 +7,6 @@ import com.smrental.utils.Parameters;
 import cern.jet.random.engine.*;
 import smrental.*;
 
-// Main Method: Experiments
-// 
 public class Experiment
 {
 

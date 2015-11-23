@@ -11,6 +11,8 @@ import com.smrental.models.Van;
 import smrental.AirPortShematic;
 import smrental.SMRental;
 
+import static smrental.Constants.*;
+
 public class UDPs 
 {
 	private SMRental model;
@@ -122,19 +124,19 @@ public class UDPs
 	}
 
 	public double calculateCosts() {
-		double personnelCost = this.model.params.getNumberOfAgents() * 11.5
-				+ this.model.params.getNumberOfVans() * 12.5;
+		double personnelCost = this.model.params.getNumberOfAgents() * AGENT_RATE
+				+ this.model.params.getNumberOfVans() * DRIVER_RATE;
 		double vanCost = 0.0;
 		double totalMilesTraveled = this.model.output.totalMilesTraveledByVans;
 		switch (this.model.params.getTypeOfVan()) {
 		case 12:
-			vanCost = totalMilesTraveled * 0.48;
+			vanCost = totalMilesTraveled * VAN_12S_COST_RATE;
 			break;
 		case 18:
-			vanCost = totalMilesTraveled * 0.73;
+			vanCost = totalMilesTraveled * VAN_18S_COST_RATE;
 			break;
 		case 30:
-			vanCost = totalMilesTraveled * 0.92;
+			vanCost = totalMilesTraveled * VAN_30S_COST_RATE;
 			break;
 		default:
 			break;

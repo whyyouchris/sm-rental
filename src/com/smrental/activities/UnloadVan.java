@@ -8,6 +8,7 @@ import com.smrental.models.Van;
 
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 
 public class UnloadVan extends ConditionalActivity{
 	private static final int COUNTER = Location.COUNTER.ordinal();
@@ -50,7 +51,7 @@ public class UnloadVan extends ConditionalActivity{
 	@Override protected void terminatingEvent() {
 		if (this.icCustomer.getType() == CustomerType.CHECK_OUT) {
 			double serviceTime = this.model.getClock() - this.icCustomer.getTimeEnterSystem();
-			if (serviceTime < 18) {
+			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
 				this.model.output.numOfSatistifiedCustomer++;
 			}
 			this.model.output.satisfactionLevel = this.model.output.numOfSatistifiedCustomer / this.model.output.numOfServed;
