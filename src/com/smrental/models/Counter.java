@@ -3,7 +3,7 @@ package com.smrental.models;
 import java.util.HashSet;
 
 public class Counter {
-	private int numberOfAgent;
+	public final int numberOfAgent;
 	private HashSet<Customer> group = new HashSet<>();
 
 	public Counter(int numberOfAgent){
@@ -25,17 +25,8 @@ public class Counter {
 	public int getN() {
 		return this.group.size();
 	}
-	
-	public int getNumberOfAgent() {
-		return this.numberOfAgent;
-	}
 
 	public HashSet<Customer> getGroup() {
 		return group;
 	}
-
-	public void setNumberOfAgent(int numberOfAgent) {
-		this.numberOfAgent = numberOfAgent;
-	}
-	
 }

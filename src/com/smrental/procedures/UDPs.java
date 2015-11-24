@@ -34,22 +34,26 @@ public class UDPs
 		return Optional.empty();
 	}
 
+	/**	
+	 * This method will check both unloading customer locations:COUNTER and DROP_OFF
+	 * and return the location that is available to unload customer
+	 * @return Optional<Location> location
+	 */
 	public Optional<Location> getUnloadingLocation() {
-		Optional<Van> vanCounter = getFirstVanInLine(Location.COUNTER);
-		if (vanCounter.isPresent()) {
-			Van van = vanCounter.get();
-			if (van.getNumberOfCustomerOnBoard() > 0) {
+		List<Van> counterVans = this.model.qVanLines[Location.COUNTER.ordinal()];
+		for (Van eachVan: counterVans) {
+			if (eachVan.onBoardCustomers.size() > 0) {
 				return Optional.of(Location.COUNTER);
 			}
 		}
 
-		Optional<Van> vanDropOff = getFirstVanInLine(Location.DROP_OFF);
-		if (vanDropOff.isPresent()) {
-			Van van = vanDropOff.get();
-			if (van.getNumberOfCustomerOnBoard() > 0) {
+		List<Van> dropOffVans = this.model.qVanLines[Location.DROP_OFF.ordinal()];
+		for (Van eachVan : dropOffVans) {
+			if (eachVan.onBoardCustomers.size() > 0) {
 				return Optional.of(Location.DROP_OFF);
 			}
 		}
+
 		return Optional.empty();
 	}
 
@@ -57,7 +61,7 @@ public class UDPs
 		Optional<Van> vanDropOff = getFirstVanInLine(Location.DROP_OFF);
 		if (vanDropOff.isPresent()) {
 			Van van = vanDropOff.get();
-			if (van.getNumberOfCustomerOnBoard() == 0) {
+			if (van.onBoardCustomers.size() == 0) {
 				return Optional.of(Location.DROP_OFF);
 			}
 		}
@@ -66,8 +70,8 @@ public class UDPs
 		Optional<Van> vanT1 = getFirstVanInLine(Location.T1);
 		if (!customerT1.isPresent()
 				&& vanT1.isPresent()
-				&& vanT1.get().getNumberOfCustomerOnBoard() > 0
-				&& vanT1.get().getStatus() == VanStatus.IDLE) {
+				&& vanT1.get().onBoardCustomers.size() > 0
+				&& vanT1.get().status == VanStatus.IDLE) {
 			return Optional.of(Location.T1);
 		}
 
@@ -75,8 +79,8 @@ public class UDPs
 		Optional<Van> vanT2 = getFirstVanInLine(Location.T2);
 		if (!customerT2.isPresent()
 				&& vanT2.isPresent()
-				&& vanT2.get().getNumberOfCustomerOnBoard() > 0
-				&& vanT2.get().getStatus() == VanStatus.IDLE) {
+				&& vanT2.get().onBoardCustomers.size() > 0
+				&& vanT2.get().status == VanStatus.IDLE) {
 			return Optional.of(Location.T2);
 		}
 
@@ -84,8 +88,8 @@ public class UDPs
 		Optional<Van> vanCounter = getFirstVanInLine(Location.COUNTER);
 		if (!customerCounter.isPresent()
 				&& vanCounter.isPresent()
-				&& vanCounter.get().getNumberOfCustomerOnBoard() > 0
-				&& vanCounter.get().getStatus() == VanStatus.IDLE) {
+				&& vanCounter.get().onBoardCustomers.size() > 0
+				&& vanCounter.get().status == VanStatus.IDLE) {
 			return Optional.of(Location.COUNTER);
 		}
 		return Optional.empty();
@@ -103,9 +107,9 @@ public class UDPs
 		List<Customer> customerLine = getCustomerPickUpLineByLocation(location);
 		if (firstVan.isPresent()) {
 			Van van = firstVan.get();
-			int numSeatAvailable = van.capacity - van.getNumberOfCustomerOnBoard();
+			int numSeatAvailable = van.capacity - van.onBoardCustomers.size();
 			for (Customer customer:customerLine) {
-				int numSeatNeeded = customer.getNumberOfAdditionalPassenager() +1;
+				int numSeatNeeded = customer.numberOfAdditionalPassenager +1;
 				if (numSeatNeeded < numSeatAvailable) {
 					return Optional.of(customer);
 				}
@@ -117,14 +121,14 @@ public class UDPs
 	public Location getDestination(Location location, Van van) {
 		Location next = null;
 		if (location == Location.COUNTER) {
-			if (van.getNumberOfCustomerOnBoard() >0 ) {
+			if (van.onBoardCustomers.size() >0 ) {
 				next = Location.DROP_OFF;
 			} else {
 				next = Location.T1;
 			}
 		}
 		if (location == Location.T1) {
-			if (van.capacity == van.getNumberOfCustomerOnBoard()) {
+			if (van.capacity == van.onBoardCustomers.size()) {
 				next = Location.COUNTER;
 			} else {
 				next = Location.T2;
@@ -177,7 +181,14 @@ public class UDPs
 			return Optional.empty();
 		}
 	}
-	
+
+	/**
+	 * This just a java helper method to help me retrieve the CustomerLine by location
+	 * So I don't have to type the super long 'this.mode.qCustomerLine[CustomerLineId.LocationId]' to get the
+	 * customer line reference
+	 * @param location
+	 * @return List<Customer> - customerLine
+	 */
 	public List<Customer> getCustomerPickUpLineByLocation(Location location) {
 		List<Customer> customerLine = null;
 		if (location == Location.COUNTER) {
@@ -189,5 +200,4 @@ public class UDPs
 		}
 		return customerLine;
 	}
-	
 }

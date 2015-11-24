@@ -24,7 +24,7 @@ public class LoadVan extends ConditionalActivity{
 		return model.udp.getLoadingLocation().isPresent();
 	}
 	@Override protected double duration() {
-		return this.model.rvp.boardingTime(this.icCustomer.getNumberOfAdditionalPassenager());
+		return this.model.rvp.boardingTime(this.icCustomer.numberOfAdditionalPassenager);
 	}
 
 	@Override public void startingEvent() {
@@ -33,14 +33,13 @@ public class LoadVan extends ConditionalActivity{
 		List<Customer> customerLine = this.model.udp.getCustomerPickUpLineByLocation(loadingLocation);
 		customerLine.remove(this.icCustomer);
 		this.van = this.model.qVanLines[this.loadingLocation.ordinal()].get(0);
-		this.van.setStatus(VanStatus.LOADING);
+		this.van.status = VanStatus.LOADING;
 	}
 
 	@Override protected void terminatingEvent() {
-		this.van.boardCustomer(this.icCustomer);
-		int newSeatTaken = this.van.getNumberOfCustomerOnBoard() + this.icCustomer.getNumberOfAdditionalPassenager() +1;
-		this.van.setNumberOfCustomerOnBoard(newSeatTaken);
-		this.van.setStatus(VanStatus.IDLE);
+		this.van.onBoardCustomers.add(this.icCustomer);
+		this.van.numOfSeatTaken = this.van.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
+		this.van.status = VanStatus.IDLE;
 	}
 
 }
