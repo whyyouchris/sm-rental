@@ -41,4 +41,8 @@ public class Van {
 	public void setNumberOfCustomerOnBoard(int num) {
 		this.numOfSeatTaken = num;
 	}
+
+	@Override public String toString() {
+		return String.format("[id: %s numSeatTaken: %s]", id, numOfSeatTaken);
+	}
 }

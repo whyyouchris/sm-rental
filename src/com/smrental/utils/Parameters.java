@@ -29,8 +29,7 @@ public class Parameters {
 		return customerIncrease;
 	}
 
-	@Override
-    public String toString() {
+	@Override public String toString() {
         return String
                 .format("[typeOfVan = %s, numberOfAgents: %s, numberOfVans: %s, customerIncrease: %s]",
                         typeOfVan, numberOfAgents, numberOfVans, customerIncrease);
@@ -41,6 +40,15 @@ public class Parameters {
 		private int numberOfAgents;
 		private int numberOfVans;
 		private boolean customerIncrease;
+
+		public Builder() {}
+
+		public Builder(Parameters params) {
+			this.typeOfVan = params.typeOfVan;
+			this.numberOfAgents = params.numberOfAgents;
+			this.numberOfVans = params.numberOfVans;
+			this.customerIncrease = params.customerIncrease;
+		}
 
 		public Builder typeOfVan(int typeOfVan) {
 			this.typeOfVan = typeOfVan;

@@ -10,38 +10,52 @@ import smrental.*;
 public class Experiment
 {
 
-   
-   public static void main(String[] args)
-   {
-       int i, NUMRUNS = 30; 
-       double startTime=0.0, endTime=660.0;
+	private static final double START_TIME = 0.0;
+	private static final double END_TIME = 270;
+	private static final double SATISFACTION_85 = 0.85;
+	private static final double SATISFACTION_90 = 0.90;
+	private static final int 	MAX_NUM_AGENTS = 10;
+	private static final int	MAX_NUM_VANS = 10;
+
+   public static void main(String[] args) {
+       int i, NUMRUNS = 10;
+
        Seeds[] sds = new Seeds[NUMRUNS];
-       SMRental smRental;  // Simulation object
 
        // Lets get a set of uncorrelated seeds
        RandomSeedGenerator rsg = new RandomSeedGenerator();
        for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
-       
-       // Loop for NUMRUN simulation runs for each case
-       // Case 1
-       System.out.println(" Case 1");
+
        int typeOfVan = VanType.SEAT12.getSeats();
        int numberOfAgents = 10;
        int numberOfVans = 10;
        boolean customerIncrease = false;
-       for(i=0 ; i < NUMRUNS ; i++)
-       {
-    	  Parameters params = new Parameters.Builder()
-    			 .typeOfVan(typeOfVan)
-    			 .numberOfAgents(numberOfAgents)
-    			 .numberOfVans(numberOfVans)
-    			 .customerIncrease(customerIncrease)
-    			 .build();
-    			 
-          smRental = new SMRental(startTime,endTime,sds[i], params, true);
-          smRental.runSimulation();
-          // See examples for hints on collecting output
-          // and developping code for analysis
+       Parameters params = new Parameters.Builder()
+  			 .typeOfVan(typeOfVan)
+  			 .numberOfAgents(numberOfAgents)
+  			 .numberOfVans(numberOfVans)
+  			 .customerIncrease(customerIncrease)
+  			 .build();
+
+       for(i=0 ; i < NUMRUNS ; i++) {
+    	   SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, true);
+    	   model.runSimulation();
+    	   System.out.println("result: "+ model.output.satisfactionLevel);
        }
+   }
+
+   private static void experimentProcedure(Parameters params, Seeds sds, boolean log) {
+	   final int maxNumAgents = 10;
+	   final int maxNumVan = 10;
+
+	   while (true) {
+		   SMRental model = new SMRental(START_TIME, END_TIME, sds, params, log);
+		   model.runSimulation();
+		   if(model.output.satisfactionLevel >= SATISFACTION_85){
+			   break;
+		   } else {
+			   
+		   }
+	   }
    }
 }

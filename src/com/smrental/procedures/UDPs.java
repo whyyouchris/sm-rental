@@ -7,6 +7,7 @@ import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
 import com.smrental.models.Location;
 import com.smrental.models.Van;
+import com.smrental.models.VanStatus;
 
 import smrental.AirPortShematic;
 import smrental.SMRental;
@@ -60,16 +61,31 @@ public class UDPs
 				return Optional.of(Location.DROP_OFF);
 			}
 		}
+
 		Optional<Customer> customerT1 = getCanBoardCustomer(Location.T1);
-		if (!customerT1.isPresent()) {
+		Optional<Van> vanT1 = getFirstVanInLine(Location.T1);
+		if (!customerT1.isPresent()
+				&& vanT1.isPresent()
+				&& vanT1.get().getNumberOfCustomerOnBoard() > 0
+				&& vanT1.get().getStatus() == VanStatus.IDLE) {
 			return Optional.of(Location.T1);
 		}
+
 		Optional<Customer> customerT2 = getCanBoardCustomer(Location.T2);
-		if (!customerT2.isPresent()) {
+		Optional<Van> vanT2 = getFirstVanInLine(Location.T2);
+		if (!customerT2.isPresent()
+				&& vanT2.isPresent()
+				&& vanT2.get().getNumberOfCustomerOnBoard() > 0
+				&& vanT2.get().getStatus() == VanStatus.IDLE) {
 			return Optional.of(Location.T2);
 		}
+
 		Optional<Customer> customerCounter = getCanBoardCustomer(Location.COUNTER);
-		if (!customerCounter.isPresent()) {
+		Optional<Van> vanCounter = getFirstVanInLine(Location.COUNTER);
+		if (!customerCounter.isPresent()
+				&& vanCounter.isPresent()
+				&& vanCounter.get().getNumberOfCustomerOnBoard() > 0
+				&& vanCounter.get().getStatus() == VanStatus.IDLE) {
 			return Optional.of(Location.COUNTER);
 		}
 		return Optional.empty();

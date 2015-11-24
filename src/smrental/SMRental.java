@@ -2,6 +2,7 @@ package smrental;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import com.smrental.actions.ArrivalCounter;
 import com.smrental.actions.ArrivalT1;
@@ -32,7 +33,7 @@ public class SMRental extends AOSimulationModel
 	public final Parameters params; // experiment parameters
 
 	/*-------------Entity Data Structures-------------------*/
-	public final Counter rgCounter = new Counter();
+	public final Counter rgCounter;
 	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
 	@SuppressWarnings("unchecked")
@@ -50,13 +51,20 @@ public class SMRental extends AOSimulationModel
 		this.traceFlag = traceFlag;
 		this.startingTime = t0time;
 		this.closingTime = tftime;
-		
+
 		this.params = params;
-	
+
 		rvp = new RVPs(this,sd);
-		
-		// rgCounter and qCustLine objects created in Initalise Action
-		
+		this.rgCounter = new Counter(this.params.getNumberOfAgents());
+
+		for (int i =0; i < this.qCustomerLines.length; i++) {
+			this.qCustomerLines[i] = new LinkedList<>();
+		}
+
+		for (int i =0; i < this.qVanLines.length; i++) {
+			this.qVanLines[i] = new LinkedList<>();
+		}
+
 		// Initialise the simulation model
 		initAOSimulModel(t0time,tftime);   
 
@@ -77,25 +85,28 @@ public class SMRental extends AOSimulationModel
 	 */
 	@Override protected void testPreconditions(Behaviour behObj) {
 		reschedule (behObj);
-		if(Drive.precondition(this)) {
-			Drive drive = new Drive(this);
-			drive.startingEvent();
-			scheduleActivity(drive);
-		}
 		if(LoadVan.precondition(this)) {
 			LoadVan loadVan = new LoadVan(this);
 			loadVan.startingEvent();
 			scheduleActivity(loadVan);
 		}
-		if(Serving.precondition(this)) {
-			Serving serving = new Serving(this);
-			serving.startingEvent();
-			scheduleActivity(serving);
+
+		if(Drive.precondition(this)) {
+			Drive drive = new Drive(this);
+			drive.startingEvent();
+			scheduleActivity(drive);
 		}
+
 		if(UnloadVan.precondition(this)) {
 			UnloadVan unloadVan = new UnloadVan(this);
 			unloadVan.startingEvent();
 			scheduleActivity(unloadVan);
+		}
+
+		if(Serving.precondition(this)) {
+			Serving serving = new Serving(this);
+			serving.startingEvent();
+			scheduleActivity(serving);
 		}
 	}
 	
@@ -112,16 +123,26 @@ public class SMRental extends AOSimulationModel
 	{
 		if(this.traceFlag)
 		{
+			StringJoiner joiner = new StringJoiner(" %s\n");
+			joiner.add("Clock:");
+			joiner.add("Vanline[T1]:");
+			joiner.add("CustomerLine[T1]:");
+			joiner.add("Vanline[T2]:");
+			joiner.add("CustomerLine[T2]:");
+			joiner.add("Vanline[COUNTER]:");
+			joiner.add("CustomerAtCounter:");
+			joiner.add("CustomerLine[WAIT_FOR_SERVING]:");
+			joiner.add("CustomerLine[WAIT_FOR_PICKUP]:");
+			joiner.add("Vanline[DROP_OFF]:%s");
 			System.out.println(
-				String.format("Clock: %s Vanline[T1]: %s CustomerLine[T1]: %s Vanline[T2]: %s CustomerLine[T2]: %s"
-					+ " Vanline[COUNTER]: %s, CustomerLine[WAIT_FOR_SERVING]: %s, CustomerLine[WAIT_FOR_PICKUP] %s"
-					+ " Vanline[DROP_OFF]: %s"
+				String.format(joiner.toString()
 					,getClock()
 					, this.qVanLines[Location.T1.ordinal()]
 					, this.qCustomerLines[CustomerLineID.T1.ordinal()]
 					, this.qVanLines[Location.T2.ordinal()]
 					, this.qCustomerLines[CustomerLineID.T2.ordinal()]
 					, this.qVanLines[Location.COUNTER.ordinal()]
+					, this.rgCounter.getN()
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
 					, this.qVanLines[Location.DROP_OFF.ordinal()]));

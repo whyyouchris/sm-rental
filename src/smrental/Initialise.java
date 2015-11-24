@@ -27,7 +27,6 @@ class Initialise extends ScheduledAction {
 		restSystem();
 		int id = 0;
 		int numOfVan = this.model.params.getNumberOfVans();
-
 		// Van Location ids
 		int T1 = Location.T1.ordinal();
 		int T2 = Location.T2.ordinal();
@@ -62,13 +61,12 @@ class Initialise extends ScheduledAction {
 		this.model.qVanLines[Location.T2.ordinal()].clear();
 		this.model.qVanLines[Location.COUNTER.ordinal()].clear();
 		this.model.qVanLines[Location.DROP_OFF.ordinal()].clear();
-
 		this.model.output.numOfServed = 0;
 		this.model.output.numOfSatistifiedCustomer = 0;
 		this.model.output.satisfactionLevel = 0.0;
 		this.model.output.totalMilesTraveledByVans = 0.0;
 	}
-	
+
 	private Van createVanHelper(int id) {
 		return new Van(id, this.model.params.getTypeOfVan());
 	}

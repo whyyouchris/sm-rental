@@ -40,6 +40,7 @@ public class LoadVan extends ConditionalActivity{
 		this.van.boardCustomer(this.icCustomer);
 		int newSeatTaken = this.van.getNumberOfCustomerOnBoard() + this.icCustomer.getNumberOfAdditionalPassenager() +1;
 		this.van.setNumberOfCustomerOnBoard(newSeatTaken);
+		this.van.setStatus(VanStatus.IDLE);
 	}
 
 }

@@ -6,6 +6,9 @@ public class Counter {
 	private int numberOfAgent;
 	private HashSet<Customer> group = new HashSet<>();
 
+	public Counter(int numberOfAgent){
+		this.numberOfAgent = numberOfAgent;
+	}
 	/**
 	 * @param Customer - icCustomer
 	 * @return void
