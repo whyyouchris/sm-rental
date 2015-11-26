@@ -11,6 +11,8 @@ import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 
+import java.util.List;
+
 public class UnloadVan extends ConditionalActivity{
 	private static final int COUNTER = Location.COUNTER.ordinal();
 	private static final int DROP_OFF = Location.DROP_OFF.ordinal();
@@ -34,15 +36,21 @@ public class UnloadVan extends ConditionalActivity{
 	@Override public void startingEvent() {
 		Location location = this.model.udp.getUnloadingLocation().get();
 		if (location == Location.COUNTER) {
-			this.van = this.model.qVanLines[COUNTER].get(0);
-			this.icCustomer = this.van.onBoardCustomers.get(0);
+			List<Van> vanList = this.model.qVanLines[Location.COUNTER.ordinal()];
+			for (Van van : vanList) {
+				for (Customer customer : van.onBoardCustomers) {
+					if (customer.type == CustomerType.CHECK_IN) {
+						this.van = this.model.qVanLines[COUNTER].get(0);
+						this.icCustomer = van.onBoardCustomers.get(0);
+					}
+				}
+			}
 		}
 
 		if (location == Location.DROP_OFF) {
-			van = this.model.qVanLines[DROP_OFF].get(0);
+			this.van = this.model.qVanLines[DROP_OFF].get(0);
 			this.icCustomer = this.van.onBoardCustomers.get(0);
 		}
-
 		this.van.status = VanStatus.UNLOADING;
 	}
 

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
+import com.smrental.models.CustomerType;
 import com.smrental.models.Location;
 import com.smrental.models.Van;
 import com.smrental.models.VanStatus;
@@ -29,7 +30,17 @@ public class UDPs
 			return Optional.of(Location.T2);
 		}
 		if (getCanBoardCustomer(Location.COUNTER).isPresent()) {
-			return Optional.of(Location.COUNTER);
+			Van firstVan = this.model.qVanLines[Location.COUNTER.ordinal()].get(0);
+			boolean canBoard = true;
+			// Can only board after all the check-in customers unboard the van
+			for (Customer customer : firstVan.onBoardCustomers) {
+				if (customer.type == CustomerType.CHECK_IN) {
+					canBoard = false;
+				} 
+			}
+			if (canBoard) {
+				return Optional.of(Location.COUNTER);
+			}
 		}
 		return Optional.empty();
 	}
@@ -42,14 +53,14 @@ public class UDPs
 	public Optional<Location> getUnloadingLocation() {
 		List<Van> counterVans = this.model.qVanLines[Location.COUNTER.ordinal()];
 		for (Van eachVan: counterVans) {
-			if (eachVan.onBoardCustomers.size() > 0) {
+			if (eachVan.onBoardCustomers.size() > 0 && eachVan.status == VanStatus.IDLE) {
 				return Optional.of(Location.COUNTER);
 			}
 		}
 
 		List<Van> dropOffVans = this.model.qVanLines[Location.DROP_OFF.ordinal()];
 		for (Van eachVan : dropOffVans) {
-			if (eachVan.onBoardCustomers.size() > 0) {
+			if (eachVan.onBoardCustomers.size() > 0 && eachVan.status == VanStatus.IDLE) {
 				return Optional.of(Location.DROP_OFF);
 			}
 		}
