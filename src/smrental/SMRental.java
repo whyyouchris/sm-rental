@@ -85,16 +85,27 @@ public class SMRental extends AOSimulationModel
 	 */
 	@Override protected void testPreconditions(Behaviour behObj) {
 		reschedule (behObj);
+        while (true) {
+            if (!preconditionChecker()) {
+                break;
+            }
+        }
+	}
+
+	private boolean preconditionChecker() {
+		boolean check = false;
 		if(LoadVan.precondition(this)) {
 			LoadVan loadVan = new LoadVan(this);
 			loadVan.startingEvent();
 			scheduleActivity(loadVan);
+            check = true;
 		}
 
 		if(Drive.precondition(this)) {
 			Drive drive = new Drive(this);
 			drive.startingEvent();
 			scheduleActivity(drive);
+            check = true;
 		}
 
 		if(UnloadVan.precondition(this)) {
@@ -107,9 +118,12 @@ public class SMRental extends AOSimulationModel
 			Serving serving = new Serving(this);
 			serving.startingEvent();
 			scheduleActivity(serving);
+            check = true;
 		}
+
+        return check;
 	}
-	
+
 	public boolean implicitStopCondition() {
 		boolean result = false;
 		if (this.getClock() >= this.closingTime &&
