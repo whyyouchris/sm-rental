@@ -57,9 +57,16 @@ public class UDPs
 		return Optional.empty();
 	}
 
+    /**
+     *  If customer line is empty, move to the next location.
+     *  If there is no enough space for customer to baord the first of the van, move to the next location
+     *  If an van has customers on board and the van in front of it is empty, move to next location
+     *
+     * @return Optional<Location> - Location id that available to move
+     */
 	public Optional<Location> getDriveLocation() {
 		Optional<Van> vanDropOff = getFirstVanInLine(Location.DROP_OFF);
-		if (vanDropOff.isPresent()) {
+		if (vanDropOff.isPresent() && vanDropOff.get().status == VanStatus.IDLE) {
 			Van van = vanDropOff.get();
 			if (van.onBoardCustomers.size() == 0) {
 				return Optional.of(Location.DROP_OFF);
@@ -67,31 +74,49 @@ public class UDPs
 		}
 
 		Optional<Customer> customerT1 = getCanBoardCustomer(Location.T1);
+        List<Customer> customerLineT1 = getCustomerPickUpLineByLocation(Location.T1);
 		Optional<Van> vanT1 = getFirstVanInLine(Location.T1);
 		if (!customerT1.isPresent()
 				&& vanT1.isPresent()
 				&& vanT1.get().onBoardCustomers.size() > 0
-				&& vanT1.get().status == VanStatus.IDLE) {
+				&& vanT1.get().status == VanStatus.IDLE
+                || (customerLineT1.size() == 0 && vanT1.isPresent() && vanT1.get().status == VanStatus.IDLE)) {
 			return Optional.of(Location.T1);
 		}
 
+
 		Optional<Customer> customerT2 = getCanBoardCustomer(Location.T2);
+        List<Customer> customerLineT2 = getCustomerPickUpLineByLocation(Location.T2);
 		Optional<Van> vanT2 = getFirstVanInLine(Location.T2);
 		if (!customerT2.isPresent()
 				&& vanT2.isPresent()
 				&& vanT2.get().onBoardCustomers.size() > 0
-				&& vanT2.get().status == VanStatus.IDLE) {
+				&& vanT2.get().status == VanStatus.IDLE
+                || (customerLineT2.size() == 0 && vanT2.isPresent() && vanT2.get().status == VanStatus.IDLE)) {
 			return Optional.of(Location.T2);
 		}
+        //If the previous van is already empty,
+        //no need to wait and drive to the next location
+        List<Van> vanLine = this.model.qVanLines[Location.T2.ordinal()];
+        int secondLastPost = vanLine.size() -2;
+        if (secondLastPost >= 0) {
+            Van secondLastVan = vanLine.get(vanLine.size()-2);
+            if (secondLastVan.onBoardCustomers.size() == 0) {
+                return  Optional.of(Location.T2);
+            }
+        }
 
 		Optional<Customer> customerCounter = getCanBoardCustomer(Location.COUNTER);
+        List<Customer> customersLineCounter = getCustomerPickUpLineByLocation(Location.COUNTER);
 		Optional<Van> vanCounter = getFirstVanInLine(Location.COUNTER);
 		if (!customerCounter.isPresent()
 				&& vanCounter.isPresent()
 				&& vanCounter.get().onBoardCustomers.size() > 0
-				&& vanCounter.get().status == VanStatus.IDLE) {
+				&& vanCounter.get().status == VanStatus.IDLE
+                || (customersLineCounter.size() == 0 && vanCounter.isPresent() && vanCounter.get().status == VanStatus.IDLE)) {
 			return Optional.of(Location.COUNTER);
 		}
+
 		return Optional.empty();
 	}
 
