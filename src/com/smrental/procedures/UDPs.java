@@ -1,12 +1,10 @@
 package com.smrental.procedures;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
-import com.smrental.models.CustomerType;
 import com.smrental.models.Location;
 import com.smrental.models.Van;
 import com.smrental.models.VanStatus;
@@ -44,16 +42,14 @@ public class UDPs
 	public Optional<Location> getUnloadingLocation() {
 		List<Van> counterVans = this.model.qVanLines[Location.COUNTER.ordinal()];
 		for (Van eachVan: counterVans) {
-			for (Customer customer : eachVan.onBoardCustomers) {
-				if (customer.type == CustomerType.CHECK_IN && eachVan.status == VanStatus.IDLE) {
-					return Optional.of(Location.COUNTER);
-				}
+			if (eachVan.onBoardCustomers.size() > 0) {
+				return Optional.of(Location.COUNTER);
 			}
 		}
 
 		List<Van> dropOffVans = this.model.qVanLines[Location.DROP_OFF.ordinal()];
 		for (Van eachVan : dropOffVans) {
-			if (eachVan.onBoardCustomers.size() > 0 && eachVan.status == VanStatus.IDLE) {
+			if (eachVan.onBoardCustomers.size() > 0) {
 				return Optional.of(Location.DROP_OFF);
 			}
 		}
@@ -61,13 +57,12 @@ public class UDPs
 		return Optional.empty();
 	}
 
-	public List<Location> getDriveLocations() {
-        List<Location> locations = new LinkedList<>();
+	public Optional<Location> getDriveLocation() {
 		Optional<Van> vanDropOff = getFirstVanInLine(Location.DROP_OFF);
 		if (vanDropOff.isPresent()) {
 			Van van = vanDropOff.get();
 			if (van.onBoardCustomers.size() == 0) {
-				locations.add(Location.DROP_OFF);
+				return Optional.of(Location.DROP_OFF);
 			}
 		}
 
@@ -77,8 +72,8 @@ public class UDPs
 				&& vanT1.isPresent()
 				&& vanT1.get().onBoardCustomers.size() > 0
 				&& vanT1.get().status == VanStatus.IDLE) {
-		    locations.add(Location.T1);
-        }
+			return Optional.of(Location.T1);
+		}
 
 		Optional<Customer> customerT2 = getCanBoardCustomer(Location.T2);
 		Optional<Van> vanT2 = getFirstVanInLine(Location.T2);
@@ -86,8 +81,8 @@ public class UDPs
 				&& vanT2.isPresent()
 				&& vanT2.get().onBoardCustomers.size() > 0
 				&& vanT2.get().status == VanStatus.IDLE) {
-		    locations.add(Location.T2);
-        }
+			return Optional.of(Location.T2);
+		}
 
 		Optional<Customer> customerCounter = getCanBoardCustomer(Location.COUNTER);
 		Optional<Van> vanCounter = getFirstVanInLine(Location.COUNTER);
@@ -95,10 +90,10 @@ public class UDPs
 				&& vanCounter.isPresent()
 				&& vanCounter.get().onBoardCustomers.size() > 0
 				&& vanCounter.get().status == VanStatus.IDLE) {
-			locations.add(Location.COUNTER);
+			return Optional.of(Location.COUNTER);
 		}
-	    return locations;
-    }
+		return Optional.empty();
+	}
 
 	/**
 	 * This function will find the first customer that both his accompany passengers
@@ -110,7 +105,7 @@ public class UDPs
 	public Optional<Customer> getCanBoardCustomer(Location location){
 		Optional<Van> firstVan = getFirstVanInLine(location);
 		List<Customer> customerLine = getCustomerPickUpLineByLocation(location);
-		if (firstVan.isPresent() && firstVan.get().status == VanStatus.IDLE) {
+		if (firstVan.isPresent()) {
 			Van van = firstVan.get();
 			int numSeatAvailable = van.capacity - van.onBoardCustomers.size();
 			for (Customer customer:customerLine) {
