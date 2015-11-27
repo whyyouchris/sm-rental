@@ -30,15 +30,15 @@ public class LoadVan extends ConditionalActivity{
 	@Override public void startingEvent() {
 		this.loadingLocation = this.model.udp.getLoadingLocation().get();
 		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation).get();
-		List<Customer> customerLine = this.model.udp.getCustomerPickUpLineByLocation(loadingLocation);
-		customerLine.remove(this.icCustomer);
 		this.van = this.model.qVanLines[this.loadingLocation.ordinal()].get(0);
-		this.van.numOfSeatTaken = this.van.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
 		this.van.status = VanStatus.LOADING;
 	}
 
 	@Override protected void terminatingEvent() {
+		List<Customer> customerLine = this.model.udp.getCustomerPickUpLineByLocation(loadingLocation);
+		customerLine.remove(this.icCustomer);
 		this.van.onBoardCustomers.add(this.icCustomer);
+		this.van.numOfSeatTaken = this.van.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
 		this.van.status = VanStatus.IDLE;
 	}
 

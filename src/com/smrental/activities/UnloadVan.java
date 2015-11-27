@@ -38,6 +38,9 @@ public class UnloadVan extends ConditionalActivity{
 		if (location == Location.COUNTER) {
 			List<Van> vanList = this.model.qVanLines[Location.COUNTER.ordinal()];
 			for (Van van : vanList) {
+				if (van.status != VanStatus.IDLE) {
+					continue;
+				}
 				for (Customer customer : van.onBoardCustomers) {
 					if (customer.type == CustomerType.CHECK_IN) {
 						this.van = this.model.qVanLines[COUNTER].get(0);
@@ -48,8 +51,16 @@ public class UnloadVan extends ConditionalActivity{
 		}
 
 		if (location == Location.DROP_OFF) {
-			this.van = this.model.qVanLines[DROP_OFF].get(0);
-			this.icCustomer = this.van.onBoardCustomers.get(0);
+			List<Van> vanList = this.model.qVanLines[Location.DROP_OFF.ordinal()];
+			for (Van van : vanList) {
+				if (van.status != VanStatus.IDLE) {
+					continue;
+				}
+				if (van.onBoardCustomers.size() > 0) {
+					this.van = van;
+					this.icCustomer = van.onBoardCustomers.get(0);
+				}
+			}
 		}
 		this.van.status = VanStatus.UNLOADING;
 	}

@@ -23,13 +23,19 @@ public class UDPs
 	public UDPs(SMRental model) { this.model = model; }
 
 	public Optional<Location> getLoadingLocation() {
-		if (getCanBoardCustomer(Location.T1).isPresent()) {
+		Optional<Van> firtVan = getFirstVanInLine(Location.T1);
+		if (getCanBoardCustomer(Location.T1).isPresent()
+				&& firtVan.get().status == VanStatus.IDLE) {
 			return Optional.of(Location.T1);
 		}
-		if (getCanBoardCustomer(Location.T2).isPresent()) {
+		firtVan = getFirstVanInLine(Location.T2);
+		if (getCanBoardCustomer(Location.T2).isPresent()
+				&& firtVan.get().status == VanStatus.IDLE) {
 			return Optional.of(Location.T2);
 		}
-		if (getCanBoardCustomer(Location.COUNTER).isPresent()) {
+		firtVan = getFirstVanInLine(Location.COUNTER);
+		if (getCanBoardCustomer(Location.COUNTER).isPresent()
+				&& firtVan.get().status == VanStatus.IDLE) {
 			Van firstVan = this.model.qVanLines[Location.COUNTER.ordinal()].get(0);
 			boolean canBoard = true;
 			// Can only board after all the check-in customers unboard the van
@@ -53,8 +59,13 @@ public class UDPs
 	public Optional<Location> getUnloadingLocation() {
 		List<Van> counterVans = this.model.qVanLines[Location.COUNTER.ordinal()];
 		for (Van eachVan: counterVans) {
-			if (eachVan.onBoardCustomers.size() > 0 && eachVan.status == VanStatus.IDLE) {
-				return Optional.of(Location.COUNTER);
+			if (eachVan.status != VanStatus.IDLE) {
+				continue;
+			}
+			for (Customer customer : eachVan.onBoardCustomers) {
+				if (customer.type == CustomerType.CHECK_IN) {
+					return  Optional.of(Location.COUNTER);
+				}
 			}
 		}
 
