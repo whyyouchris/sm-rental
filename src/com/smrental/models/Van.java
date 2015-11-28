@@ -9,7 +9,6 @@ public class Van {
 	public final List<Customer> onBoardCustomers;
 	public int numOfSeatTaken;
 	public VanStatus status;
-	public double startWaitingTime;
 
 	public Van(int id, int capacity) {
 		this.id = id;
@@ -17,7 +16,6 @@ public class Van {
 		this.onBoardCustomers = new ArrayList<>(capacity);
 		this.numOfSeatTaken = 0;
 		this.status = VanStatus.IDLE;
-		this.startWaitingTime = 0.0;
 	}
 
 	@Override public String toString() {

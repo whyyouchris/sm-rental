@@ -3,5 +3,10 @@ package com.smrental.models;
 public enum VanStatus {
 	LOADING,
 	UNLOADING,
-	IDLE
+	IDLE,
+    DRIVING_COUNTER_T1,
+    DRIVING_COUNTER_DROP_OFF,
+    DRIVING_DROP_OFF_T1,
+	DRIVING_T1_T2,
+	DRIVING_T2_COUNTER
 }

@@ -2,19 +2,17 @@ package com.smrental.activities;
 
 import java.util.List;
 
-import com.smrental.models.Customer;
-import com.smrental.models.VanLineID;
-import com.smrental.models.Van;
-import com.smrental.models.VanStatus;
+import com.smrental.models.*;
 
+import com.smrental.utils.Operation;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
 public class LoadVan extends ConditionalActivity{
 	private SMRental model;
-	private Van van;
+	private int vanId;
 	private Customer icCustomer;
-	private VanLineID loadingVanLineID;
+	private Location loadingLocation;
 
 	public LoadVan(SMRental model) {
 		this.model = model;
@@ -28,18 +26,19 @@ public class LoadVan extends ConditionalActivity{
 	}
 
 	@Override public void startingEvent() {
-		this.loadingVanLineID = this.model.udp.getLoadingLocation().get();
-		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingVanLineID).get();
-		this.van = this.model.qVanLines[this.loadingVanLineID.ordinal()].get(0);
-		this.van.status = VanStatus.LOADING;
+		this.loadingLocation = this.model.udp.getLoadingLocation().get();
+		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation).get();
+		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, Operation.PICK_UP).get();
+		this.model.vans[vanId].status = VanStatus.LOADING;
 	}
 
 	@Override protected void terminatingEvent() {
-		List<Customer> customerLine = this.model.udp.getCustomerPickUpLineByLocation(loadingVanLineID);
+		List<Customer> customerLine = this.model.udp.getCustomerLine(this.loadingLocation, Operation.PICK_UP);
 		customerLine.remove(this.icCustomer);
-		this.van.onBoardCustomers.add(this.icCustomer);
-		this.van.numOfSeatTaken = this.van.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
-		this.van.status = VanStatus.IDLE;
+		Van van = this.model.vans[this.vanId];
+		van.onBoardCustomers.add(this.icCustomer);
+		van.numOfSeatTaken = van.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
+		van.status = VanStatus.IDLE;
 	}
 
 }

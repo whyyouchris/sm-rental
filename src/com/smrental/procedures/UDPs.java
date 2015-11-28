@@ -8,7 +8,6 @@ import com.smrental.models.VanLineID;
 
 import com.smrental.utils.Operation;
 import smrental.AirPortShematic;
-import smrental.Constants;
 import smrental.SMRental;
 
 import static smrental.Constants.*;
@@ -51,33 +50,24 @@ public class UDPs
 
     /**
      * Return the van reference that available to move from given location
+     *
      * @param location - airport location id
-     * @return Optional<Van> van
+     * @return Optional<Integer> vanId
      */
-    public Optional<Van> getUnloadingVan(Location location) {
-        if (location == Location.COUNTER) {
-            List<Van> counterVanLine = getVanLine(Location.COUNTER, Operation.DROP_UP);
-            for (Van eachVan : counterVanLine) {
+    public Optional<Integer> getUnloadingVan(Location location) {
+        if (location == Location.COUNTER || location == Location.DROP_OFF) {
+            List<Integer> rgDropOff = getVanLine(location, Operation.DROP_OFF);
+            for (int eachVanId : rgDropOff) {
+                Van eachVan = this.model.vans[eachVanId];
                 if (eachVan.status != VanStatus.IDLE) {
                     continue;
                 }
-                for (Customer customer : eachVan.onBoardCustomers) {
-                    if (customer.type == CustomerType.CHECK_IN) {
-                        return Optional.of(eachVan);
-                    }
+                if (!eachVan.onBoardCustomers.isEmpty()
+                        && eachVan.status == VanStatus.IDLE) {
+                    return Optional.of(eachVanId);
                 }
             }
         }
-        if (location == Location.DROP_OFF) {
-            List<Van> dropOffVans = getVanLine(Location.DROP_OFF, Operation.DROP_UP);
-            for (Van eachVan : dropOffVans) {
-                if (eachVan.onBoardCustomers.size() > 0 && eachVan.status == VanStatus.IDLE) {
-                    return Optional.of(eachVan);
-                }
-            }
-
-        }
-
         return Optional.empty();
     }
 
@@ -89,50 +79,46 @@ public class UDPs
      * @return Optional<Location> - location id that has van available to move
      */
     public Optional<Location> getDriveLocation() {
-        if (getVanCanDrive(Location.COUNTER).isPresent()) {
+        if (isTheLocationCanDrive(Location.COUNTER)) {
             return  Optional.of(Location.COUNTER);
         }
-        if (getVanCanDrive(Location.T1).isPresent()) {
+        if (isTheLocationCanDrive(Location.T1)) {
             return Optional.of(Location.T1);
         }
-        if (getVanCanDrive(Location.T2).isPresent()) {
+        if (isTheLocationCanDrive(Location.T2)) {
             return  Optional.of(Location.T2);
         }
-        if (getVanCanDrive(Location.DROP_OFF).isPresent()) {
+        if (isTheLocationCanDrive(Location.DROP_OFF)) {
             return  Optional.of(Location.DROP_OFF);
         }
+
         return Optional.empty();
     }
 
-    /**
-     * This check all the van pick up line see if any van can drive
-     * return the reference of van that can drive from given location
-     * @param location - airport location id
-     * @return van - reference
-     */
-    public Optional<Van> getVanCanDrive(Location location) {
-        double currentTime = this.model.getClock();
-        List<Van> vanLine;
-        //Move van from van counter drop off to the van counter pick up should be
-        // in the unload van activity
+    private boolean isTheLocationCanDrive(Location location) {
+        boolean result = false;
         if (location == Location.DROP_OFF) {
-            vanLine = getVanLine(location, Operation.DROP_UP);
-            for (Van van : vanLine) {
-                if (van.status == VanStatus.IDLE && van.numOfSeatTaken == 0) {
-                    return  Optional.of(van);
+            List<Integer> dropOffVanIds = getVanLine(Location.DROP_OFF, Operation.DROP_OFF);
+            for (int vanId : dropOffVanIds) {
+                Van van = this.model.vans[vanId];
+                if (van.onBoardCustomers.isEmpty()) {
+                    result = true;
                 }
             }
         } else {
-            vanLine = getVanLine(location, Operation.PICK_UP);
-            for (Van van : vanLine) {
-                if (((currentTime - van.startWaitingTime > Constants.VAN_WAIT_DURATION)
-                        || !getCanBoardCustomer(location).isPresent())
+            Optional<Integer> vanId = getFirstVanInLine(location, Operation.PICK_UP);
+            List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
+            if (vanId.isPresent()) {
+                Van van = this.model.vans[vanId.get()];
+                if ((van.numOfSeatTaken == van.capacity
+                        || !getCanBoardCustomer(location).isPresent()
+                        || customerLine.isEmpty())
                         && van.status == VanStatus.IDLE) {
-                    return Optional.of(van);
+                    result = true;
                 }
             }
         }
-        return Optional.empty();
+        return result;
     }
 
 	/**
@@ -142,30 +128,33 @@ public class UDPs
 	 * @param location - airport location id
 	 * @return customer - Optional<Customer>
 	 */
-	public Optional<Customer> getCanBoardCustomer(Location location){
-		Optional<Van> firstVan = getFirstVanInLine(location, Operation.PICK_UP);
-		List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
-		if (firstVan.isPresent() && firstVan.get().status == VanStatus.IDLE) {
-			Van van = firstVan.get();
-			int numSeatAvailable = van.capacity - van.numOfSeatTaken;
-			for (Customer customer:customerLine) {
-				int numSeatNeeded = customer.numberOfAdditionalPassenager +1;
-				if (numSeatNeeded < numSeatAvailable) {
-					return Optional.of(customer);
-				}
-			}
-		}
-		return Optional.empty();
-	}
+    public Optional<Customer> getCanBoardCustomer(Location location) {
+        Optional<Integer> vanId = getFirstVanInLine(location, Operation.PICK_UP);
+        if (vanId.isPresent()) {
+            Van firstVan = this.model.vans[vanId.get()];
+            List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
+            if (firstVan.status == VanStatus.IDLE) {
+                int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
+                for (Customer customer : customerLine) {
+                    int numSeatNeeded = customer.numberOfAdditionalPassenager + 1;
+                    if (numSeatNeeded < numSeatAvailable) {
+                        return Optional.of(customer);
+                    }
+                }
+            }
+        }
+        return Optional.empty();
+    }
 
     /**
      * This method will calculate the destination based on current van status and current van location
      * @param origin - current van location
-     * @param van - current van
+     * @param vanId - current van
      * @return Location - destination location id
      */
-	public Location getDestination(Location origin, Van van) {
+	public Location getDestination(Location origin, int vanId) {
 		Location next = null;
+        Van van = this.model.vans[vanId];
 		if (origin == Location.COUNTER) {
 			if (van.onBoardCustomers.size() >0 ) {
 				next = Location.DROP_OFF;
@@ -210,7 +199,7 @@ public class UDPs
 		return personnelCost + vanCost;
 	}
 
-	public double distance(VanLineID origin, VanLineID destination) {
+	public double distance(Location origin, Location destination) {
 		return AirPortShematic.getInstance().getDistance(origin, destination);
 	}
 
@@ -220,8 +209,8 @@ public class UDPs
      * @param operation - operation performed
 	 * @return van
 	 */
-	public Optional<Van> getFirstVanInLine(Location location, Operation operation) {
-		List<Van> vanLine = getVanLine(location, operation);
+	public Optional<Integer> getFirstVanInLine(Location location, Operation operation) {
+		List<Integer> vanLine = getVanLine(location, operation);
 		if (vanLine.size() > 0) {
 			return Optional.of(vanLine.get(0));
 		} else {
@@ -239,7 +228,7 @@ public class UDPs
 	 */
 	public List<Customer> getCustomerLine(Location location, Operation operation) {
 		List<Customer> customerLine = null;
-		if (operation == Operation.DROP_UP) {
+		if (operation == Operation.DROP_OFF) {
             if (location == Location.COUNTER) {
                 customerLine = this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()];
             }
@@ -265,8 +254,8 @@ public class UDPs
      * @param operation - Operation perfomed on the customer: pick up or drop off
      * @return List<van> - vanLine
      */
-    public List<Van> getVanLine(Location location, Operation operation) {
-        List<Van> vanList = null;
+    public List<Integer> getVanLine(Location location, Operation operation) {
+        List<Integer> vanList = null;
         if (operation == Operation.PICK_UP) {
             if (location == Location.COUNTER) {
                 vanList = this.model.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()];
@@ -279,7 +268,7 @@ public class UDPs
             }
         }
 
-        if (operation == Operation.DROP_UP) {
+        if (operation == Operation.DROP_OFF) {
             if (location == Location.COUNTER) {
                 vanList = this.model.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()];
             }

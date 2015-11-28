@@ -34,7 +34,9 @@ public class SMRental extends AOSimulationModel
 	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
 	@SuppressWarnings("unchecked")
-	public final List<Van>[] qVanLines = new LinkedList[5];
+	public final List<Integer>[] qVanLines = new LinkedList[5];
+
+    public final Van[] vans;
 	
 	// References to RVP and DVP objects
 	public final RVPs rvp;
@@ -54,16 +56,24 @@ public class SMRental extends AOSimulationModel
 		rvp = new RVPs(this,sd);
 		this.rgCounter = new Counter(this.params.getNumberOfAgents());
 
+        // Initialize customer lines
 		for (int i =0; i < this.qCustomerLines.length; i++) {
 			this.qCustomerLines[i] = new LinkedList<>();
 		}
 
+        // Initialize van lines
 		for (int i =0; i < this.qVanLines.length; i++) {
 			this.qVanLines[i] = new LinkedList<>();
 		}
 
+        // Initialize vans
+        vans = new Van[params.getNumberOfVans()];
+        for (int i=0; i< vans.length; i++) {
+            vans[i] = new Van(i, params.getTypeOfVan());
+        }
+
 		// Initialise the simulation model
-		initAOSimulModel(t0time,tftime);   
+		initAOSimulModel(t0time,tftime);
 
 		// Schedule the first arrivals and employee scheduling
 		Initialise init = new Initialise(this);
@@ -74,7 +84,7 @@ public class SMRental extends AOSimulationModel
 		scheduleAction(arrivalT2);
 		ArrivalCounter arrivalCounter = new ArrivalCounter(this);
 		scheduleAction(arrivalCounter);
-	}
+    }
 
 	/************  Implementation of Data Modules***********/	
 	/*
@@ -130,10 +140,8 @@ public class SMRental extends AOSimulationModel
 		return result;
 	}
 
-	@Override public void eventOccured()
-	{
-		if(this.traceFlag)
-		{
+	@Override public void eventOccured() {
+		if(this.traceFlag) {
 			StringJoiner joiner = new StringJoiner(" %s\n");
 			joiner.add("Clock:");
 			joiner.add("Vanline[T1]:");
@@ -159,9 +167,53 @@ public class SMRental extends AOSimulationModel
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
 					, this.qVanLines[VanLineID.DROP_OFF.ordinal()]));
-			 showSBL();			
+
+            printVanStatus();
+            showSBL();
 		}
 	}
+
+    private void printVanStatus() {
+        List<Van> counterToT1 = new LinkedList<>();
+        List<Van> counterToDropOff = new LinkedList<>();
+        List<Van> dropOffToT1 = new LinkedList<>();
+        List<Van> t1ToT2 = new LinkedList<>();
+        List<Van> t2ToCounter = new LinkedList<>();
+
+        for (int i = 0; i < this.vans.length; i ++) {
+            Van van = this.vans[i];
+            if (van.status == VanStatus.DRIVING_COUNTER_T1) {
+                counterToT1.add(van);
+            }
+            if (van.status == VanStatus.DRIVING_COUNTER_DROP_OFF) {
+                counterToDropOff.add(van);
+            }
+            if (van.status == VanStatus.DRIVING_DROP_OFF_T1) {
+                dropOffToT1.add(van);
+            }
+            if (van.status == VanStatus.DRIVING_T1_T2) {
+                t1ToT2.add(van);
+            }
+            if (van.status == VanStatus.DRIVING_T2_COUNTER) {
+                t2ToCounter.add(van);
+            }
+        }
+        StringJoiner joiner = new StringJoiner(" %s\n");
+        joiner.add("Counter -> T1:");
+        joiner.add("Counter -> Drop-Off:");
+        joiner.add("Drop-Off -> T1:");
+        joiner.add("T1 -> T2:");
+        joiner.add("T2 -> Counter:");
+        System.out.println(
+                String.format(
+                joiner.toString(),
+                        counterToT1.toString(),
+                        counterToDropOff.toString(),
+                        dropOffToT1.toString(),
+                        t1ToT2.toString(),
+                        t2ToCounter.toString()
+                ));
+    }
 }
 
 

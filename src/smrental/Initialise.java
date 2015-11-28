@@ -25,23 +25,23 @@ class Initialise extends ScheduledAction {
 	@Override
 	protected void actionEvent() {
 		restSystem();
-		int id = 0;
+		int vanId = 0;
 		int numOfVan = this.model.params.getNumberOfVans();
 		// Van VanLineID ids
 		int T1 = VanLineID.T1.ordinal();
 		int T2 = VanLineID.T2.ordinal();
-		int COUNTER = VanLineID.COUNTER.ordinal();
+		int COUNTER = VanLineID.COUNTER_PICK_UP.ordinal();
 
-		while(id < numOfVan) {
-			this.model.qVanLines[COUNTER].add(createVanHelper(id));
-			id++;
-			if (id < numOfVan) {
-				this.model.qVanLines[T1].add(createVanHelper(id));
-				id++;
+		while(vanId < numOfVan) {
+			this.model.qVanLines[COUNTER].add(vanId);
+			vanId++;
+			if (vanId < numOfVan) {
+				this.model.qVanLines[T1].add(vanId);
+				vanId++;
 			}
-			if (id < numOfVan) {
-				this.model.qVanLines[T2].add(createVanHelper(id));
-				id++;
+			if (vanId < numOfVan) {
+				this.model.qVanLines[T2].add(vanId);
+				vanId++;
 			}
 		}
 	}
@@ -59,15 +59,14 @@ class Initialise extends ScheduledAction {
 		// Van Lines
 		this.model.qVanLines[VanLineID.T1.ordinal()].clear();
 		this.model.qVanLines[VanLineID.T2.ordinal()].clear();
-		this.model.qVanLines[VanLineID.COUNTER.ordinal()].clear();
+		this.model.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()].clear();
+		this.model.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()].clear();
 		this.model.qVanLines[VanLineID.DROP_OFF.ordinal()].clear();
+
+		// Outputs
 		this.model.output.numOfServed = 0;
 		this.model.output.numOfSatistifiedCustomer = 0;
 		this.model.output.satisfactionLevel = 0.0;
 		this.model.output.totalMilesTraveledByVans = 0.0;
-	}
-
-	private Van createVanHelper(int id) {
-		return new Van(id, this.model.params.getTypeOfVan());
 	}
 }
