@@ -59,11 +59,7 @@ public class UDPs
             List<Integer> rgDropOff = getVanLine(location, Operation.DROP_OFF);
             for (int eachVanId : rgDropOff) {
                 Van eachVan = this.model.vans[eachVanId];
-                if (eachVan.status != VanStatus.IDLE) {
-                    continue;
-                }
-                if (!eachVan.onBoardCustomers.isEmpty()
-                        && eachVan.status == VanStatus.IDLE) {
+                if (!eachVan.onBoardCustomers.isEmpty()) {
                     return Optional.of(eachVanId);
                 }
             }
@@ -98,22 +94,20 @@ public class UDPs
     private boolean isTheLocationCanDrive(Location location) {
         boolean result = false;
         if (location == Location.DROP_OFF) {
-            List<Integer> dropOffVanIds = getVanLine(Location.DROP_OFF, Operation.DROP_OFF);
-            for (int vanId : dropOffVanIds) {
+            List<Integer> rgDropoff = getVanLine(Location.DROP_OFF, Operation.DROP_OFF);
+            for (int vanId : rgDropoff) {
                 Van van = this.model.vans[vanId];
                 if (van.onBoardCustomers.isEmpty()) {
                     result = true;
+                    break;
                 }
             }
         } else {
             Optional<Integer> vanId = getFirstVanInLine(location, Operation.PICK_UP);
             List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
             if (vanId.isPresent()) {
-                Van van = this.model.vans[vanId.get()];
-                if ((van.numOfSeatTaken == van.capacity
-                        || !getCanBoardCustomer(location).isPresent()
-                        || customerLine.isEmpty())
-                        && van.status == VanStatus.IDLE) {
+                if (!getCanBoardCustomer(location).isPresent()
+                        || customerLine.isEmpty()) {
                     result = true;
                 }
             }
@@ -133,13 +127,16 @@ public class UDPs
         if (vanId.isPresent()) {
             Van firstVan = this.model.vans[vanId.get()];
             List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
-            if (firstVan.status == VanStatus.IDLE) {
-                int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
-                for (Customer customer : customerLine) {
-                    int numSeatNeeded = customer.numberOfAdditionalPassenager + 1;
-                    if (numSeatNeeded < numSeatAvailable) {
-                        return Optional.of(customer);
-                    }
+            int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
+            for (Customer customer : customerLine) {
+                // If there is already a customer boarding,
+                // then no need to check again until that customer finishes.
+                if (customer.customerStatus == CustomerStatus.BOARDING) {
+                    return  Optional.empty();
+                }
+                int numSeatNeeded = customer.numberOfAdditionalPassenager + 1;
+                if (numSeatNeeded < numSeatAvailable) {
+                    return Optional.of(customer);
                 }
             }
         }

@@ -14,6 +14,6 @@ public class DVPs
 	public double calculateTime(Location origin, Location destination) {
 		double distance = this.model.udp.distance(origin, destination);
 		double vanSpeed = 20;
-		return distance/vanSpeed;
+		return (distance/vanSpeed) * 60;
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
+import com.smrental.models.CustomerStatus;
 import com.smrental.models.CustomerType;
 
 import simulationModelling.ConditionalActivity;
@@ -40,6 +41,7 @@ public class Serving extends ConditionalActivity {
 	@Override public void startingEvent() {
 		this.icCustomer = this.model.qCustomerLines[COUNTER_WAIT_FOR_SERVING].remove(0);
 		this.model.rgCounter.insertGrp(this.icCustomer);
+		this.icCustomer.customerStatus = CustomerStatus.SERVING;
 	}
 
 	@Override protected void terminatingEvent() {
@@ -51,6 +53,7 @@ public class Serving extends ConditionalActivity {
 		}
 		if (this.icCustomer.type == CustomerType.CHECK_OUT) {
 			this.model.qCustomerLines[COUNTER_WAIT_FOR_PICKUP].add(this.icCustomer);
+			this.icCustomer.customerStatus = CustomerStatus.WAITING_PICKUP;
 		}
 		if (this.icCustomer.type == CustomerType.CHECK_IN) {
 			this.icCustomer = null;

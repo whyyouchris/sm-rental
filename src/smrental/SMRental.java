@@ -203,7 +203,8 @@ public class SMRental extends AOSimulationModel
         joiner.add("Counter -> Drop-Off:");
         joiner.add("Drop-Off -> T1:");
         joiner.add("T1 -> T2:");
-        joiner.add("T2 -> Counter:");
+        joiner.add("T2 -> Counter:%s");
+		System.out.println("======================Van Status=====================");
         System.out.println(
                 String.format(
                 joiner.toString(),
