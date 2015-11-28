@@ -26,8 +26,8 @@ public class Experiment
        for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
 
        int typeOfVan = VanType.SEAT12.getSeats();
-       int numberOfAgents = 10;
-       int numberOfVans = 6;
+       int numberOfAgents = 20;
+       int numberOfVans = 10;
        boolean customerIncrease = false;
        Parameters params = new Parameters.Builder()
   			 .typeOfVan(typeOfVan)
@@ -37,24 +37,12 @@ public class Experiment
   			 .build();
 
        for(i=0 ; i < NUMRUNS ; i++) {
+		   System.out.println("configuration" + params);
     	   SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, true);
     	   model.runSimulation();
-    	   System.out.println("result: "+ model.output.satisfactionLevel);
+		   double serviceLevel = (double) model.output.numOfSatistifiedCustomer / model.output.numOfServed;
+    	   System.out.println("Service Level: " + serviceLevel);
+    	   System.out.println("Total cost for the configuration: " + model.udp.calculateCosts());
        }
-   }
-
-   private static void experimentProcedure(Parameters params, Seeds sds, boolean log) {
-	   final int maxNumAgents = 10;
-	   final int maxNumVan = 10;
-
-	   while (true) {
-		   SMRental model = new SMRental(START_TIME, END_TIME, sds, params, log);
-		   model.runSimulation();
-		   if(model.output.satisfactionLevel >= SATISFACTION_85){
-			   break;
-		   } else {
-			   
-		   }
-	   }
    }
 }
