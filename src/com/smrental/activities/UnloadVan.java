@@ -49,7 +49,6 @@ public class UnloadVan extends ConditionalActivity{
 			double serviceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
 			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
 				this.model.output.numOfSatistifiedCustomer++;
-				this.model.output.satisfactionLevel = this.model.output.numOfSatistifiedCustomer / this.model.output.numOfServed;
 			}
 			van.onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;

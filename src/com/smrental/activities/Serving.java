@@ -58,7 +58,6 @@ public class Serving extends ConditionalActivity {
 			this.icCustomer = null;
 		}
 		this.model.output.numOfServed++;
-		this.model.output.satisfactionLevel = this.model.output.numOfSatistifiedCustomer / this.model.output.numOfServed;
 	}
 
 }

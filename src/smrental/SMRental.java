@@ -167,12 +167,12 @@ public class SMRental extends AOSimulationModel
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
 					, this.qVanLines[VanLineID.DROP_OFF.ordinal()]));
 
-            printVanStatus();
+            printRunningVanStatus();
             showSBL();
 		}
 	}
 
-    private void printVanStatus() {
+    private void printRunningVanStatus() {
         List<Van> counterToT1 = new LinkedList<>();
         List<Van> counterToDropOff = new LinkedList<>();
         List<Van> dropOffToT1 = new LinkedList<>();
@@ -214,6 +214,7 @@ public class SMRental extends AOSimulationModel
                         t2ToCounter.toString()
                 ));
     }
+
 }
 
 

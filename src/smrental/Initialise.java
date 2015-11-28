@@ -64,7 +64,6 @@ class Initialise extends ScheduledAction {
 		// Outputs
 		this.model.output.numOfServed = 0;
 		this.model.output.numOfSatistifiedCustomer = 0;
-		this.model.output.satisfactionLevel = 0.0;
 		this.model.output.totalMilesTraveledByVans = 0.0;
 	}
 }
