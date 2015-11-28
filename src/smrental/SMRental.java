@@ -156,16 +156,16 @@ public class SMRental extends AOSimulationModel
 			System.out.println(
 				String.format(joiner.toString()
 					,getClock()
-					, this.qVanLines[VanLineID.T1.ordinal()]
-					, this.qCustomerLines[CustomerLineID.T1.ordinal()]
-					, this.qVanLines[VanLineID.T2.ordinal()]
-					, this.qCustomerLines[CustomerLineID.T2.ordinal()]
-					, this.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()]
-					, this.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()]
+					, printVanLine(this.qVanLines[VanLineID.T1.ordinal()])
+					, "(n="+this.qCustomerLines[CustomerLineID.T1.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T1.ordinal()]
+					, printVanLine(this.qVanLines[VanLineID.T2.ordinal()])
+					, "(n="+this.qCustomerLines[CustomerLineID.T2.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T2.ordinal()]
+					, printVanLine(this.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()])
+					, printVanLine(this.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()])
 					, this.rgCounter.getN()
-					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
-					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
-					, this.qVanLines[VanLineID.DROP_OFF.ordinal()]));
+					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
+					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
+					, printVanLine(this.qVanLines[VanLineID.DROP_OFF.ordinal()])));
 
             printRunningVanStatus();
             showSBL();
@@ -203,7 +203,7 @@ public class SMRental extends AOSimulationModel
         joiner.add("Drop-Off -> T1:");
         joiner.add("T1 -> T2:");
         joiner.add("T2 -> Counter:%s");
-		System.out.println("======================Van Status=====================");
+		System.out.println("=====================Running Van Status=====================");
         System.out.println(
                 String.format(
                 joiner.toString(),
@@ -215,6 +215,12 @@ public class SMRental extends AOSimulationModel
                 ));
     }
 
+    private String  printVanLine(List<Integer> vanLine) {
+        List<Van> theRealVanLine = new LinkedList<>();
+        for (int vanId : vanLine) {
+            theRealVanLine.add(this.vans[vanId]);
+        }
+        return "(n="+theRealVanLine.size()+")" + theRealVanLine.toString();
+    }
+
 }
-
-

@@ -18,6 +18,6 @@ public class Customer {
     }
 
 	@Override public String toString() {
-		return String.format("[type: %s]", type.name());
+		return String.format("[type: %s, add_pass:%s]", type.name(), numberOfAdditionalPassenager);
 	}
 }
