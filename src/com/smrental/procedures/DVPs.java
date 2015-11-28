@@ -1,8 +1,6 @@
 package com.smrental.procedures;
 
 import com.smrental.models.Location;
-import com.smrental.models.VanLineID;
-
 import smrental.SMRental;
 
 public class DVPs 

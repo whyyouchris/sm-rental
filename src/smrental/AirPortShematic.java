@@ -1,7 +1,6 @@
 package smrental;
 
 import com.smrental.models.Location;
-import com.smrental.models.VanLineID;
 
 /**
  * Singleton class represents the airport schematic

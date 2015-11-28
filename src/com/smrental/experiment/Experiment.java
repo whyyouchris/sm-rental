@@ -1,11 +1,10 @@
 package com.smrental.experiment;
 
+import cern.jet.random.engine.RandomSeedGenerator;
 import com.smrental.models.VanType;
 import com.smrental.procedures.Seeds;
 import com.smrental.utils.Parameters;
-
-import cern.jet.random.engine.*;
-import smrental.*;
+import smrental.SMRental;
 
 public class Experiment
 {

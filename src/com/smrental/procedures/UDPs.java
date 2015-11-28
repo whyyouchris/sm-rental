@@ -1,14 +1,12 @@
 package com.smrental.procedures;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.smrental.models.*;
-import com.smrental.models.VanLineID;
-
 import com.smrental.utils.Operation;
 import smrental.AirPortShematic;
 import smrental.SMRental;
+
+import java.util.List;
+import java.util.Optional;
 
 import static smrental.Constants.*;
 

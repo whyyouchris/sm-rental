@@ -1,12 +1,11 @@
 package com.smrental.activities;
 
-import java.util.List;
-
 import com.smrental.models.*;
-
 import com.smrental.utils.Operation;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+
+import java.util.List;
 
 public class LoadVan extends ConditionalActivity{
 	private SMRental model;

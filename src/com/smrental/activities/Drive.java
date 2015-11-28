@@ -1,9 +1,7 @@
 package com.smrental.activities;
 
 import com.smrental.models.Location;
-import com.smrental.models.VanLineID;
 import com.smrental.models.Van;
-
 import com.smrental.models.VanStatus;
 import com.smrental.utils.Operation;
 import simulationModelling.ConditionalActivity;

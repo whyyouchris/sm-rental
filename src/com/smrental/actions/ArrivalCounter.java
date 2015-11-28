@@ -3,7 +3,6 @@ package com.smrental.actions;
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
 import com.smrental.models.CustomerType;
-
 import simulationModelling.ScheduledAction;
 import smrental.SMRental;
 

@@ -1,13 +1,12 @@
 package com.smrental.procedures;
 
-import static com.smrental.procedures.ArrivalConfig.*;
-
-import com.smrental.models.CustomerType;
-
 import cern.jet.random.Exponential;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister;
+import com.smrental.models.CustomerType;
 import smrental.SMRental;
+
+import static com.smrental.procedures.ArrivalConfig.*;
 public class RVPs 
 {
 	

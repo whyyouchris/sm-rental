@@ -1,9 +1,5 @@
 package smrental;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.StringJoiner;
-
 import com.smrental.actions.ArrivalCounter;
 import com.smrental.actions.ArrivalT1;
 import com.smrental.actions.ArrivalT2;
@@ -12,15 +8,17 @@ import com.smrental.activities.LoadVan;
 import com.smrental.activities.Serving;
 import com.smrental.activities.UnloadVan;
 import com.smrental.models.*;
-import com.smrental.models.VanLineID;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
 import com.smrental.procedures.UDPs;
 import com.smrental.utils.Parameters;
-
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringJoiner;
 
 public class SMRental extends AOSimulationModel
 {

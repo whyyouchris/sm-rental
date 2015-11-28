@@ -1,10 +1,10 @@
 package com.smrental.activities;
 
 import com.smrental.models.*;
-
 import com.smrental.utils.Operation;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+
 import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 
 public class UnloadVan extends ConditionalActivity{

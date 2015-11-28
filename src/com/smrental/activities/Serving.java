@@ -1,14 +1,13 @@
 package com.smrental.activities;
 
-import java.util.List;
-
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
 import com.smrental.models.CustomerStatus;
 import com.smrental.models.CustomerType;
-
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+
+import java.util.List;
 
 import static smrental.Constants.ACCEPTABLE_CHECK_IN_TIME;
 
