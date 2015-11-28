@@ -8,7 +8,6 @@ import smrental.SMRental;
 import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 
 public class UnloadVan extends ConditionalActivity{
-	private static final int COUNTER_WAIT_FOR_SERVIVING = CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal();
 
 	private SMRental model;
 	private int vanId;
