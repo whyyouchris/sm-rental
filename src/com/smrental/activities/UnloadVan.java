@@ -57,7 +57,7 @@ public class UnloadVan extends ConditionalActivity{
 
 		if (this.unloadingLocation == Location.COUNTER
 				&& van.onBoardCustomers.isEmpty()) {
-			this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).remove(this.vanId);
+			this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).remove(new Integer(this.vanId));
 			this.model.udp.getVanLine(Location.COUNTER, Operation.PICK_UP).add(this.vanId);
 		}
 	}
