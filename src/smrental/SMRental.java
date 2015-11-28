@@ -119,6 +119,7 @@ public class SMRental extends AOSimulationModel
 			UnloadVan unloadVan = new UnloadVan(this);
 			unloadVan.startingEvent();
 			scheduleActivity(unloadVan);
+			check = true;
 		}
 
 		if(Serving.precondition(this)) {
@@ -131,7 +132,7 @@ public class SMRental extends AOSimulationModel
         return check;
 	}
 
-	public boolean implicitStopCondition() {
+	@Override public boolean implicitStopCondition() {
 		boolean result = false;
 		if (this.getClock() >= this.closingTime &&
 				this.rgCounter.getN() == 0) {

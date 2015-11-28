@@ -33,6 +33,7 @@ public class UnloadVan extends ConditionalActivity{
 		Van van = this.model.vans[this.vanId];
 		van.status = VanStatus.UNLOADING;
 		this.icCustomer = van.onBoardCustomers.get(0);
+		this.icCustomer.customerStatus = CustomerStatus.UNBOARDING;
 	}
 
 	@Override protected void terminatingEvent() {
@@ -41,7 +42,8 @@ public class UnloadVan extends ConditionalActivity{
 		van.numOfSeatTaken = van.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
 		if (this.icCustomer.type == CustomerType.CHECK_IN) {
-			this.model.qCustomerLines[COUNTER_WAIT_FOR_SERVIVING].add(this.icCustomer);
+            this.model.udp.getCustomerLine(Location.COUNTER, Operation.DROP_OFF).add(this.icCustomer);
+			this.icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		}
 
 		if (this.icCustomer.type == CustomerType.CHECK_OUT) {
@@ -50,6 +52,7 @@ public class UnloadVan extends ConditionalActivity{
 				this.model.output.numOfSatistifiedCustomer++;
 				this.model.output.satisfactionLevel = this.model.output.numOfSatistifiedCustomer / this.model.output.numOfServed;
 			}
+			van.onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;
 		}
 

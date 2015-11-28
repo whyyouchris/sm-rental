@@ -18,7 +18,7 @@ public class Experiment
 	private static final int	MAX_NUM_VANS = 10;
 
    public static void main(String[] args) {
-       int i, NUMRUNS = 10;
+       int i, NUMRUNS = 1;
 
        Seeds[] sds = new Seeds[NUMRUNS];
 

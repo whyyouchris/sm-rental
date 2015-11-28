@@ -56,15 +56,28 @@ public class UDPs
      */
     public Optional<Integer> getUnloadingVan(Location location) {
         if (location == Location.COUNTER || location == Location.DROP_OFF) {
-            List<Integer> rgDropOff = getVanLine(location, Operation.DROP_OFF);
-            for (int eachVanId : rgDropOff) {
+            List<Integer> rqDropOff = getVanLine(location, Operation.DROP_OFF);
+            for (int eachVanId : rqDropOff) {
                 Van eachVan = this.model.vans[eachVanId];
-                if (!eachVan.onBoardCustomers.isEmpty()) {
+                if (!eachVan.onBoardCustomers.isEmpty()
+                        && !isCustomerUnloading(eachVanId)) {
                     return Optional.of(eachVanId);
                 }
             }
         }
         return Optional.empty();
+    }
+
+    public boolean isCustomerUnloading(int vanId) {
+        boolean result = false;
+        Van van = this.model.vans[vanId];
+        for(Customer customer : van.onBoardCustomers) {
+            if (customer.customerStatus == CustomerStatus.UNBOARDING) {
+                result = true;
+                break;
+            }
+        }
+        return  result;
     }
 
     /**
@@ -106,7 +119,7 @@ public class UDPs
             Optional<Integer> vanId = getFirstVanInLine(location, Operation.PICK_UP);
             List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
             if (vanId.isPresent()) {
-                if (!getCanBoardCustomer(location).isPresent()
+                if ((!getCanBoardCustomer(location).isPresent() && !this.model.udp.isCustomerBoarding(location))
                         || customerLine.isEmpty()) {
                     result = true;
                 }
@@ -124,16 +137,17 @@ public class UDPs
 	 */
     public Optional<Customer> getCanBoardCustomer(Location location) {
         Optional<Integer> vanId = getFirstVanInLine(location, Operation.PICK_UP);
+
+        // If there is already a customer boarding,
+        // then no need to check again until that customer finishes.
+        if (isCustomerBoarding(location)) {
+            return Optional.empty();
+        }
         if (vanId.isPresent()) {
             Van firstVan = this.model.vans[vanId.get()];
             List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
             int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
             for (Customer customer : customerLine) {
-                // If there is already a customer boarding,
-                // then no need to check again until that customer finishes.
-                if (customer.customerStatus == CustomerStatus.BOARDING) {
-                    return  Optional.empty();
-                }
                 int numSeatNeeded = customer.numberOfAdditionalPassenager + 1;
                 if (numSeatNeeded < numSeatAvailable) {
                     return Optional.of(customer);
@@ -141,6 +155,18 @@ public class UDPs
             }
         }
         return Optional.empty();
+    }
+
+    public boolean isCustomerBoarding(Location location) {
+        boolean result = false;
+        List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
+        for (Customer customer : customerLine) {
+            if (customer.customerStatus == CustomerStatus.BOARDING) {
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     /**
