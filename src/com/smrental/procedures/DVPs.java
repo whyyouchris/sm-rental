@@ -1,6 +1,6 @@
 package com.smrental.procedures;
 
-import com.smrental.models.Location;
+import com.smrental.models.VanLineID;
 
 import smrental.SMRental;
 
@@ -10,7 +10,7 @@ public class DVPs
 
 	public DVPs(SMRental model) { this.model = model; }
 
-	public double calculateTime(Location origin, Location destination) {
+	public double calculateTime(VanLineID origin, VanLineID destination) {
 		double distance = this.model.udp.distance(origin, destination);
 		double vanSpeed = 20;
 		return distance/vanSpeed;

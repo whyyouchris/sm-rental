@@ -11,4 +11,6 @@ public class Constants
 
 	public static final double AGENT_RATE = 11.5; // Per hour salary of agent
 	public static final double DRIVER_RATE = 12.5; // Per hour salary of driver
+
+	public static final double VAN_WAIT_DURATION = 3.0;
 }

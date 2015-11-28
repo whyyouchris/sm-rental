@@ -11,11 +11,8 @@ import com.smrental.activities.Drive;
 import com.smrental.activities.LoadVan;
 import com.smrental.activities.Serving;
 import com.smrental.activities.UnloadVan;
-import com.smrental.models.Counter;
-import com.smrental.models.Customer;
-import com.smrental.models.CustomerLineID;
-import com.smrental.models.Location;
-import com.smrental.models.Van;
+import com.smrental.models.*;
+import com.smrental.models.VanLineID;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
@@ -37,7 +34,7 @@ public class SMRental extends AOSimulationModel
 	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
 	@SuppressWarnings("unchecked")
-	public final List<Van>[] qVanLines = new LinkedList[4];
+	public final List<Van>[] qVanLines = new LinkedList[5];
 	
 	// References to RVP and DVP objects
 	public final RVPs rvp;
@@ -143,7 +140,8 @@ public class SMRental extends AOSimulationModel
 			joiner.add("CustomerLine[T1]:");
 			joiner.add("Vanline[T2]:");
 			joiner.add("CustomerLine[T2]:");
-			joiner.add("Vanline[COUNTER]:");
+			joiner.add("Vanline[COUNTER_PICKUP]:");
+			joiner.add("Vanline[COUNTER_DROPOFF]:");
 			joiner.add("CustomerAtCounter:");
 			joiner.add("CustomerLine[WAIT_FOR_SERVING]:");
 			joiner.add("CustomerLine[WAIT_FOR_PICKUP]:");
@@ -151,15 +149,16 @@ public class SMRental extends AOSimulationModel
 			System.out.println(
 				String.format(joiner.toString()
 					,getClock()
-					, this.qVanLines[Location.T1.ordinal()]
+					, this.qVanLines[VanLineID.T1.ordinal()]
 					, this.qCustomerLines[CustomerLineID.T1.ordinal()]
-					, this.qVanLines[Location.T2.ordinal()]
+					, this.qVanLines[VanLineID.T2.ordinal()]
 					, this.qCustomerLines[CustomerLineID.T2.ordinal()]
-					, this.qVanLines[Location.COUNTER.ordinal()]
+					, this.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()]
+					, this.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()]
 					, this.rgCounter.getN()
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
 					, this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
-					, this.qVanLines[Location.DROP_OFF.ordinal()]));
+					, this.qVanLines[VanLineID.DROP_OFF.ordinal()]));
 			 showSBL();			
 		}
 	}

@@ -1,7 +1,7 @@
 package smrental;
 
 import com.smrental.models.CustomerLineID;
-import com.smrental.models.Location;
+import com.smrental.models.VanLineID;
 import com.smrental.models.Van;
 
 import simulationModelling.ScheduledAction;
@@ -27,10 +27,10 @@ class Initialise extends ScheduledAction {
 		restSystem();
 		int id = 0;
 		int numOfVan = this.model.params.getNumberOfVans();
-		// Van Location ids
-		int T1 = Location.T1.ordinal();
-		int T2 = Location.T2.ordinal();
-		int COUNTER = Location.COUNTER.ordinal();
+		// Van VanLineID ids
+		int T1 = VanLineID.T1.ordinal();
+		int T2 = VanLineID.T2.ordinal();
+		int COUNTER = VanLineID.COUNTER.ordinal();
 
 		while(id < numOfVan) {
 			this.model.qVanLines[COUNTER].add(createVanHelper(id));
@@ -57,10 +57,10 @@ class Initialise extends ScheduledAction {
 		this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].clear();
 
 		// Van Lines
-		this.model.qVanLines[Location.T1.ordinal()].clear();
-		this.model.qVanLines[Location.T2.ordinal()].clear();
-		this.model.qVanLines[Location.COUNTER.ordinal()].clear();
-		this.model.qVanLines[Location.DROP_OFF.ordinal()].clear();
+		this.model.qVanLines[VanLineID.T1.ordinal()].clear();
+		this.model.qVanLines[VanLineID.T2.ordinal()].clear();
+		this.model.qVanLines[VanLineID.COUNTER.ordinal()].clear();
+		this.model.qVanLines[VanLineID.DROP_OFF.ordinal()].clear();
 		this.model.output.numOfServed = 0;
 		this.model.output.numOfSatistifiedCustomer = 0;
 		this.model.output.satisfactionLevel = 0.0;

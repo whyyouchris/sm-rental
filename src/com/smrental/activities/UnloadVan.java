@@ -1,11 +1,7 @@
 package com.smrental.activities;
 
-import com.smrental.models.Customer;
-import com.smrental.models.CustomerLineID;
-import com.smrental.models.CustomerType;
-import com.smrental.models.Location;
-import com.smrental.models.Van;
-import com.smrental.models.VanStatus;
+import com.smrental.models.*;
+import com.smrental.models.VanLineID;
 
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
@@ -14,8 +10,8 @@ import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 import java.util.List;
 
 public class UnloadVan extends ConditionalActivity{
-	private static final int COUNTER = Location.COUNTER.ordinal();
-	private static final int DROP_OFF = Location.DROP_OFF.ordinal();
+	private static final int COUNTER = VanLineID.COUNTER.ordinal();
+	private static final int DROP_OFF = VanLineID.DROP_OFF.ordinal();
 	private static final int COUNTER_WAIT_FOR_SERVIVING = CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal();
 	private SMRental model;
 	private Van van;
@@ -34,9 +30,9 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	@Override public void startingEvent() {
-		Location location = this.model.udp.getUnloadingLocation().get();
-		if (location == Location.COUNTER) {
-			List<Van> vanList = this.model.qVanLines[Location.COUNTER.ordinal()];
+		VanLineID vanLineID = this.model.udp.getUnloadingLocation().get();
+		if (vanLineID == VanLineID.COUNTER) {
+			List<Van> vanList = this.model.qVanLines[VanLineID.COUNTER.ordinal()];
 			for (Van van : vanList) {
 				if (van.status != VanStatus.IDLE) {
 					continue;
@@ -50,8 +46,8 @@ public class UnloadVan extends ConditionalActivity{
 			}
 		}
 
-		if (location == Location.DROP_OFF) {
-			List<Van> vanList = this.model.qVanLines[Location.DROP_OFF.ordinal()];
+		if (vanLineID == VanLineID.DROP_OFF) {
+			List<Van> vanList = this.model.qVanLines[VanLineID.DROP_OFF.ordinal()];
 			for (Van van : vanList) {
 				if (van.status != VanStatus.IDLE) {
 					continue;

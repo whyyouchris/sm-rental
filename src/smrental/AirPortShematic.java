@@ -1,16 +1,16 @@
 package smrental;
 
-import com.smrental.models.Location;
+import com.smrental.models.VanLineID;
 
 /**
  * Singleton class represents the airport schematic
  */
 public class AirPortShematic {
 	private double[][] schematic;
-	private static final int T1 = Location.T1.ordinal();
-	private static final int T2 = Location.T2.ordinal();
-	private static final int COUNTER = Location.COUNTER.ordinal();
-	private static final int DROP_OFF = Location.DROP_OFF.ordinal();
+	private static final int T1 = VanLineID.T1.ordinal();
+	private static final int T2 = VanLineID.T2.ordinal();
+	private static final int COUNTER = VanLineID.COUNTER.ordinal();
+	private static final int DROP_OFF = VanLineID.DROP_OFF.ordinal();
 	
 	// Forbid other classes to create an instance of this class
 	private AirPortShematic() {
@@ -36,7 +36,7 @@ public class AirPortShematic {
 		schematic[T2][COUNTER] = 2.0;
 	}
 	
-	public double getDistance(Location origin, Location destination) {
+	public double getDistance(VanLineID origin, VanLineID destination) {
 		return this.schematic[origin.ordinal()][destination.ordinal()];
 	}
 	

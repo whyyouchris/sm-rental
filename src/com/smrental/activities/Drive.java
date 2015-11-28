@@ -1,6 +1,6 @@
 package com.smrental.activities;
 
-import com.smrental.models.Location;
+import com.smrental.models.VanLineID;
 import com.smrental.models.Van;
 
 import simulationModelling.ConditionalActivity;
@@ -9,8 +9,8 @@ import smrental.SMRental;
 public class Drive extends ConditionalActivity{
 
 	private SMRental model;
-	private Location origin;
-	private Location destination;
+	private VanLineID origin;
+	private VanLineID destination;
 	private Van van;
 
 	public Drive(SMRental model) {
