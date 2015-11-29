@@ -2,6 +2,7 @@ package com.smrental.actions;
 
 import com.smrental.models.Customer;
 import com.smrental.models.CustomerLineID;
+import com.smrental.models.CustomerStatus;
 import com.smrental.models.CustomerType;
 import simulationModelling.ScheduledAction;
 import smrental.SMRental;
@@ -20,8 +21,11 @@ public class ArrivalT1 extends ScheduledAction{
 	}
 
 	@Override protected void actionEvent() {
- 		Customer icCustomer = 
- 				new Customer(CUSTOMER_TYPE, this.model.getClock(), this.model.rvp.additionalPassengers());
+ 		Customer icCustomer = new Customer(); 
+ 		icCustomer.uType = CUSTOMER_TYPE;
+ 		icCustomer.timeEnterSystem = this.model.getClock();
+ 		icCustomer.numberOfAdditionalPassenager = this.model.rvp.additionalPassengers();
+ 		icCustomer.customerStatus = CustomerStatus.WAITING_PICKUP;
  		this.model.qCustomerLines[T1].add(icCustomer);
 	}
 
