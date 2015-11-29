@@ -1,6 +1,5 @@
 package smrental;
 
-import com.smrental.models.CustomerLineID;
 import com.smrental.models.VanLineID;
 import simulationModelling.ScheduledAction;
 
@@ -22,7 +21,6 @@ class Initialise extends ScheduledAction {
 
 	@Override
 	protected void actionEvent() {
-		restSystem();
 		int vanId = 0;
 		int numOfVan = this.model.params.getNumberOfVans();
 		// Van VanLineID ids
@@ -42,28 +40,5 @@ class Initialise extends ScheduledAction {
 				vanId++;
 			}
 		}
-	}
-
-	private void restSystem() {
-		// System Initialisation
-		this.model.rgCounter.getGroup().clear();
-
-		// Customer lines
-		this.model.qCustomerLines[CustomerLineID.T1.ordinal()].clear();
-		this.model.qCustomerLines[CustomerLineID.T2.ordinal()].clear();
-		this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()].clear();
-		this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].clear();
-
-		// Van Lines
-		this.model.qVanLines[VanLineID.T1.ordinal()].clear();
-		this.model.qVanLines[VanLineID.T2.ordinal()].clear();
-		this.model.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()].clear();
-		this.model.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()].clear();
-		this.model.qVanLines[VanLineID.DROP_OFF.ordinal()].clear();
-
-		// Outputs
-		this.model.output.numOfServed = 0;
-		this.model.output.numOfSatistifiedCustomer = 0;
-		this.model.output.totalMilesTraveledByVans = 0.0;
 	}
 }
