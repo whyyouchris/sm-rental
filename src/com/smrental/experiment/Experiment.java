@@ -28,6 +28,7 @@ public class Experiment
        int typeOfVan = VanType.SEAT12.getSeats();
        int numberOfAgents = 20;
        int numberOfVans = 10;
+       
        boolean customerIncrease = false;
        Parameters params = new Parameters.Builder()
   			 .typeOfVan(typeOfVan)

@@ -30,22 +30,22 @@ public class Drive extends ConditionalActivity{
             this.vanId = this.model.udp.getVanLine(this.origin, Operation.PICK_UP).remove(0);
         }
 		this.destination = this.model.udp.getDestination(this.origin, vanId);
-        Van van = this.model.vans[this.vanId];
+        Van rqVan = this.model.rqVans[this.vanId];
         if (this.origin == Location.COUNTER
                 && this.destination == Location.T1) {
-            van.status = VanStatus.DRIVING_COUNTER_T1;
+        	rqVan.status = VanStatus.DRIVING_COUNTER_T1;
         } else if (this.origin == Location.COUNTER
                 && this.destination == Location.DROP_OFF) {
-            van.status = VanStatus.DRIVING_COUNTER_DROP_OFF;
+        	rqVan.status = VanStatus.DRIVING_COUNTER_DROP_OFF;
         } else if (this.origin == Location.DROP_OFF
                 && this.destination == Location.T1) {
-            van.status = VanStatus.DRIVING_DROP_OFF_T1;
+        	rqVan.status = VanStatus.DRIVING_DROP_OFF_T1;
         } else if (this.origin == Location.T1
                 && this.destination == Location.T2) {
-            van.status = VanStatus.DRIVING_T1_T2;
+        	rqVan.status = VanStatus.DRIVING_T1_T2;
         } else if (this.origin == Location.T2
                 && this.destination == Location.COUNTER) {
-            van.status = VanStatus.DRIVING_T2_COUNTER;
+        	rqVan.status = VanStatus.DRIVING_T2_COUNTER;
         }
 	}
 
@@ -54,8 +54,8 @@ public class Drive extends ConditionalActivity{
 	}
 
     @Override protected void terminatingEvent() {
-        Van van = this.model.vans[this.vanId];
-        if (this.destination == Location.COUNTER && !van.onBoardCustomers.isEmpty()) {
+        Van rqVan = this.model.rqVans[this.vanId];
+        if (this.destination == Location.COUNTER && !rqVan.onBoardCustomers.isEmpty()) {
             this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).add(this.vanId);
         } else if (this.destination == Location.DROP_OFF){
             this.model.udp.getVanLine(Location.DROP_OFF, Operation.DROP_OFF).add(this.vanId);
@@ -63,6 +63,6 @@ public class Drive extends ConditionalActivity{
             this.model.udp.getVanLine(destination, Operation.PICK_UP).add(this.vanId);
         }
         this.model.output.totalMilesTraveledByVans += this.model.udp.distance(origin, destination);
-        van.status = VanStatus.IDLE;
+        rqVan.status = VanStatus.IDLE;
     }
 }

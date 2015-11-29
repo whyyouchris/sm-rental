@@ -29,33 +29,33 @@ public class UnloadVan extends ConditionalActivity{
 	@Override public void startingEvent() {
 		this.unloadingLocation = this.model.udp.getUnloadingLocation().get();
 		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation).get();
-		Van van = this.model.vans[this.vanId];
-		van.status = VanStatus.UNLOADING;
-		this.icCustomer = van.onBoardCustomers.get(0);
+		Van rqVan = this.model.rqVans[this.vanId];
+		rqVan.status = VanStatus.UNLOADING;
+		this.icCustomer = rqVan.onBoardCustomers.get(0);
 		this.icCustomer.customerStatus = CustomerStatus.UNBOARDING;
 	}
 
 	@Override protected void terminatingEvent() {
-		Van van = this.model.vans[this.vanId];
-		van.onBoardCustomers.remove(this.icCustomer);
-		van.numOfSeatTaken = van.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
+		Van rqVan = this.model.rqVans[this.vanId];
+		rqVan.onBoardCustomers.remove(this.icCustomer);
+		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
-		if (this.icCustomer.type == CustomerType.CHECK_IN) {
+		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
             this.model.udp.getCustomerLine(Location.COUNTER, Operation.DROP_OFF).add(this.icCustomer);
 			this.icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		}
 
-		if (this.icCustomer.type == CustomerType.CHECK_OUT) {
+		if (this.icCustomer.uType == CustomerType.CHECK_OUT) {
 			double serviceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
 			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
 				this.model.output.numOfSatistifiedCustomer++;
 			}
-			van.onBoardCustomers.remove(this.icCustomer);
+			rqVan.onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;
 		}
 
 		if (this.unloadingLocation == Location.COUNTER
-				&& van.onBoardCustomers.isEmpty()) {
+				&& rqVan.onBoardCustomers.isEmpty()) {
 			this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).remove(new Integer(this.vanId));
 			this.model.udp.getVanLine(Location.COUNTER, Operation.PICK_UP).add(this.vanId);
 		}

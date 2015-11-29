@@ -21,10 +21,12 @@ public class RVPs
 	private Exponential boardingTimeDist; // Boarding time distribution
 	private Exponential exitingTimeDist; // Exiting time distribution
 
-	private Uniform checkInServiceTime; // Check in customer service time distribution
-	private Uniform checkOutServiceTime;// Check out customer service time distribution
+	private Uniform uCheckInServiceTime; // Check in customer service time distribution
+	private Uniform uCheckOutServiceTime;// Check out customer service time distribution
 
 	public RVPs(SMRental model, Seeds sd) { 
+		
+		
 		this.model = model; 
 		// Set up distribution functions
 
@@ -39,9 +41,15 @@ public class RVPs
 		this.exitingTimeDist = new Exponential(1.0/AVERAGE_EXISTING_TIME, new MersenneTwister(sd.exitingTime));
 
 		//service time
-		this.checkInServiceTime = new Uniform(STCIMIN, STCIMAX, sd.cistm);
-		this.checkOutServiceTime = new Uniform(STCOMIN, STCOMAX, sd.costm);
+		this.uCheckInServiceTime = new Uniform(STCIMIN, STCIMAX, sd.cistm);
+		this.uCheckOutServiceTime = new Uniform(STCOMIN, STCOMAX, sd.costm);
 	}
+	
+	/**
+	 * 
+	 * @param customerIncrease
+	 * @return customer in T1
+	 */
 
 	public double DuCT1(boolean customerIncrease) {
 		double nextArrival;
@@ -79,6 +87,12 @@ public class RVPs
 		}
 		return nextArrival;
 	}
+	
+	/**
+	 * 
+	 * @param customerIncrease
+	 * @return customer in T2
+	 */
 
 	public double DuCT2(boolean customerIncrease) {
 		double nextArrival;
@@ -117,6 +131,11 @@ public class RVPs
 		return nextArrival;
 	}
 	
+	/**
+	 * 
+	 * @param customerIncrease
+	 * @return customer in Counter
+	 */
 	public double DuCCounter(boolean customerIncrease) {
 		double nextArrival;
 		double mean;
@@ -153,18 +172,27 @@ public class RVPs
 		}
 		return nextArrival;
 	}
-
-	public double uServiceTime(CustomerType type) {
+   
+	/**
+	 * 
+	 * @param uType
+	 * @return service time
+	 */
+	public double uServiceTime(CustomerType uType) {
 		double serviceTime = -1;
-		if (type == CustomerType.CHECK_IN) {
-			serviceTime = this.checkInServiceTime.nextDouble();
+		if (uType == CustomerType.CHECK_IN) {
+			serviceTime = this.uCheckInServiceTime.nextDouble();
 		}
-		if (type == CustomerType.CHECK_OUT) {
-			serviceTime = this.checkOutServiceTime.nextDouble();
+		if (uType == CustomerType.CHECK_OUT) {
+			serviceTime = this.uCheckOutServiceTime.nextDouble();
 		}
 		return serviceTime;
 	}
 	
+	/**
+	 * 
+	 * @return number of additional customers
+	 */
 	public int additionalPassengers() {
 		double randNum = this.additionalPassengerGen.nextDouble();
 		int numberOfAdditionalPassenger = -1;

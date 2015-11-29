@@ -1,13 +1,13 @@
 package com.smrental.models;
 
 public class Customer {
-	public final CustomerType type;
+	public final CustomerType uType;
 	public final double timeEnterSystem;
 	public final int numberOfAdditionalPassenager;
 	public CustomerStatus customerStatus;
 
     public Customer(CustomerType type, double timeEnterSystem, int numberOfAdditionalPassenager) {
-    	this.type = type;
+    	this.uType = type;
     	this.timeEnterSystem = timeEnterSystem;
     	this.numberOfAdditionalPassenager = numberOfAdditionalPassenager;
 		if (type == CustomerType.CHECK_IN) {
@@ -18,6 +18,6 @@ public class Customer {
     }
 
 	@Override public String toString() {
-		return String.format("[type: %s, add_pass:%s]", type.name(), numberOfAdditionalPassenager);
+		return String.format("[type: %s, add_pass:%s]", uType.name(), numberOfAdditionalPassenager);
 	}
 }

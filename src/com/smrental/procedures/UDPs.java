@@ -56,7 +56,7 @@ public class UDPs
         if (location == Location.COUNTER || location == Location.DROP_OFF) {
             List<Integer> rqDropOff = getVanLine(location, Operation.DROP_OFF);
             for (int eachVanId : rqDropOff) {
-                Van eachVan = this.model.vans[eachVanId];
+                Van eachVan = this.model.rqVans[eachVanId];
                 if (!eachVan.onBoardCustomers.isEmpty()
                         && !isCustomerUnloading(eachVanId)) {
                     return Optional.of(eachVanId);
@@ -65,11 +65,15 @@ public class UDPs
         }
         return Optional.empty();
     }
-
+    /**
+     * 
+     * @param vanId
+     * @return boolean value indicate whether customer unloading
+     */
     public boolean isCustomerUnloading(int vanId) {
         boolean result = false;
-        Van van = this.model.vans[vanId];
-        for(Customer customer : van.onBoardCustomers) {
+        Van rqVan = this.model.rqVans[vanId];
+        for(Customer customer : rqVan.onBoardCustomers) {
             if (customer.customerStatus == CustomerStatus.UNBOARDING) {
                 result = true;
                 break;
@@ -101,14 +105,18 @@ public class UDPs
 
         return Optional.empty();
     }
-
+    /**
+     * 
+     * @param location
+     * @return boolean value which check whether can drive to location
+     */
     private boolean isTheLocationCanDrive(Location location) {
         boolean result = false;
         if (location == Location.DROP_OFF) {
             List<Integer> rgDropoff = getVanLine(Location.DROP_OFF, Operation.DROP_OFF);
             for (int vanId : rgDropoff) {
-                Van van = this.model.vans[vanId];
-                if (van.onBoardCustomers.isEmpty()) {
+                Van rqVan = this.model.rqVans[vanId];
+                if (rqVan.onBoardCustomers.isEmpty()) {
                     result = true;
                     break;
                 }
@@ -142,7 +150,7 @@ public class UDPs
             return Optional.empty();
         }
         if (vanId.isPresent()) {
-            Van firstVan = this.model.vans[vanId.get()];
+            Van firstVan = this.model.rqVans[vanId.get()];
             List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
             int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
             for (Customer customer : customerLine) {
@@ -154,7 +162,11 @@ public class UDPs
         }
         return Optional.empty();
     }
-
+/**
+ * 
+ * @param location
+ * @return a boolean value indicate whether customers can boarding
+ */
     public boolean isCustomerBoarding(Location location) {
         boolean result = false;
         List<Customer> customerLine = getCustomerLine(location, Operation.PICK_UP);
@@ -175,7 +187,7 @@ public class UDPs
      */
 	public Location getDestination(Location origin, int vanId) {
 		Location next = null;
-        Van van = this.model.vans[vanId];
+        Van van = this.model.rqVans[vanId];
 		if (origin == Location.COUNTER) {
 			if (van.onBoardCustomers.size() >0 ) {
 				next = Location.DROP_OFF;
@@ -198,7 +210,10 @@ public class UDPs
 		}
 		return next;
 	}
-
+    /**
+     * 
+     * @return total cost
+     */
 	public double calculateCosts() {
 		double personnelCost = this.model.params.getNumberOfAgents() * AGENT_RATE
 				+ this.model.params.getNumberOfVans() * DRIVER_RATE;

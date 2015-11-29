@@ -34,7 +34,7 @@ public class Serving extends ConditionalActivity {
 	}
 
 	@Override protected double duration() {
-		return this.model.rvp.uServiceTime(this.icCustomer.type);
+		return this.model.rvp.uServiceTime(this.icCustomer.uType);
 	}
 
 	@Override public void startingEvent() {
@@ -46,15 +46,15 @@ public class Serving extends ConditionalActivity {
 	@Override protected void terminatingEvent() {
 		this.model.rgCounter.removeGrp(this.icCustomer);
 		double customerServiceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
-		if (this.icCustomer.type == CustomerType.CHECK_IN
+		if (this.icCustomer.uType == CustomerType.CHECK_IN
 				&& customerServiceTime < ACCEPTABLE_CHECK_IN_TIME) {
 			this.model.output.numOfSatistifiedCustomer++;
 		}
-		if (this.icCustomer.type == CustomerType.CHECK_OUT) {
+		if (this.icCustomer.uType == CustomerType.CHECK_OUT) {
 			this.model.qCustomerLines[COUNTER_WAIT_FOR_PICKUP].add(this.icCustomer);
 			this.icCustomer.customerStatus = CustomerStatus.WAITING_PICKUP;
 		}
-		if (this.icCustomer.type == CustomerType.CHECK_IN) {
+		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
 			this.icCustomer = null;
 		}
 		this.model.output.numOfServed++;

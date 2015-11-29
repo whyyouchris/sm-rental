@@ -34,7 +34,7 @@ public class SMRental extends AOSimulationModel
 	@SuppressWarnings("unchecked")
 	public final List<Integer>[] qVanLines = new LinkedList[5];
 
-    public final Van[] vans;
+    public final Van[] rqVans;
 	
 	// References to RVP and DVP objects
 	public final RVPs rvp;
@@ -65,9 +65,9 @@ public class SMRental extends AOSimulationModel
 		}
 
         // Initialize vans
-        vans = new Van[params.getNumberOfVans()];
-        for (int i=0; i< vans.length; i++) {
-            vans[i] = new Van(i, params.getTypeOfVan());
+        rqVans = new Van[params.getNumberOfVans()];
+        for (int i=0; i< rqVans.length; i++) {
+        	rqVans[i] = new Van(i, params.getTypeOfVan());
         }
 
 		// Initialise the simulation model
@@ -179,22 +179,22 @@ public class SMRental extends AOSimulationModel
         List<Van> t1ToT2 = new LinkedList<>();
         List<Van> t2ToCounter = new LinkedList<>();
 
-        for (int i = 0; i < this.vans.length; i ++) {
-            Van van = this.vans[i];
-            if (van.status == VanStatus.DRIVING_COUNTER_T1) {
-                counterToT1.add(van);
+        for (int i = 0; i < this.rqVans.length; i ++) {
+            Van rqVan = this.rqVans[i];
+            if (rqVan.status == VanStatus.DRIVING_COUNTER_T1) {
+                counterToT1.add(rqVan);
             }
-            if (van.status == VanStatus.DRIVING_COUNTER_DROP_OFF) {
-                counterToDropOff.add(van);
+            if (rqVan.status == VanStatus.DRIVING_COUNTER_DROP_OFF) {
+                counterToDropOff.add(rqVan);
             }
-            if (van.status == VanStatus.DRIVING_DROP_OFF_T1) {
-                dropOffToT1.add(van);
+            if (rqVan.status == VanStatus.DRIVING_DROP_OFF_T1) {
+                dropOffToT1.add(rqVan);
             }
-            if (van.status == VanStatus.DRIVING_T1_T2) {
-                t1ToT2.add(van);
+            if (rqVan.status == VanStatus.DRIVING_T1_T2) {
+                t1ToT2.add(rqVan);
             }
-            if (van.status == VanStatus.DRIVING_T2_COUNTER) {
-                t2ToCounter.add(van);
+            if (rqVan.status == VanStatus.DRIVING_T2_COUNTER) {
+                t2ToCounter.add(rqVan);
             }
         }
         StringJoiner joiner = new StringJoiner(" %s\n");
@@ -218,7 +218,7 @@ public class SMRental extends AOSimulationModel
     private String  printVanLine(List<Integer> vanLine) {
         List<Van> theRealVanLine = new LinkedList<>();
         for (int vanId : vanLine) {
-            theRealVanLine.add(this.vans[vanId]);
+            theRealVanLine.add(this.rqVans[vanId]);
         }
         return "(n="+theRealVanLine.size()+")" + theRealVanLine.toString();
     }
