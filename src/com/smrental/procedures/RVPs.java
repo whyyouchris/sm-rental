@@ -223,7 +223,7 @@ public class RVPs
 			boardingTime += this.boardingTimeDist.nextDouble();
 			numberOfPassengers--;
 		}
-		return boardingTime;
+		return boardingTime/60;
 	}
 
 	/**
@@ -241,6 +241,6 @@ public class RVPs
 			exitingTime += this.exitingTimeDist.nextDouble();
 			numberOfPassengers--;
 		}
-		return exitingTime;
+		return exitingTime/60;
 	}
 }

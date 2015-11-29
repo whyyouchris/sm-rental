@@ -26,8 +26,8 @@ public class Experiment
        for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
 
        int typeOfVan = VanType.SEAT12.getSeats();
-       int numberOfAgents = 20;
-       int numberOfVans = 10;
+       int numberOfAgents = 13;
+       int numberOfVans = 5;
        
        boolean customerIncrease = false;
        Parameters params = new Parameters.Builder()

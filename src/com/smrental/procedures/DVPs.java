@@ -18,7 +18,8 @@ public class DVPs
 	public double calculateTime(Location origin, Location destination) {
 		double distance = this.model.udp.distance(origin, destination);
 		double vanSpeed = 20; //given van average speed
-		return (distance/vanSpeed) * 60; //the time unit is minute in this experiment. 
+		double time = (distance/vanSpeed) * 60; //the time unit is minute in this experiment.
 										 //i.e. (miles/miles per hour) * minutes
+		return time;
 	}
 }
