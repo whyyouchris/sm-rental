@@ -11,13 +11,9 @@ public class Experiment
 
 	private static final double START_TIME = 0.0;
 	private static final double END_TIME = 270;
-	private static final double SATISFACTION_85 = 0.85;
-	private static final double SATISFACTION_90 = 0.90;
-	private static final int 	MAX_NUM_AGENTS = 10;
-	private static final int	MAX_NUM_VANS = 10;
 
    public static void main(String[] args) {
-       int i, NUMRUNS = 1;
+       int i, NUMRUNS = 10;
 
        Seeds[] sds = new Seeds[NUMRUNS];
 
@@ -25,11 +21,12 @@ public class Experiment
        RandomSeedGenerator rsg = new RandomSeedGenerator();
        for(i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
 
+	   // Experiment Params
        int typeOfVan = VanType.SEAT12.getSeats();
        int numberOfAgents = 13;
        int numberOfVans = 5;
-       
        boolean customerIncrease = false;
+
        Parameters params = new Parameters.Builder()
   			 .typeOfVan(typeOfVan)
   			 .numberOfAgents(numberOfAgents)
