@@ -168,6 +168,15 @@ public class SMRental extends AOSimulationModel
 					, printVanLine(this.qVanLines[VanLineID.DROP_OFF.ordinal()])));
 
             printRunningVanStatus();
+			System.out.println("Current Cost: "+ udp.calculateCosts());
+			double currentServiceLevel = 0.0;
+
+            try {
+                currentServiceLevel = (double) output.numOfSatistifiedCustomer / output.numOfServed;
+            } catch (Exception e) {
+                // Divided by zero exception
+            }
+			System.out.println("Current service level: "+ currentServiceLevel);
             showSBL();
 		}
 	}
