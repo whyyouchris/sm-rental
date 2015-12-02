@@ -9,6 +9,7 @@ import smrental.SMRental;
 public class Experiment
 {
 
+    // Please make sure you have JDK 8 installed in order to run the project
 	private static final double START_TIME = 0.0;
 	private static final double END_TIME = 270;
 
