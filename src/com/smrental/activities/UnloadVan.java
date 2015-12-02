@@ -1,7 +1,7 @@
 package com.smrental.activities;
 
 import com.smrental.models.*;
-import com.smrental.utils.Operation;
+import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
@@ -41,7 +41,7 @@ public class UnloadVan extends ConditionalActivity{
 		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
 		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
-            this.model.udp.getCustomerLine(Location.COUNTER, Operation.DROP_OFF).add(this.icCustomer);
+            this.model.udp.getCustomerLine(Location.COUNTER, LineType.DROP_OFF).add(this.icCustomer);
 			this.icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		}
 
@@ -56,8 +56,8 @@ public class UnloadVan extends ConditionalActivity{
 
 		if (this.unloadingLocation == Location.COUNTER
 				&& rqVan.onBoardCustomers.isEmpty()) {
-			this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).remove(new Integer(this.vanId));
-			this.model.udp.getVanLine(Location.COUNTER, Operation.PICK_UP).add(this.vanId);
+			this.model.udp.getVanLine(Location.COUNTER, LineType.DROP_OFF).remove(new Integer(this.vanId));
+			this.model.udp.getVanLine(Location.COUNTER, LineType.PICK_UP).add(this.vanId);
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.smrental.activities;
 
 import com.smrental.models.*;
-import com.smrental.utils.Operation;
+import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
@@ -28,12 +28,12 @@ public class LoadVan extends ConditionalActivity{
 		this.loadingLocation = this.model.udp.getLoadingLocation().get();
 		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation).get();
 		this.icCustomer.customerStatus = CustomerStatus.BOARDING;
-		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, Operation.PICK_UP).get();
+		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, LineType.PICK_UP).get();
 		this.model.rqVans[vanId].status = VanStatus.LOADING;
 	}
 
 	@Override protected void terminatingEvent() {
-		List<Customer> customerLine = this.model.udp.getCustomerLine(this.loadingLocation, Operation.PICK_UP);
+		List<Customer> customerLine = this.model.udp.getCustomerLine(this.loadingLocation, LineType.PICK_UP);
 		customerLine.remove(this.icCustomer);
 		Van rqVan = this.model.rqVans[this.vanId];
 		rqVan.onBoardCustomers.add(this.icCustomer);

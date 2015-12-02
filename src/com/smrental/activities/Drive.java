@@ -3,7 +3,7 @@ package com.smrental.activities;
 import com.smrental.models.Location;
 import com.smrental.models.Van;
 import com.smrental.models.VanStatus;
-import com.smrental.utils.Operation;
+import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
@@ -25,9 +25,9 @@ public class Drive extends ConditionalActivity{
 	@Override public void startingEvent() {
 		this.origin = this.model.udp.getDriveLocation().get();
         if (this.origin == Location.DROP_OFF) {
-            this.vanId = this.model.udp.getVanLine(Location.DROP_OFF, Operation.DROP_OFF).remove(0);
+            this.vanId = this.model.udp.getVanLine(Location.DROP_OFF, LineType.DROP_OFF).remove(0);
         } else {
-            this.vanId = this.model.udp.getVanLine(this.origin, Operation.PICK_UP).remove(0);
+            this.vanId = this.model.udp.getVanLine(this.origin, LineType.PICK_UP).remove(0);
         }
 		this.destination = this.model.udp.getDestination(this.origin, vanId);
         Van rqVan = this.model.rqVans[this.vanId];
@@ -56,11 +56,11 @@ public class Drive extends ConditionalActivity{
     @Override protected void terminatingEvent() {
         Van rqVan = this.model.rqVans[this.vanId];
         if (this.destination == Location.COUNTER && !rqVan.onBoardCustomers.isEmpty()) {
-            this.model.udp.getVanLine(Location.COUNTER, Operation.DROP_OFF).add(this.vanId);
+            this.model.udp.getVanLine(Location.COUNTER, LineType.DROP_OFF).add(this.vanId);
         } else if (this.destination == Location.DROP_OFF){
-            this.model.udp.getVanLine(Location.DROP_OFF, Operation.DROP_OFF).add(this.vanId);
+            this.model.udp.getVanLine(Location.DROP_OFF, LineType.DROP_OFF).add(this.vanId);
         } else {
-            this.model.udp.getVanLine(destination, Operation.PICK_UP).add(this.vanId);
+            this.model.udp.getVanLine(destination, LineType.PICK_UP).add(this.vanId);
         }
         this.model.output.totalMilesTraveledByVans += this.model.udp.distance(origin, destination);
         rqVan.status = VanStatus.IDLE;
