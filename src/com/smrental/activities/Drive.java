@@ -1,8 +1,8 @@
 package com.smrental.activities;
 
-import com.smrental.models.Location;
-import com.smrental.models.Van;
-import com.smrental.models.VanStatus;
+import com.smrental.entities.Location;
+import com.smrental.entities.Van;
+import com.smrental.entities.VanStatus;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;

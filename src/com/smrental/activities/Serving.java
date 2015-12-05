@@ -1,9 +1,9 @@
 package com.smrental.activities;
 
-import com.smrental.models.Customer;
-import com.smrental.models.CustomerLineID;
-import com.smrental.models.CustomerStatus;
-import com.smrental.models.CustomerType;
+import com.smrental.entities.Customer;
+import com.smrental.entities.CustomerLineID;
+import com.smrental.entities.CustomerStatus;
+import com.smrental.entities.CustomerType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
@@ -48,7 +48,7 @@ public class Serving extends ConditionalActivity {
 		double customerServiceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
 		if (this.icCustomer.uType == CustomerType.CHECK_IN
 				&& customerServiceTime < ACCEPTABLE_CHECK_IN_TIME) {
-			this.model.output.numOfSatistifiedCustomer++;
+			this.model.output.numOfSatisfiedCustomer++;
 		}
 		if (this.icCustomer.uType == CustomerType.CHECK_OUT) {
 			this.model.qCustomerLines[COUNTER_WAIT_FOR_PICKUP].add(this.icCustomer);

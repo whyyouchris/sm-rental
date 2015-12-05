@@ -3,7 +3,7 @@ package com.smrental.procedures;
 import cern.jet.random.Exponential;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister;
-import com.smrental.models.CustomerType;
+import com.smrental.entities.CustomerType;
 import smrental.SMRental;
 
 import static com.smrental.procedures.ArrivalConfig.*;
@@ -193,7 +193,7 @@ public class RVPs
 	 * 
 	 * @return number of additional customers
 	 */
-	public int additionalPassengers() {
+	public int uAdditionalPassengers() {
 		double randNum = this.additionalPassengerGen.nextDouble();
 		int numberOfAdditionalPassenger = -1;
 		if (randNum < THREE_ADDITIONAL_PASSENGER) {
@@ -213,9 +213,9 @@ public class RVPs
 	 * of the customer and additional customers  
 	 * 
 	 * @param numberOfPassengers
-	 * @return double - boardingTime
+	 * @return double - uBoardingTime
 	 */
-	public double boardingTime(int numberOfPassengers) {
+	public double uBoardingTime(int numberOfPassengers) {
 		double boardingTime = 0;
 		// Customer himself should also be considered as an passenger
 		numberOfPassengers++;
@@ -231,9 +231,9 @@ public class RVPs
 	 * of the customer and additional customers  
 	 * 
 	 * @param numberOfPassengers
-	 * @return double - exitingTime
+	 * @return double - uExitingTime
 	 */
-	public double exitingTime(int numberOfPassengers) {
+	public double uExitingTime(int numberOfPassengers) {
 		double exitingTime = 0;
 		// Customer himself should also be considered as an passenger
 		numberOfPassengers++;

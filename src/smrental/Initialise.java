@@ -1,6 +1,6 @@
 package smrental;
 
-import com.smrental.models.VanLineID;
+import com.smrental.entities.VanLineID;
 import simulationModelling.ScheduledAction;
 
 class Initialise extends ScheduledAction {

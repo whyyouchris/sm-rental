@@ -1,6 +1,6 @@
 package com.smrental.procedures;
 
-import com.smrental.models.*;
+import com.smrental.entities.*;
 import com.smrental.utils.LineType;
 import smrental.AirPortShematic;
 import smrental.SMRental;

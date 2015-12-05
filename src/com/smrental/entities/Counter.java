@@ -1,4 +1,4 @@
-package com.smrental.models;
+package com.smrental.entities;
 
 import java.util.HashSet;
 

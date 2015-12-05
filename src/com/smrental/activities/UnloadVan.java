@@ -1,6 +1,6 @@
 package com.smrental.activities;
 
-import com.smrental.models.*;
+import com.smrental.entities.*;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
@@ -23,7 +23,7 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	@Override protected double duration() {
-		return this.model.rvp.exitingTime(this.icCustomer.numberOfAdditionalPassenager);
+		return this.model.rvp.uExitingTime(this.icCustomer.numberOfAdditionalPassenager);
 	}
 
 	@Override public void startingEvent() {
@@ -48,7 +48,7 @@ public class UnloadVan extends ConditionalActivity{
 		if (this.icCustomer.uType == CustomerType.CHECK_OUT) {
 			double serviceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
 			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
-				this.model.output.numOfSatistifiedCustomer++;
+				this.model.output.numOfSatisfiedCustomer++;
 			}
 			rqVan.onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;

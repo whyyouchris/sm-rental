@@ -1,4 +1,4 @@
-package com.smrental.models;
+package com.smrental.entities;
 
 public enum Location {
     T1,

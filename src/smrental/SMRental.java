@@ -7,7 +7,7 @@ import com.smrental.activities.Drive;
 import com.smrental.activities.LoadVan;
 import com.smrental.activities.Serving;
 import com.smrental.activities.UnloadVan;
-import com.smrental.models.*;
+import com.smrental.entities.*;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
@@ -174,7 +174,7 @@ public class SMRental extends AOSimulationModel
 			if (output.numOfServed == 0) {
 				currentServiceLevel = 0.0;
 			} else {
-                currentServiceLevel = (double) output.numOfSatistifiedCustomer / output.numOfServed;
+                currentServiceLevel = (double) output.numOfSatisfiedCustomer / output.numOfServed;
 			}
 			System.out.println("Current service level: "+ currentServiceLevel);
             showSBL();

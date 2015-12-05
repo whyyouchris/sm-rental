@@ -1,7 +1,7 @@
 package com.smrental.experiment;
 
 import cern.jet.random.engine.RandomSeedGenerator;
-import com.smrental.models.VanType;
+import com.smrental.entities.VanType;
 import com.smrental.procedures.Seeds;
 import com.smrental.utils.Parameters;
 import smrental.SMRental;
@@ -39,7 +39,7 @@ public class Experiment
 		   System.out.println("configuration" + params);
     	   SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, true);
     	   model.runSimulation();
-		   double serviceLevel = (double) model.output.numOfSatistifiedCustomer / model.output.numOfServed;
+		   double serviceLevel = (double) model.output.numOfSatisfiedCustomer / model.output.numOfServed;
     	   System.out.println("Service Level: " + serviceLevel);
     	   System.out.println("Total cost for the configuration: " + model.udp.calculateCosts());
        }

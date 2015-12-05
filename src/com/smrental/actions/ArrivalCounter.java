@@ -1,9 +1,9 @@
 package com.smrental.actions;
 
-import com.smrental.models.Customer;
-import com.smrental.models.CustomerLineID;
-import com.smrental.models.CustomerStatus;
-import com.smrental.models.CustomerType;
+import com.smrental.entities.Customer;
+import com.smrental.entities.CustomerLineID;
+import com.smrental.entities.CustomerStatus;
+import com.smrental.entities.CustomerType;
 import simulationModelling.ScheduledAction;
 import smrental.SMRental;
 
@@ -24,7 +24,7 @@ public class ArrivalCounter extends ScheduledAction{
 		Customer icCustomer = new Customer(); 
  		icCustomer.uType = CUSTOMER_TYPE;
  		icCustomer.timeEnterSystem = this.model.getClock();
- 		icCustomer.numberOfAdditionalPassenager = this.model.rvp.additionalPassengers();
+ 		icCustomer.numberOfAdditionalPassenager = this.model.rvp.uAdditionalPassengers();
  		icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		this.model.qCustomerLines[COUNTER].add(icCustomer);
 	}
