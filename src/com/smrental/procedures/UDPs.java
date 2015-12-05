@@ -215,8 +215,8 @@ public class UDPs
      * @return total cost
      */
 	public double calculateCosts() {
-		double personnelCost = this.model.params.getNumberOfAgents() * AGENT_RATE
-				+ this.model.params.getNumberOfVans() * DRIVER_RATE;
+		double personnelCost = this.model.params.getNumberOfAgents() * AGENT_RATE * TOTAL_TIME
+				+ this.model.params.getNumberOfVans() * DRIVER_RATE * TOTAL_TIME;
 		double vanCost = 0.0;
 		double totalMilesTraveled = this.model.output.totalMilesTraveledByVans;
 		switch (this.model.params.getTypeOfVan()) {
