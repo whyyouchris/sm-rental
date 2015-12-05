@@ -19,11 +19,11 @@ public class Drive extends ConditionalActivity{
 	}
 
 	public static boolean precondition(SMRental model) {
-		return model.udp.getDriveLocation().isPresent();
+		return model.udp.getDriveLocation() != null;
 	}
 
 	@Override public void startingEvent() {
-		this.origin = this.model.udp.getDriveLocation().get();
+		this.origin = this.model.udp.getDriveLocation();
         if (this.origin == Location.DROP_OFF) {
             this.vanId = this.model.udp.getVanLine(Location.DROP_OFF, LineType.DROP_OFF).remove(0);
         } else {

@@ -4,6 +4,7 @@ import com.smrental.entities.*;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+import static smrental.Constants.*;
 
 import java.util.List;
 
@@ -18,17 +19,17 @@ public class LoadVan extends ConditionalActivity{
 	}
 
 	public static boolean precondition(SMRental model) {
-		return model.udp.getLoadingLocation().isPresent();
+		return model.udp.getLoadingLocation() != null;
 	}
 	@Override protected double duration() {
 		return this.model.rvp.uBoardingTime(this.icCustomer.numberOfAdditionalPassenager);
 	}
 
 	@Override public void startingEvent() {
-		this.loadingLocation = this.model.udp.getLoadingLocation().get();
-		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation).get();
+		this.loadingLocation = this.model.udp.getLoadingLocation();
+		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation);
 		this.icCustomer.customerStatus = CustomerStatus.BOARDING;
-		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, LineType.PICK_UP).get();
+		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, LineType.PICK_UP);
 		this.model.rqVans[vanId].status = VanStatus.LOADING;
 	}
 

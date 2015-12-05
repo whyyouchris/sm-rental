@@ -19,7 +19,7 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	public static boolean precondition(SMRental model) {
-		return model.udp.getUnloadingLocation().isPresent();
+		return model.udp.getUnloadingLocation() != null;
 	}
 
 	@Override protected double duration() {
@@ -27,8 +27,8 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	@Override public void startingEvent() {
-		this.unloadingLocation = this.model.udp.getUnloadingLocation().get();
-		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation).get();
+		this.unloadingLocation = this.model.udp.getUnloadingLocation();
+		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation);
 		Van rqVan = this.model.rqVans[this.vanId];
 		rqVan.status = VanStatus.UNLOADING;
 		this.icCustomer = rqVan.onBoardCustomers.get(0);
