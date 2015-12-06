@@ -28,7 +28,7 @@ public class SMRental extends AOSimulationModel
 	public final Parameters params; // experiment parameters
 
 	/*-------------Entity Data Structures-------------------*/
-	public final Counter rgCounter;
+	public Counter rgCounter;
 	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
 	@SuppressWarnings("unchecked")

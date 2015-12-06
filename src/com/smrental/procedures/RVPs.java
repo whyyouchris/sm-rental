@@ -6,7 +6,6 @@ import cern.jet.random.engine.MersenneTwister;
 import com.smrental.entities.CustomerType;
 import smrental.SMRental;
 
-import static com.smrental.procedures.ArrivalConfig.*;
 public class RVPs 
 {
 	
@@ -44,7 +43,27 @@ public class RVPs
 		this.uCheckInServiceTime = new Uniform(STCIMIN, STCIMAX, sd.cistm);
 		this.uCheckOutServiceTime = new Uniform(STCOMIN, STCOMAX, sd.costm);
 	}
-	
+
+    // Customer arrival times for Terminal 1
+    private static final double T1_MEAN_1 = 2.5;
+    private static final double T1_MEAN_2 = 1.111;
+    private static final double T1_MEAN_3 = 0.9375;
+    private static final double T1_MEAN_4 = 1.304;
+    private static final double T1_MEAN_5 = 7.5;
+    private static final double T1_MEAN_6 = 1.25;
+    private static final double T1_MEAN_7 = 0.968;
+    private static final double T1_MEAN_8 = 3;
+    private static final double T1_MEAN_9 = 5;
+
+    public static final double INCREASED_T1_MEAN_1 = 2.083;
+    public static final double INCREASED_T1_MEAN_2 = 0.925;
+    public static final double INCREASED_T1_MEAN_3 = 0.781;
+    public static final double INCREASED_T1_MEAN_4 = 1.087;
+    public static final double INCREASED_T1_MEAN_5 = 6.25;
+    public static final double INCREASED_T1_MEAN_6 = 1.042;
+    public static final double INCREASED_T1_MEAN_7 = 0.806;
+    public static final double INCREASED_T1_MEAN_8 = 2.5;
+    public static final double INCREASED_T1_MEAN_9 = 4.167;
 	/**
 	 * 
 	 * @param customerIncrease
@@ -87,7 +106,27 @@ public class RVPs
 		}
 		return nextArrival;
 	}
-	
+
+    // Customer arrival times for Terminal 2
+    private static final double T2_MEAN_1 = 3.333;
+    private static final double T2_MEAN_2 = 1.25;
+    private static final double T2_MEAN_3 = 0.833;
+    private static final double T2_MEAN_4 = 1.5;
+    private static final double T2_MEAN_5 = 10;
+    private static final double T2_MEAN_6 = 0.857;
+    private static final double T2_MEAN_7 = 0.968;
+    private static final double T2_MEAN_8 = 4.23;
+    private static final double T2_MEAN_9 = 5;
+
+    private static final double INCREASED_T2_MEAN_1 = 2.778;
+    private static final double INCREASED_T2_MEAN_2 = 1.042;
+    private static final double INCREASED_T2_MEAN_3 = 0.735;
+    private static final double INCREASED_T2_MEAN_4 = 1.25;
+    private static final double INCREASED_T2_MEAN_5 = 8.333;
+    private static final double INCREASED_T2_MEAN_6 = 0.714;
+    private static final double INCREASED_T2_MEAN_7 = 0.806;
+    private static final double INCREASED_T2_MEAN_8 = 3.571;
+    private static final double INCREASED_T2_MEAN_9 = 4.167;
 	/**
 	 * 
 	 * @param customerIncrease
@@ -130,7 +169,27 @@ public class RVPs
 		}
 		return nextArrival;
 	}
-	
+
+    // Customer arrival times for Counter
+    private static final double COUNTER_MEAN_1 = 1.429;
+    private static final double COUNTER_MEAN_2 = 0.652;
+    private static final double COUNTER_MEAN_3 = 0.682;
+    private static final double COUNTER_MEAN_4 = 1.111;
+    private static final double COUNTER_MEAN_5 = 1.765;
+    private static final double COUNTER_MEAN_6 = 0.5;
+    private static final double COUNTER_MEAN_7 = 0.625;
+    private static final double COUNTER_MEAN_8 = 1.154;
+    private static final double COUNTER_MEAN_9 = 3.333;
+
+    private static final double INCREASED_COUNTER_MEAN_1 = 1.190;
+    private static final double INCREASED_COUNTER_MEAN_2 = 0.543;
+    private static final double INCREASED_COUNTER_MEAN_3 = 0.568;
+    private static final double INCREASED_COUNTER_MEAN_4 = 0.925;
+    private static final double INCREASED_COUNTER_MEAN_5 = 1.47;
+    private static final double INCREASED_COUNTER_MEAN_6 = 0.417;
+    private static final double INCREASED_COUNTER_MEAN_7 = 0.521;
+    private static final double INCREASED_COUNTER_MEAN_8 = 0.962;
+    private static final double INCREASED_COUNTER_MEAN_9 = 2.778;
 	/**
 	 * 
 	 * @param customerIncrease
@@ -172,7 +231,12 @@ public class RVPs
 		}
 		return nextArrival;
 	}
-   
+
+	//Min and Max for service times
+	private static final double STCIMIN = 1.6;
+	private static final double STCIMAX = 5.1;
+	private static final double STCOMIN = 1;
+	private static final double STCOMAX = 4.8;
 	/**
 	 * 
 	 * @param uType
@@ -188,7 +252,11 @@ public class RVPs
 		}
 		return serviceTime;
 	}
-	
+
+	// Percentage of additional customers
+	private static final double ONE_ADDITIONAL_PASSENGER = 0.2;
+	private static final double TWO_ADDITIONAL_PASSENGER = 0.15;
+	private static final double THREE_ADDITIONAL_PASSENGER = 0.05;
 	/**
 	 * 
 	 * @return number of additional customers
@@ -207,11 +275,13 @@ public class RVPs
 		}
 		return numberOfAdditionalPassenger;
 	}
-	
+
+	//Average boarding time
+	private static final double AVERAGE_BOARDING_TIME = 0.2; // 12s => 0.2min
 	/**
-	 * This method return the total boarding time 
-	 * of the customer and additional customers  
-	 * 
+	 * This method return the total boarding time
+	 * of the customer and additional customers
+	 *
 	 * @param numberOfPassengers
 	 * @return double - uBoardingTime
 	 */
@@ -226,10 +296,12 @@ public class RVPs
 		return boardingTime/60;
 	}
 
+	//Average existing time
+	private static final double AVERAGE_EXISTING_TIME = 0.1; // 6s => 0.1min
 	/**
-	 * This method return the total exiting time 
-	 * of the customer and additional customers  
-	 * 
+	 * This method return the total exiting time
+	 * of the customer and additional customers
+	 *
 	 * @param numberOfPassengers
 	 * @return double - uExitingTime
 	 */

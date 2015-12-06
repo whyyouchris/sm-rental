@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Van {
+	// The id attribute is only for the purpose of toString method
 	public final int id;
 	public final int capacity;
 	public final List<Customer> onBoardCustomers;
