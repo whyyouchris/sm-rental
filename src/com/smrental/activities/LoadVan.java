@@ -50,9 +50,8 @@ public class LoadVan extends ConditionalActivity{
 		if (this.loadingLocation == Location.T2) {
 			this.model.qCustomerLines[CUSTOMERLINE_T2].remove(this.icCustomer);
 		}
-		Van rqVan = this.model.rqVans[this.vanId];
-		rqVan.onBoardCustomers.add(this.icCustomer);
-		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
+		this.model.rqVans[this.vanId].onBoardCustomers.add(this.icCustomer);
+		this.model.rqVans[this.vanId].numOfSeatTaken = this.model.rqVans[this.vanId].numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
 	}
 
 }
