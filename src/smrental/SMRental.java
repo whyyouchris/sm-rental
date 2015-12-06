@@ -160,14 +160,14 @@ public class SMRental extends AOSimulationModel
 				String.format(joiner.toString()
 					,getClock()
 					, printVanLine(this.qVanLines[VANLINE_T1])
-					, "(n="+this.qCustomerLines[CustomerLineID.T1.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T1.ordinal()]
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_T1].size()+")"+this.qCustomerLines[CUSTOMERLINE_T1]
 					, printVanLine(this.qVanLines[VANLINE_T2])
-					, "(n="+this.qCustomerLines[CustomerLineID.T2.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T2.ordinal()]
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_T2].size()+")"+this.qCustomerLines[CUSTOMERLINE_T2]
 					, printVanLine(this.qVanLines[VANLINE_COUNTER_PICKUP])
 					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])
 					, this.rgCounter.getN()
-					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
-					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING]
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP]
 					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])));
 
             printRunningVanStatus();

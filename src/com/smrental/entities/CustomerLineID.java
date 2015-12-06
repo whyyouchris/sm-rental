@@ -1,8 +1,0 @@
-package com.smrental.entities;
-
-public enum CustomerLineID {
-	T1,
-	T2,
-	COUNTER_WAIT_FOR_SERVICING,
-	COUNTER_WAIT_FOR_PICKUP
-}

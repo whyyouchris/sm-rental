@@ -1,7 +1,5 @@
 package smrental;
 
-import org.omg.CORBA.PUBLIC_MEMBER;
-
 public class Constants
 {
 	public static final int ACCEPTABLE_CHECK_IN_TIME = 20; //Acceptable turn around time for check in customer

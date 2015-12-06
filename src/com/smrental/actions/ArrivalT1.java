@@ -1,15 +1,15 @@
 package com.smrental.actions;
 
 import com.smrental.entities.Customer;
-import com.smrental.entities.CustomerLineID;
 import com.smrental.entities.CustomerStatus;
 import com.smrental.entities.CustomerType;
 import simulationModelling.ScheduledAction;
 import smrental.SMRental;
 
+import static smrental.Constants.CUSTOMERLINE_T1;
+
 public class ArrivalT1 extends ScheduledAction{
 	private static final CustomerType CUSTOMER_TYPE = CustomerType.CHECK_IN;
-	private static final int T1 = CustomerLineID.T1.ordinal();
 	private SMRental model;
 
 	public ArrivalT1(SMRental model) {
@@ -26,7 +26,7 @@ public class ArrivalT1 extends ScheduledAction{
  		icCustomer.timeEnterSystem = this.model.getClock();
  		icCustomer.numberOfAdditionalPassenager = this.model.rvp.uAdditionalPassengers();
  		icCustomer.customerStatus = CustomerStatus.WAITING_PICKUP;
- 		this.model.qCustomerLines[T1].add(icCustomer);
+ 		this.model.qCustomerLines[CUSTOMERLINE_T1].add(icCustomer);
 	}
 
 }

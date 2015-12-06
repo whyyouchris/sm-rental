@@ -271,19 +271,19 @@ public class UDPs {
         List<Customer> customerLine = null;
         if (lineType == LineType.DROP_OFF) {
             if (location == Location.COUNTER) {
-                customerLine = this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()];
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING];
             }
         }
 
         if (lineType == LineType.PICK_UP) {
             if (location == Location.COUNTER) {
-                customerLine = this.model.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()];
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP];
             }
             if (location == Location.T1) {
-                customerLine = this.model.qCustomerLines[CustomerLineID.T1.ordinal()];
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T1];
             }
             if (location == Location.T2) {
-                customerLine = this.model.qCustomerLines[CustomerLineID.T2.ordinal()];
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T2];
             }
         }
         return customerLine;
