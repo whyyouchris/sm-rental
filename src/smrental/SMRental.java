@@ -7,18 +7,22 @@ import com.smrental.activities.Drive;
 import com.smrental.activities.LoadVan;
 import com.smrental.activities.Serving;
 import com.smrental.activities.UnloadVan;
-import com.smrental.models.*;
+import com.smrental.entities.Counter;
+import com.smrental.entities.Customer;
+import com.smrental.entities.Van;
+import com.smrental.entities.Van.VanStatus;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
 import com.smrental.procedures.UDPs;
-import com.smrental.utils.Parameters;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
+
+import static smrental.Constants.*;
 
 public class SMRental extends AOSimulationModel
 {
@@ -28,7 +32,7 @@ public class SMRental extends AOSimulationModel
 	public final Parameters params; // experiment parameters
 
 	/*-------------Entity Data Structures-------------------*/
-	public final Counter rgCounter;
+	public Counter rgCounter;
 	@SuppressWarnings("unchecked")
 	public final List<Customer>[] qCustomerLines = new LinkedList[4];
 	@SuppressWarnings("unchecked")
@@ -156,26 +160,26 @@ public class SMRental extends AOSimulationModel
 			System.out.println(
 				String.format(joiner.toString()
 					,getClock()
-					, printVanLine(this.qVanLines[VanLineID.T1.ordinal()])
-					, "(n="+this.qCustomerLines[CustomerLineID.T1.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T1.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.T2.ordinal()])
-					, "(n="+this.qCustomerLines[CustomerLineID.T2.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T2.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()])
-					, printVanLine(this.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()])
+					, printVanLine(this.qVanLines[VANLINE_T1])
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_T1].size()+")"+this.qCustomerLines[CUSTOMERLINE_T1]
+					, printVanLine(this.qVanLines[VANLINE_T2])
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_T2].size()+")"+this.qCustomerLines[CUSTOMERLINE_T2]
+					, printVanLine(this.qVanLines[VANLINE_COUNTER_PICKUP])
+					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])
 					, this.rgCounter.getN()
-					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
-					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.DROP_OFF.ordinal()])));
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING]
+					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP]
+					, printVanLine(this.qVanLines[VANLINE_DROPOFF])));
 
             printRunningVanStatus();
 			System.out.println("Current Cost: "+ udp.calculateCosts());
-			double currentServiceLevel = 0.0;
+			double currentServiceLevel;
 
-            try {
-                currentServiceLevel = (double) output.numOfSatistifiedCustomer / output.numOfServed;
-            } catch (Exception e) {
-                // Divided by zero exception
-            }
+			if (output.numOfServed == 0) {
+				currentServiceLevel = 0.0;
+			} else {
+                currentServiceLevel = (double) output.numOfSatisfiedCustomer / output.numOfServed;
+			}
 			System.out.println("Current service level: "+ currentServiceLevel);
             showSBL();
 		}
@@ -188,24 +192,23 @@ public class SMRental extends AOSimulationModel
         List<Van> t1ToT2 = new LinkedList<>();
         List<Van> t2ToCounter = new LinkedList<>();
 
-        for (int i = 0; i < this.rqVans.length; i ++) {
-            Van rqVan = this.rqVans[i];
-            if (rqVan.status == VanStatus.DRIVING_COUNTER_T1) {
-                counterToT1.add(rqVan);
-            }
-            if (rqVan.status == VanStatus.DRIVING_COUNTER_DROP_OFF) {
-                counterToDropOff.add(rqVan);
-            }
-            if (rqVan.status == VanStatus.DRIVING_DROP_OFF_T1) {
-                dropOffToT1.add(rqVan);
-            }
-            if (rqVan.status == VanStatus.DRIVING_T1_T2) {
-                t1ToT2.add(rqVan);
-            }
-            if (rqVan.status == VanStatus.DRIVING_T2_COUNTER) {
-                t2ToCounter.add(rqVan);
-            }
-        }
+		for (Van rqVan : this.rqVans) {
+			if (rqVan.status == VanStatus.DRIVING_COUNTER_T1) {
+				counterToT1.add(rqVan);
+			}
+			if (rqVan.status == VanStatus.DRIVING_COUNTER_DROP_OFF) {
+				counterToDropOff.add(rqVan);
+			}
+			if (rqVan.status == VanStatus.DRIVING_DROP_OFF_T1) {
+				dropOffToT1.add(rqVan);
+			}
+			if (rqVan.status == VanStatus.DRIVING_T1_T2) {
+				t1ToT2.add(rqVan);
+			}
+			if (rqVan.status == VanStatus.DRIVING_T2_COUNTER) {
+				t2ToCounter.add(rqVan);
+			}
+		}
         StringJoiner joiner = new StringJoiner(" %s\n");
         joiner.add("Counter -> T1:");
         joiner.add("Counter -> Drop-Off:");

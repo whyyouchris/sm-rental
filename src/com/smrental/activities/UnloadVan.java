@@ -1,11 +1,14 @@
 package com.smrental.activities;
 
-import com.smrental.models.*;
-import com.smrental.utils.LineType;
+import com.smrental.entities.Customer;
+import com.smrental.entities.Customer.CustomerStatus;
+import com.smrental.entities.Customer.CustomerType;
+import com.smrental.entities.Van.VanStatus;
 import simulationModelling.ConditionalActivity;
+import smrental.Constants.*;
 import smrental.SMRental;
 
-import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
+import static smrental.Constants.*;
 
 public class UnloadVan extends ConditionalActivity{
 
@@ -19,7 +22,7 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	public static boolean precondition(SMRental model) {
-		return model.udp.getUnloadingLocation().isPresent();
+		return model.udp.getUnloadingLocation() != null;
 	}
 
 	@Override protected double duration() {
@@ -27,37 +30,35 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	@Override public void startingEvent() {
-		this.unloadingLocation = this.model.udp.getUnloadingLocation().get();
-		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation).get();
-		Van rqVan = this.model.rqVans[this.vanId];
-		rqVan.status = VanStatus.UNLOADING;
-		this.icCustomer = rqVan.onBoardCustomers.get(0);
+		this.unloadingLocation = this.model.udp.getUnloadingLocation();
+		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation);
+		this.model.rqVans[this.vanId].status = VanStatus.UNLOADING;
+		this.icCustomer = this.model.rqVans[this.vanId].onBoardCustomers.get(0);
 		this.icCustomer.customerStatus = CustomerStatus.UNBOARDING;
 	}
 
 	@Override protected void terminatingEvent() {
-		Van rqVan = this.model.rqVans[this.vanId];
-		rqVan.onBoardCustomers.remove(this.icCustomer);
-		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
+		this.model.rqVans[this.vanId].onBoardCustomers.remove(this.icCustomer);
+		this.model.rqVans[this.vanId].numOfSeatTaken = this.model.rqVans[this.vanId].numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
 		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
-            this.model.udp.getCustomerLine(Location.COUNTER, LineType.DROP_OFF).add(this.icCustomer);
+			this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].add(this.icCustomer);
 			this.icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		}
 
 		if (this.icCustomer.uType == CustomerType.CHECK_OUT) {
 			double serviceTime = this.model.getClock() - this.icCustomer.timeEnterSystem;
 			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
-				this.model.output.numOfSatistifiedCustomer++;
+				this.model.output.numOfSatisfiedCustomer++;
 			}
-			rqVan.onBoardCustomers.remove(this.icCustomer);
+			this.model.rqVans[this.vanId].onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;
 		}
 
 		if (this.unloadingLocation == Location.COUNTER
-				&& rqVan.onBoardCustomers.isEmpty()) {
-			this.model.udp.getVanLine(Location.COUNTER, LineType.DROP_OFF).remove(new Integer(this.vanId));
-			this.model.udp.getVanLine(Location.COUNTER, LineType.PICK_UP).add(this.vanId);
+				&& this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
+			this.model.qVanLines[VANLINE_COUNTER_DROPOFF].remove(new Integer(this.vanId));
+			this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);
 		}
 	}
 

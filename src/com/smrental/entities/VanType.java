@@ -1,4 +1,4 @@
-package com.smrental.models;
+package com.smrental.entities;
 
 public enum VanType {
 	SEAT12(12),

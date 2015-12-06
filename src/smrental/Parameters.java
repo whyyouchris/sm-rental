@@ -1,4 +1,4 @@
-package com.smrental.utils;
+package smrental;
 
 public class Parameters {
 	private int typeOfVan;

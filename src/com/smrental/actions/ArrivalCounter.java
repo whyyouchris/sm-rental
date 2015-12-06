@@ -1,15 +1,15 @@
 package com.smrental.actions;
 
-import com.smrental.models.Customer;
-import com.smrental.models.CustomerLineID;
-import com.smrental.models.CustomerStatus;
-import com.smrental.models.CustomerType;
+import com.smrental.entities.Customer;
+import com.smrental.entities.Customer.CustomerStatus;
+import com.smrental.entities.Customer.CustomerType;
 import simulationModelling.ScheduledAction;
 import smrental.SMRental;
 
+import static smrental.Constants.CUSTOMERLINE_WAIT_FOR_SERVING;
+
 public class ArrivalCounter extends ScheduledAction{
 	private static final CustomerType CUSTOMER_TYPE = CustomerType.CHECK_OUT;
-	private static final int COUNTER = CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal();
 	private SMRental model;
 	
 	public ArrivalCounter(SMRental model) {
@@ -26,6 +26,6 @@ public class ArrivalCounter extends ScheduledAction{
  		icCustomer.timeEnterSystem = this.model.getClock();
  		icCustomer.numberOfAdditionalPassenager = this.model.rvp.uAdditionalPassengers();
  		icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
-		this.model.qCustomerLines[COUNTER].add(icCustomer);
+		this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].add(icCustomer);
 	}
 }
