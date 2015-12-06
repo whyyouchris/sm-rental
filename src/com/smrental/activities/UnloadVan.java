@@ -33,16 +33,14 @@ public class UnloadVan extends ConditionalActivity{
 	@Override public void startingEvent() {
 		this.unloadingLocation = this.model.udp.getUnloadingLocation();
 		this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation);
-		Van rqVan = this.model.rqVans[this.vanId];
-		rqVan.status = VanStatus.UNLOADING;
-		this.icCustomer = rqVan.onBoardCustomers.get(0);
+		this.model.rqVans[this.vanId].status = VanStatus.UNLOADING;
+		this.icCustomer = this.model.rqVans[this.vanId].onBoardCustomers.get(0);
 		this.icCustomer.customerStatus = CustomerStatus.UNBOARDING;
 	}
 
 	@Override protected void terminatingEvent() {
-		Van rqVan = this.model.rqVans[this.vanId];
-		rqVan.onBoardCustomers.remove(this.icCustomer);
-		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
+		this.model.rqVans[this.vanId].onBoardCustomers.remove(this.icCustomer);
+		this.model.rqVans[this.vanId].numOfSeatTaken = this.model.rqVans[this.vanId].numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
 		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
 			this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].add(this.icCustomer);
@@ -54,12 +52,12 @@ public class UnloadVan extends ConditionalActivity{
 			if (serviceTime < ACCEPTABLE_CHECK_OUT_TIME) {
 				this.model.output.numOfSatisfiedCustomer++;
 			}
-			rqVan.onBoardCustomers.remove(this.icCustomer);
+			this.model.rqVans[this.vanId].onBoardCustomers.remove(this.icCustomer);
 			this.icCustomer = null;
 		}
 
 		if (this.unloadingLocation == Location.COUNTER
-				&& rqVan.onBoardCustomers.isEmpty()) {
+				&& this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
 			this.model.qVanLines[VANLINE_COUNTER_DROPOFF].remove(new Integer(this.vanId));
 			this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);
 		}

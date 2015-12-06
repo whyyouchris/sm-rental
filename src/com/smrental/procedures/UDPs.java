@@ -80,8 +80,7 @@ public class UDPs {
      */
     public boolean isCustomerUnloading(int vanId) {
         boolean result = false;
-        Van rqVan = this.model.rqVans[vanId];
-        for (Customer customer : rqVan.onBoardCustomers) {
+        for (Customer customer : this.model.rqVans[vanId].onBoardCustomers) {
             if (customer.customerStatus == CustomerStatus.UNBOARDING) {
                 result = true;
                 break;
