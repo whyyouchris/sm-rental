@@ -3,7 +3,7 @@ package com.smrental.experiment;
 import cern.jet.random.engine.RandomSeedGenerator;
 import com.smrental.entities.VanType;
 import com.smrental.procedures.Seeds;
-import com.smrental.utils.Parameters;
+import smrental.Parameters;
 import smrental.SMRental;
 
 public class Experiment

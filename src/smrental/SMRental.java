@@ -15,7 +15,6 @@ import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
 import com.smrental.procedures.UDPs;
-import com.smrental.utils.Parameters;
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
