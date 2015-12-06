@@ -170,7 +170,7 @@ public class SMRental extends AOSimulationModel
 					, this.rgCounter.getN()
 					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING]
 					, "(n="+this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].size()+")" + this.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP]
-					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])));
+					, printVanLine(this.qVanLines[VANLINE_DROPOFF])));
 
             printRunningVanStatus();
 			System.out.println("Current Cost: "+ udp.calculateCosts());
