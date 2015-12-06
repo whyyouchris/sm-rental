@@ -6,6 +6,8 @@ import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
+import smrental.Constants.Location;
+
 import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
 
 public class UnloadVan extends ConditionalActivity{

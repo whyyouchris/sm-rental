@@ -28,8 +28,6 @@ public class Constants
     public static final int CUSTOMERLINE_WAIT_FOR_PICKUP = 3;
 
     // Location Ids
-    public static final int LOCATION_T1 = 0;
-    public static final int LOCATION_T2 = 1;
-    public static final int LOCATION_COUNTER = 2;
-    public static final int LOCATION_DROP_OFF = 3;
+    public enum Location { T1, T2, COUNTER, DROP_OFF }
+
 }

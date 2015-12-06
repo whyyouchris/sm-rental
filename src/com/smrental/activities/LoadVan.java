@@ -2,12 +2,12 @@ package com.smrental.activities;
 
 import com.smrental.entities.Customer;
 import com.smrental.entities.CustomerStatus;
-import com.smrental.entities.Location;
 import com.smrental.entities.Van;
 import com.smrental.entities.Van.VanStatus;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
+import smrental.Constants.Location;
 
 import java.util.List;
 

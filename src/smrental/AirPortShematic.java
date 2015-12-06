@@ -1,6 +1,6 @@
 package smrental;
 
-import com.smrental.entities.Location;
+import smrental.Constants.Location;
 
 /**
  * Singleton class represents the airport schematic

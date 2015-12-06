@@ -1,6 +1,6 @@
 package com.smrental.procedures;
 
-import com.smrental.entities.Location;
+import smrental.Constants.Location;
 import smrental.SMRental;
 
 public class DVPs 

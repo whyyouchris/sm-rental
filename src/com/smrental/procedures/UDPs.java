@@ -2,11 +2,12 @@ package com.smrental.procedures;
 
 import com.smrental.entities.Customer;
 import com.smrental.entities.CustomerStatus;
-import com.smrental.entities.Location;
 import com.smrental.entities.Van;
 import com.smrental.utils.LineType;
 import smrental.AirPortShematic;
 import smrental.SMRental;
+
+import smrental.Constants.Location;
 
 import java.util.List;
 
