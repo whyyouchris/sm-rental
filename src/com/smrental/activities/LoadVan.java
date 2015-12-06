@@ -4,7 +4,6 @@ import com.smrental.entities.*;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
-import static smrental.Constants.*;
 
 import java.util.List;
 

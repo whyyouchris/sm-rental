@@ -8,9 +8,7 @@ import smrental.SMRental;
 
 import java.util.List;
 
-import static smrental.Constants.ACCEPTABLE_CHECK_IN_TIME;
-import static smrental.Constants.CUSTOMERLINE_WAIT_FOR_SERVING;
-import static smrental.Constants.CUSTOMERLINE_WAIT_FOR_PICKUP;
+import static smrental.Constants.*;
 
 public class Serving extends ConditionalActivity {
 

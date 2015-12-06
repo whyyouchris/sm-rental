@@ -7,21 +7,23 @@ import com.smrental.activities.Drive;
 import com.smrental.activities.LoadVan;
 import com.smrental.activities.Serving;
 import com.smrental.activities.UnloadVan;
-import com.smrental.entities.*;
+import com.smrental.entities.Counter;
+import com.smrental.entities.Customer;
+import com.smrental.entities.Van;
+import com.smrental.entities.VanStatus;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
 import com.smrental.procedures.UDPs;
 import com.smrental.utils.Parameters;
-
-import static smrental.Constants.*;
-
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
+
+import static smrental.Constants.*;
 
 public class SMRental extends AOSimulationModel
 {

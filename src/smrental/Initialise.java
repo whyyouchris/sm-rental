@@ -1,6 +1,7 @@
 package smrental;
 
 import simulationModelling.ScheduledAction;
+
 import static smrental.Constants.*;
 
 class Initialise extends ScheduledAction {
