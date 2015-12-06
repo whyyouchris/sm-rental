@@ -36,22 +36,21 @@ public class Drive extends ConditionalActivity{
         }
 
 		this.destination = this.model.udp.getDestination(this.origin, vanId);
-        Van rqVan = this.model.rqVans[this.vanId];
         if (this.origin == Location.COUNTER
                 && this.destination == Location.T1) {
-        	rqVan.status = VanStatus.DRIVING_COUNTER_T1;
+        	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_COUNTER_T1;
         } else if (this.origin == Location.COUNTER
                 && this.destination == Location.DROP_OFF) {
-        	rqVan.status = VanStatus.DRIVING_COUNTER_DROP_OFF;
+        	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_COUNTER_DROP_OFF;
         } else if (this.origin == Location.DROP_OFF
                 && this.destination == Location.T1) {
-        	rqVan.status = VanStatus.DRIVING_DROP_OFF_T1;
+        	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_DROP_OFF_T1;
         } else if (this.origin == Location.T1
                 && this.destination == Location.T2) {
-        	rqVan.status = VanStatus.DRIVING_T1_T2;
+        	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_T1_T2;
         } else if (this.origin == Location.T2
                 && this.destination == Location.COUNTER) {
-        	rqVan.status = VanStatus.DRIVING_T2_COUNTER;
+        	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_T2_COUNTER;
         }
 	}
 
