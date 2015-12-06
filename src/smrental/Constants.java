@@ -30,4 +30,13 @@ public class Constants
     // Location Ids
     public enum Location { T1, T2, COUNTER, DROP_OFF }
 
+    // At a particular location, there might be multiple van lines or customer lines.
+    // for example. at counter, you have two van lines, one for customer drop off, another for customer pick up
+    // also there are two customer lines, one for servicing at the counter, another is for van to pick them up.
+    // Here is something call LineType to distinguish between them so we can retrieve a particular line by location
+    // This is absolutely necessary. This is because all the vans are navigating through the system using Location id,
+    // Therefore, we need this to establish a relationship between location id and different
+    public enum LineType { PICK_UP, DROP_OFF }
+
+
 }
