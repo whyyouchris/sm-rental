@@ -3,11 +3,9 @@ package com.smrental.procedures;
 import com.smrental.entities.Customer;
 import com.smrental.entities.Customer.CustomerStatus;
 import com.smrental.entities.Van;
-import smrental.Constants.LineType;
 import smrental.AirPortShematic;
+import smrental.Constants.*;
 import smrental.SMRental;
-
-import smrental.Constants.Location;
 
 import java.util.List;
 
@@ -58,7 +56,13 @@ public class UDPs {
      */
     public Integer getUnloadingVan(Location location) {
         if (location == Location.COUNTER || location == Location.DROP_OFF) {
-            List<Integer> rqDropOff = getVanLine(location, LineType.DROP_OFF);
+            List<Integer> rqDropOff = null;
+            if (location == Location.COUNTER) {
+                rqDropOff = this.model.qVanLines[VANLINE_COUNTER_DROPOFF];
+            }
+            if (location == Location.DROP_OFF) {
+                rqDropOff = this.model.qVanLines[VANLINE_DROPOFF];
+            }
             for (int eachVanId : rqDropOff) {
                 Van eachVan = this.model.rqVans[eachVanId];
                 if (!eachVan.onBoardCustomers.isEmpty()
@@ -117,7 +121,7 @@ public class UDPs {
     private boolean isTheLocationCanDrive(Location location) {
         boolean result = false;
         if (location == Location.DROP_OFF) {
-            List<Integer> rgDropoff = getVanLine(Location.DROP_OFF, LineType.DROP_OFF);
+            List<Integer> rgDropoff = this.model.qVanLines[VANLINE_DROPOFF];
             for (int vanId : rgDropoff) {
                 Van rqVan = this.model.rqVans[vanId];
                 if (rqVan.onBoardCustomers.isEmpty()) {
@@ -126,8 +130,27 @@ public class UDPs {
                 }
             }
         } else {
-            Integer vanId = getFirstVanInLine(location, LineType.PICK_UP);
-            List<Customer> customerLine = getCustomerLine(location, LineType.PICK_UP);
+            Integer vanId = null;
+            if (location == Location.COUNTER
+                    && this.model.qVanLines[VANLINE_COUNTER_PICKUP].size()>0) {
+                vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].get(0);
+            } else if (location == Location.T1
+                    && this.model.qVanLines[VANLINE_T1].size()>0) {
+                vanId = this.model.qVanLines[VANLINE_T1].get(0);
+            } else if (location == Location.T2
+                    && this.model.qVanLines[VANLINE_T2].size()>0) {
+                vanId = this.model.qVanLines[VANLINE_T2].get(0);
+            }
+            List<Customer> customerLine = null;
+            if (location == Location.COUNTER) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP];
+            }
+            if (location == Location.T1) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T1];
+            }
+            if (location == Location.T2) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T2];
+            }
             if (vanId != null) {
                 if ((getCanBoardCustomer(location) == null
                         && !this.model.udp.isCustomerBoarding(location))
@@ -148,7 +171,19 @@ public class UDPs {
      * @return customer - Optional<Customer>
      */
     public Customer getCanBoardCustomer(Location location) {
-        Integer vanId = getFirstVanInLine(location, LineType.PICK_UP);
+        Integer vanId = null;
+        if (location == Location.COUNTER
+                && this.model.qVanLines[VANLINE_COUNTER_PICKUP].size() > 0) {
+            vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].get(0);
+        }
+        if (location == Location.T1
+                && this.model.qVanLines[VANLINE_T1].size() > 0) {
+            vanId = this.model.qVanLines[VANLINE_T1].get(0);
+        }
+        if (location == Location.T2
+                && this.model.qVanLines[VANLINE_T2].size() > 0) {
+            vanId = this.model.qVanLines[VANLINE_T2].get(0);
+        }
 
         // If there is already a customer boarding,
         // then no need to check again until that customer finishes.
@@ -157,7 +192,16 @@ public class UDPs {
         }
         if (vanId != null) {
             Van firstVan = this.model.rqVans[vanId];
-            List<Customer> customerLine = getCustomerLine(location, LineType.PICK_UP);
+            List<Customer> customerLine = null;
+            if (location == Location.COUNTER) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP];
+            }
+            if (location == Location.T1) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T1];
+            }
+            if (location == Location.T2) {
+                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T2];
+            }
             int numSeatAvailable = firstVan.capacity - firstVan.numOfSeatTaken;
             for (Customer customer : customerLine) {
                 int numSeatNeeded = customer.numberOfAdditionalPassenager + 1;
@@ -175,7 +219,16 @@ public class UDPs {
      */
     public boolean isCustomerBoarding(Location location) {
         boolean result = false;
-        List<Customer> customerLine = getCustomerLine(location, LineType.PICK_UP);
+        List<Customer> customerLine = null;
+        if (location == Location.COUNTER) {
+            customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP];
+        }
+        if (location == Location.T1) {
+            customerLine = this.model.qCustomerLines[CUSTOMERLINE_T1];
+        }
+        if (location == Location.T2) {
+            customerLine = this.model.qCustomerLines[CUSTOMERLINE_T2];
+        }
         for (Customer customer : customerLine) {
             if (customer.customerStatus == CustomerStatus.BOARDING) {
                 result = true;
@@ -244,85 +297,5 @@ public class UDPs {
 
     public double distance(Location origin, Location destination) {
         return AirPortShematic.getInstance().getDistance(origin, destination);
-    }
-
-    /**
-     * Get the first van in the vanLine of given vanLineID
-     *
-     * @param location - airport location
-     * @param lineType - lineType performed
-     * @return van
-     */
-    public Integer getFirstVanInLine(Location location, LineType lineType) {
-        List<Integer> vanLine = getVanLine(location, lineType);
-        if (vanLine.size() > 0) {
-            return vanLine.get(0);
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * This just a java helper method to help me retrieve the CustomerLine by vanLineID
-     * So I don't have to type the super long 'this.mode.qCustomerLine[CustomerLineId.LocationId]' to get the
-     * customer line reference
-     *
-     * @param location - airport location
-     * @param lineType - lineType performed
-     * @return List<Customer> - customerLine
-     */
-    public List<Customer> getCustomerLine(Location location, LineType lineType) {
-        List<Customer> customerLine = null;
-        if (lineType == LineType.DROP_OFF) {
-            if (location == Location.COUNTER) {
-                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING];
-            }
-        }
-
-        if (lineType == LineType.PICK_UP) {
-            if (location == Location.COUNTER) {
-                customerLine = this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP];
-            }
-            if (location == Location.T1) {
-                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T1];
-            }
-            if (location == Location.T2) {
-                customerLine = this.model.qCustomerLines[CUSTOMERLINE_T2];
-            }
-        }
-        return customerLine;
-    }
-
-    /**
-     * This method will retrieve vanLine at a particular location basic on the lineType
-     *
-     * @param location - Airport location id
-     * @param lineType - LineType perfomed on the customer: pick up or drop off
-     * @return List<van> - vanLine
-     */
-    public List<Integer> getVanLine(Location location, LineType lineType) {
-        List<Integer> vanList = null;
-        if (lineType == LineType.PICK_UP) {
-            if (location == Location.COUNTER) {
-                vanList = this.model.qVanLines[VANLINE_COUNTER_PICKUP];
-            }
-            if (location == Location.T1) {
-                vanList = this.model.qVanLines[VANLINE_T1];
-            }
-            if (location == Location.T2) {
-                vanList = this.model.qVanLines[VANLINE_T2];
-            }
-        }
-
-        if (lineType == LineType.DROP_OFF) {
-            if (location == Location.COUNTER) {
-                vanList = this.model.qVanLines[VANLINE_COUNTER_DROPOFF];
-            }
-            if (location == Location.DROP_OFF) {
-                vanList = this.model.qVanLines[VANLINE_DROPOFF];
-            }
-        }
-
-        return vanList;
     }
 }

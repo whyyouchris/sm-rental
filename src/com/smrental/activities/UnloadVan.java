@@ -1,16 +1,15 @@
 package com.smrental.activities;
 
-import com.smrental.entities.*;
-import com.smrental.entities.Van.VanStatus;
-import com.smrental.entities.Customer.CustomerType;
+import com.smrental.entities.Customer;
 import com.smrental.entities.Customer.CustomerStatus;
-import smrental.Constants.LineType;
+import com.smrental.entities.Customer.CustomerType;
+import com.smrental.entities.Van;
+import com.smrental.entities.Van.VanStatus;
 import simulationModelling.ConditionalActivity;
+import smrental.Constants.*;
 import smrental.SMRental;
 
-import smrental.Constants.Location;
-
-import static smrental.Constants.ACCEPTABLE_CHECK_OUT_TIME;
+import static smrental.Constants.*;
 
 public class UnloadVan extends ConditionalActivity{
 
@@ -46,7 +45,7 @@ public class UnloadVan extends ConditionalActivity{
 		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken - this.icCustomer.numberOfAdditionalPassenager - 1;
 
 		if (this.icCustomer.uType == CustomerType.CHECK_IN) {
-            this.model.udp.getCustomerLine(Location.COUNTER, LineType.DROP_OFF).add(this.icCustomer);
+			this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].add(this.icCustomer);
 			this.icCustomer.customerStatus = CustomerStatus.WAITING_SERVICING;
 		}
 
@@ -61,8 +60,8 @@ public class UnloadVan extends ConditionalActivity{
 
 		if (this.unloadingLocation == Location.COUNTER
 				&& rqVan.onBoardCustomers.isEmpty()) {
-			this.model.udp.getVanLine(Location.COUNTER, LineType.DROP_OFF).remove(new Integer(this.vanId));
-			this.model.udp.getVanLine(Location.COUNTER, LineType.PICK_UP).add(this.vanId);
+			this.model.qVanLines[VANLINE_COUNTER_DROPOFF].remove(new Integer(this.vanId));
+			this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);
 		}
 	}
 

@@ -2,10 +2,11 @@ package com.smrental.activities;
 
 import com.smrental.entities.Van;
 import com.smrental.entities.Van.VanStatus;
-import smrental.Constants.LineType;
 import simulationModelling.ConditionalActivity;
+import smrental.Constants.*;
 import smrental.SMRental;
-import smrental.Constants.Location;
+
+import static smrental.Constants.*;
 
 public class Drive extends ConditionalActivity{
 
@@ -25,10 +26,15 @@ public class Drive extends ConditionalActivity{
 	@Override public void startingEvent() {
 		this.origin = this.model.udp.getDriveLocation();
         if (this.origin == Location.DROP_OFF) {
-            this.vanId = this.model.udp.getVanLine(Location.DROP_OFF, LineType.DROP_OFF).remove(0);
-        } else {
-            this.vanId = this.model.udp.getVanLine(this.origin, LineType.PICK_UP).remove(0);
+            this.vanId = this.model.qVanLines[VANLINE_DROPOFF].remove(0);
+        } else if (this.origin == Location.COUNTER) {
+            this.vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].remove(0);
+        } else if (this.origin == Location.T1) {
+            this.vanId = this.model.qVanLines[VANLINE_T1].remove(0);
+        } else if (this.origin == Location.T2) {
+            this.vanId = this.model.qVanLines[VANLINE_T2].remove(0);
         }
+
 		this.destination = this.model.udp.getDestination(this.origin, vanId);
         Van rqVan = this.model.rqVans[this.vanId];
         if (this.origin == Location.COUNTER
@@ -56,11 +62,15 @@ public class Drive extends ConditionalActivity{
     @Override protected void terminatingEvent() {
         Van rqVan = this.model.rqVans[this.vanId];
         if (this.destination == Location.COUNTER && !rqVan.onBoardCustomers.isEmpty()) {
-            this.model.udp.getVanLine(Location.COUNTER, LineType.DROP_OFF).add(this.vanId);
+            this.model.qVanLines[VANLINE_COUNTER_DROPOFF].add(this.vanId);
         } else if (this.destination == Location.DROP_OFF){
-            this.model.udp.getVanLine(Location.DROP_OFF, LineType.DROP_OFF).add(this.vanId);
-        } else {
-            this.model.udp.getVanLine(destination, LineType.PICK_UP).add(this.vanId);
+            this.model.qVanLines[VANLINE_DROPOFF].add(this.vanId);
+        } else if (this.destination == Location.COUNTER){
+            this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);
+        } else if (this.destination == Location.T1) {
+            this.model.qVanLines[VANLINE_T1].add(this.vanId);
+        } else if (this.destination == Location.T2) {
+            this.model.qVanLines[VANLINE_T2].add(this.vanId);
         }
         this.model.output.totalMilesTraveledByVans += this.model.udp.distance(origin, destination);
         rqVan.status = VanStatus.IDLE;

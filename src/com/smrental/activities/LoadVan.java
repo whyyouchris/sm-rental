@@ -4,12 +4,10 @@ import com.smrental.entities.Customer;
 import com.smrental.entities.Customer.CustomerStatus;
 import com.smrental.entities.Van;
 import com.smrental.entities.Van.VanStatus;
-import smrental.Constants.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
-import smrental.Constants.Location;
 
-import java.util.List;
+import static smrental.Constants.*;
 
 public class LoadVan extends ConditionalActivity{
 	private SMRental model;
@@ -32,13 +30,26 @@ public class LoadVan extends ConditionalActivity{
 		this.loadingLocation = this.model.udp.getLoadingLocation();
 		this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation);
 		this.icCustomer.customerStatus = CustomerStatus.BOARDING;
-		this.vanId = this.model.udp.getFirstVanInLine(this.loadingLocation, LineType.PICK_UP);
+		if (this.loadingLocation == Location.COUNTER) {
+			this.vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].get(0);
+		} else if (this.loadingLocation == Location.T1) {
+			this.vanId = this.model.qVanLines[VANLINE_T1].get(0);
+		} else if (this.loadingLocation == Location.T2) {
+			this.vanId = this.model.qVanLines[VANLINE_T2].get(0);
+		}
 		this.model.rqVans[vanId].status = VanStatus.LOADING;
 	}
 
 	@Override protected void terminatingEvent() {
-		List<Customer> customerLine = this.model.udp.getCustomerLine(this.loadingLocation, LineType.PICK_UP);
-		customerLine.remove(this.icCustomer);
+		if (this.loadingLocation == Location.COUNTER) {
+			this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].remove(this.icCustomer);
+		}
+		if (this.loadingLocation == Location.T1) {
+			this.model.qCustomerLines[CUSTOMERLINE_T1].remove(this.icCustomer);
+		}
+		if (this.loadingLocation == Location.T2) {
+			this.model.qCustomerLines[CUSTOMERLINE_T2].remove(this.icCustomer);
+		}
 		Van rqVan = this.model.rqVans[this.vanId];
 		rqVan.onBoardCustomers.add(this.icCustomer);
 		rqVan.numOfSeatTaken = rqVan.numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager +1;
