@@ -21,7 +21,7 @@ public class LoadVan extends ConditionalActivity{
 		return model.udp.getLoadingLocation().isPresent();
 	}
 	@Override protected double duration() {
-		return this.model.rvp.boardingTime(this.icCustomer.numberOfAdditionalPassenager);
+		return this.model.rvp.uBoardingTime(this.icCustomer.numberOfAdditionalPassenager);
 	}
 
 	@Override public void startingEvent() {

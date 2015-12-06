@@ -26,7 +26,7 @@ public class ArrivalT2 extends ScheduledAction{
 		Customer icCustomer = new Customer(); 
  		icCustomer.uType = CUSTOMER_TYPE;
  		icCustomer.timeEnterSystem = this.model.getClock();
- 		icCustomer.numberOfAdditionalPassenager = this.model.rvp.additionalPassengers();
+ 		icCustomer.numberOfAdditionalPassenager = this.model.rvp.uAdditionalPassengers();
  		icCustomer.customerStatus = CustomerStatus.WAITING_PICKUP;
 		this.model.qCustomerLines[T2].add(icCustomer);
 	}

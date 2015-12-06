@@ -23,7 +23,7 @@ public class UnloadVan extends ConditionalActivity{
 	}
 
 	@Override protected double duration() {
-		return this.model.rvp.exitingTime(this.icCustomer.numberOfAdditionalPassenager);
+		return this.model.rvp.uExitingTime(this.icCustomer.numberOfAdditionalPassenager);
 	}
 
 	@Override public void startingEvent() {

@@ -193,7 +193,7 @@ public class RVPs
 	 * 
 	 * @return number of additional customers
 	 */
-	public int additionalPassengers() {
+	public int uAdditionalPassengers() {
 		double randNum = this.additionalPassengerGen.nextDouble();
 		int numberOfAdditionalPassenger = -1;
 		if (randNum < THREE_ADDITIONAL_PASSENGER) {
@@ -215,7 +215,7 @@ public class RVPs
 	 * @param numberOfPassengers
 	 * @return double - boardingTime
 	 */
-	public double boardingTime(int numberOfPassengers) {
+	public double uBoardingTime(int numberOfPassengers) {
 		double boardingTime = 0;
 		// Customer himself should also be considered as an passenger
 		numberOfPassengers++;
@@ -233,7 +233,7 @@ public class RVPs
 	 * @param numberOfPassengers
 	 * @return double - exitingTime
 	 */
-	public double exitingTime(int numberOfPassengers) {
+	public double uExitingTime(int numberOfPassengers) {
 		double exitingTime = 0;
 		// Customer himself should also be considered as an passenger
 		numberOfPassengers++;
