@@ -13,6 +13,9 @@ import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;
 import com.smrental.procedures.UDPs;
 import com.smrental.utils.Parameters;
+
+import static smrental.Constants.*;
+
 import simulationModelling.AOSimulationModel;
 import simulationModelling.Behaviour;
 
@@ -156,16 +159,16 @@ public class SMRental extends AOSimulationModel
 			System.out.println(
 				String.format(joiner.toString()
 					,getClock()
-					, printVanLine(this.qVanLines[VanLineID.T1.ordinal()])
+					, printVanLine(this.qVanLines[VANLINE_T1])
 					, "(n="+this.qCustomerLines[CustomerLineID.T1.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T1.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.T2.ordinal()])
+					, printVanLine(this.qVanLines[VANLINE_T2])
 					, "(n="+this.qCustomerLines[CustomerLineID.T2.ordinal()].size()+")"+this.qCustomerLines[CustomerLineID.T2.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()])
-					, printVanLine(this.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()])
+					, printVanLine(this.qVanLines[VANLINE_COUNTER_PICKUP])
+					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])
 					, this.rgCounter.getN()
 					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_SERVICING.ordinal()]
 					, "(n="+this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()].size()+")" + this.qCustomerLines[CustomerLineID.COUNTER_WAIT_FOR_PICKUP.ordinal()]
-					, printVanLine(this.qVanLines[VanLineID.DROP_OFF.ordinal()])));
+					, printVanLine(this.qVanLines[VANLINE_COUNTER_DROPOFF])));
 
             printRunningVanStatus();
 			System.out.println("Current Cost: "+ udp.calculateCosts());

@@ -1,7 +1,7 @@
 package smrental;
 
-import com.smrental.entities.VanLineID;
 import simulationModelling.ScheduledAction;
+import static smrental.Constants.*;
 
 class Initialise extends ScheduledAction {
 	SMRental model;
@@ -23,20 +23,16 @@ class Initialise extends ScheduledAction {
 	protected void actionEvent() {
 		int vanId = 0;
 		int numOfVan = this.model.params.getNumberOfVans();
-		// Van VanLineID ids
-		int T1 = VanLineID.T1.ordinal();
-		int T2 = VanLineID.T2.ordinal();
-		int COUNTER = VanLineID.COUNTER_PICK_UP.ordinal();
 
 		while(vanId < numOfVan) {
-			this.model.qVanLines[COUNTER].add(vanId);
+			this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(vanId);
 			vanId++;
 			if (vanId < numOfVan) {
-				this.model.qVanLines[T1].add(vanId);
+				this.model.qVanLines[VANLINE_T1].add(vanId);
 				vanId++;
 			}
 			if (vanId < numOfVan) {
-				this.model.qVanLines[T2].add(vanId);
+				this.model.qVanLines[VANLINE_T2].add(vanId);
 				vanId++;
 			}
 		}

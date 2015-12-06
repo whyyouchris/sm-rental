@@ -238,7 +238,6 @@ public class RVPs
 	private static final double STCOMIN = 1;
 	private static final double STCOMAX = 4.8;
 	/**
-	 * 
 	 * @param uType
 	 * @return service time
 	 */

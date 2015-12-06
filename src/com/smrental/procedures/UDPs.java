@@ -300,22 +300,22 @@ public class UDPs {
         List<Integer> vanList = null;
         if (lineType == LineType.PICK_UP) {
             if (location == Location.COUNTER) {
-                vanList = this.model.qVanLines[VanLineID.COUNTER_PICK_UP.ordinal()];
+                vanList = this.model.qVanLines[VANLINE_COUNTER_PICKUP];
             }
             if (location == Location.T1) {
-                vanList = this.model.qVanLines[VanLineID.T1.ordinal()];
+                vanList = this.model.qVanLines[VANLINE_T1];
             }
             if (location == Location.T2) {
-                vanList = this.model.qVanLines[VanLineID.T2.ordinal()];
+                vanList = this.model.qVanLines[VANLINE_T2];
             }
         }
 
         if (lineType == LineType.DROP_OFF) {
             if (location == Location.COUNTER) {
-                vanList = this.model.qVanLines[VanLineID.COUNTER_DROP_OFF.ordinal()];
+                vanList = this.model.qVanLines[VANLINE_COUNTER_DROPOFF];
             }
             if (location == Location.DROP_OFF) {
-                vanList = this.model.qVanLines[VanLineID.DROP_OFF.ordinal()];
+                vanList = this.model.qVanLines[VANLINE_DROPOFF];
             }
         }
 
