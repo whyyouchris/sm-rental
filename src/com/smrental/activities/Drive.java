@@ -1,6 +1,5 @@
 package com.smrental.activities;
 
-import com.smrental.entities.Van;
 import com.smrental.entities.Van.VanStatus;
 import simulationModelling.ConditionalActivity;
 import smrental.Constants.*;
@@ -59,8 +58,7 @@ public class Drive extends ConditionalActivity{
 	}
 
     @Override protected void terminatingEvent() {
-        Van rqVan = this.model.rqVans[this.vanId];
-        if (this.destination == Location.COUNTER && !rqVan.onBoardCustomers.isEmpty()) {
+        if (this.destination == Location.COUNTER && !this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
             this.model.qVanLines[VANLINE_COUNTER_DROPOFF].add(this.vanId);
         } else if (this.destination == Location.DROP_OFF){
             this.model.qVanLines[VANLINE_DROPOFF].add(this.vanId);
@@ -72,6 +70,6 @@ public class Drive extends ConditionalActivity{
             this.model.qVanLines[VANLINE_T2].add(this.vanId);
         }
         this.model.output.totalMilesTraveledByVans += this.model.udp.distance(origin, destination);
-        rqVan.status = VanStatus.IDLE;
+        this.model.rqVans[this.vanId].status = VanStatus.IDLE;
     }
 }
