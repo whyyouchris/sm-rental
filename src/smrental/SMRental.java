@@ -10,7 +10,7 @@ import com.smrental.activities.UnloadVan;
 import com.smrental.entities.Counter;
 import com.smrental.entities.Customer;
 import com.smrental.entities.Van;
-import com.smrental.entities.VanStatus;
+import com.smrental.entities.Van.VanStatus;
 import com.smrental.procedures.DVPs;
 import com.smrental.procedures.RVPs;
 import com.smrental.procedures.Seeds;

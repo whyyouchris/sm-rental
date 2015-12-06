@@ -1,6 +1,7 @@
 package com.smrental.activities;
 
 import com.smrental.entities.*;
+import com.smrental.entities.Van.VanStatus;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
