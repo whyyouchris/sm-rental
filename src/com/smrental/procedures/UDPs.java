@@ -3,7 +3,6 @@ package com.smrental.procedures;
 import com.smrental.entities.Customer;
 import com.smrental.entities.Customer.CustomerStatus;
 import com.smrental.entities.Van;
-import smrental.AirPortShematic;
 import smrental.Constants.*;
 import smrental.SMRental;
 
@@ -295,6 +294,13 @@ public class UDPs {
     }
 
     public double distance(Location origin, Location destination) {
-        return AirPortShematic.getInstance().getDistance(origin, destination);
+        double [][] distance=
+                {
+                        {  -1.0, 0.3, 2.3, -1.0 },// T1
+                        { -1.0, -1.0, 2.0, -1.0 },// T2
+                        { 1.5, -1.0, -1.0, 1.7  },// Counter
+                        { 0.5, -1.0, -1.0, -1.0 } // Drop-off
+                };
+        return distance[origin.ordinal()][destination.ordinal()];
     }
 }
