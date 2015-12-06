@@ -6,43 +6,43 @@ import com.smrental.procedures.Seeds;
 import smrental.Parameters;
 import smrental.SMRental;
 
-public class Experiment
-{
+public class Experiment {
 
     // Please make sure you have JDK 8 installed in order to run the project
-	private static final double START_TIME  = 0.0;
-	private static final double END_TIME    = 270;
-	private static final double NUMRUNS     = 270;
+    private static final double START_TIME = 0.0;
+    private static final double END_TIME = 270;
+    private static final double NUMRUNS = 270;
 
-   public static void main(String[] args) {
-       int NUMRUNS = 10;
+    public static void main(String[] args) {
+        int NUMRUNS = 10;
 
-       Seeds[] sds = new Seeds[NUMRUNS];
+        Seeds[] sds = new Seeds[NUMRUNS];
 
-       // Lets get a set of uncorrelated seeds
-       RandomSeedGenerator rsg = new RandomSeedGenerator();
-       for(int i=0 ; i<NUMRUNS ; i++) sds[i] = new Seeds(rsg);
+        // Lets get a set of uncorrelated seeds
+        RandomSeedGenerator rsg = new RandomSeedGenerator();
 
-	   // Experiment Params
-       int typeOfVan = VanType.SEAT12.getSeats();
-       int numberOfAgents = 13;
-       int numberOfVans = 5;
-       boolean customerIncrease = false;
+        for (int i = 0; i < NUMRUNS; i++) sds[i] = new Seeds(rsg);
 
-       Parameters params = new Parameters.Builder()
-  			 .typeOfVan(typeOfVan)
-  			 .numberOfAgents(numberOfAgents)
-  			 .numberOfVans(numberOfVans)
-  			 .customerIncrease(customerIncrease)
-  			 .build();
+        // Experiment Params
+        int typeOfVan = VanType.SEAT12.getSeats();
+        int numberOfAgents = 13;
+        int numberOfVans = 5;
+        boolean customerIncrease = false;
 
-       for(int i=0 ; i < NUMRUNS ; i++) {
-		   System.out.println("configuration" + params);
-    	   SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, true);
-    	   model.runSimulation();
-		   double serviceLevel = (double) model.output.numOfSatisfiedCustomer / model.output.numOfServed;
-    	   System.out.println("Service Level: " + serviceLevel);
-    	   System.out.println("Total cost for the configuration: " + model.udp.calculateCosts());
-       }
-   }
+        Parameters params = new Parameters.Builder()
+                .typeOfVan(typeOfVan)
+                .numberOfAgents(numberOfAgents)
+                .numberOfVans(numberOfVans)
+                .customerIncrease(customerIncrease)
+                .build();
+
+        for (int i = 0; i < NUMRUNS; i++) {
+            System.out.println("configuration" + params);
+            SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, true);
+            model.runSimulation();
+            double serviceLevel = (double) model.output.numOfSatisfiedCustomer / model.output.numOfServed;
+            System.out.println("Service Level: " + serviceLevel);
+            System.out.println("Total cost for the configuration: " + model.udp.calculateCosts());
+        }
+    }
 }
