@@ -3,7 +3,7 @@ package com.smrental.procedures;
 import cern.jet.random.Exponential;
 import cern.jet.random.Uniform;
 import cern.jet.random.engine.MersenneTwister;
-import com.smrental.entities.CustomerType;
+import com.smrental.entities.Customer.CustomerType;
 import smrental.SMRental;
 
 public class RVPs 

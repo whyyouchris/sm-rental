@@ -2,6 +2,8 @@ package com.smrental.activities;
 
 import com.smrental.entities.*;
 import com.smrental.entities.Van.VanStatus;
+import com.smrental.entities.Customer.CustomerType;
+import com.smrental.entities.Customer.CustomerStatus;
 import com.smrental.utils.LineType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
