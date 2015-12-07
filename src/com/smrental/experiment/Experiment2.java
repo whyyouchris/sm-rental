@@ -50,7 +50,7 @@ public class Experiment2 {
         printExperimentResult(30, true, result12, "3BI");
     }
 
-    private static ExperimentResult doExperiment(final int typeOfVan, final boolean isCustomerIncrease, final double serviceLevel) {
+    public static ExperimentResult doExperiment(final int typeOfVan, final boolean isCustomerIncrease, final double serviceLevel) {
         Seeds[] sds = new Seeds[NUMRUNS];
 
         // Lets get a set of uncorrelated seeds
@@ -124,18 +124,18 @@ public class Experiment2 {
         ConfidenceInterval c40 = new ConfidenceInterval(slice(result.costs, 40),CONF_LEVEL);
 
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-         System.out.printf("|  Case#: %3s     %d-seat van      numberOfAgents: %d       numberOfVans: %d     customerIncrease: %5s    |\n",
+        System.out.printf("|  Case#: %3s     %d-seat van      numberOfAgents: %d       numberOfVans: %d     customerIncrease: %5s    |\n",
                 caseNumer, typeOfVan, result.params.getNumberOfAgents(), result.params.getNumberOfVans(), isIncrease);
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.println("|        |              Satisfaction Level                |                    Cost                        |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-         System.out.printf("|   n    |  yb(n)        s(n)       z(n)      z(n)/yb(n)  |   yb(n)      s(n)       z(n)       z(n)/yb(n)  |\n");
+        System.out.printf("|   n    |  yb(n)        s(n)       z(n)      z(n)/yb(n)  |   yb(n)      s(n)       z(n)       z(n)/yb(n)  |\n");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-         System.out.printf("|%7d |%7.3f %11.3f %11.3f %12.4f    | %9.3f %8.3f %9.3f %12.4f      |\n",
-                 20, sl20.getPointEstimate(), sl20.getStdDev(), sl20.getZeta(), sl20.getZeta() / sl20.getPointEstimate(),
-                 c20.getPointEstimate(), c20.getStdDev(), c20.getZeta(), c20.getZeta() / c20.getPointEstimate());
+        System.out.printf("|%7d |%7.3f %11.3f %11.3f %12.4f    | %9.3f %8.3f %9.3f %12.4f      |\n",
+                20, sl20.getPointEstimate(), sl20.getStdDev(), sl20.getZeta(), sl20.getZeta() / sl20.getPointEstimate(),
+                c20.getPointEstimate(), c20.getStdDev(), c20.getZeta(), c20.getZeta() / c20.getPointEstimate());
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-         System.out.printf("|%7d |%7.3f %11.3f %11.3f %12.4f    | %9.3f %8.3f %9.3f %12.4f      |\n",
+        System.out.printf("|%7d |%7.3f %11.3f %11.3f %12.4f    | %9.3f %8.3f %9.3f %12.4f      |\n",
                 30, sl30.getPointEstimate(), sl30.getStdDev(), sl30.getZeta(), sl30.getZeta() / sl30.getPointEstimate(),
                 c30.getPointEstimate(), c30.getStdDev(), c30.getZeta(), c30.getZeta() / c30.getPointEstimate());
         printLines(1);//   --------------------------------------------------------------------------------------------------------
