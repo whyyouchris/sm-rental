@@ -130,13 +130,13 @@ public class UDPs {
         } else {
             Integer vanId = null;
             if (location == Location.COUNTER
-                    && this.model.qVanLines[VANLINE_COUNTER_PICKUP].size()>0) {
+                    && this.model.qVanLines[VANLINE_COUNTER_PICKUP].size() > 0) {
                 vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].get(0);
             } else if (location == Location.T1
-                    && this.model.qVanLines[VANLINE_T1].size()>0) {
+                    && this.model.qVanLines[VANLINE_T1].size() > 0) {
                 vanId = this.model.qVanLines[VANLINE_T1].get(0);
             } else if (location == Location.T2
-                    && this.model.qVanLines[VANLINE_T2].size()>0) {
+                    && this.model.qVanLines[VANLINE_T2].size() > 0) {
                 vanId = this.model.qVanLines[VANLINE_T2].get(0);
             }
             List<Customer> customerLine = null;
@@ -273,11 +273,11 @@ public class UDPs {
      * @return total cost
      */
     public double calculateCosts() {
-        double personnelCost = this.model.params.getNumberOfAgents() * AGENT_RATE * TOTAL_TIME
-                + this.model.params.getNumberOfVans() * DRIVER_RATE * TOTAL_TIME;
+        double personnelCost = this.model.params.numberOfAgents * AGENT_RATE * TOTAL_TIME
+                + this.model.params.numberOfVans * DRIVER_RATE * TOTAL_TIME;
         double vanCost = 0.0;
         double totalMilesTraveled = this.model.output.totalMilesTraveledByVans;
-        switch (this.model.params.getTypeOfVan()) {
+        switch (this.model.params.typeOfVan) {
             case 12:
                 vanCost = totalMilesTraveled * VAN_12S_COST_RATE;
                 break;
@@ -294,12 +294,12 @@ public class UDPs {
     }
 
     public double distance(Location origin, Location destination) {
-        double [][] distance=
+        double[][] distance =
                 {
-                        {  -1.0, 0.3, 2.3, -1.0 },// T1
-                        { -1.0, -1.0, 2.0, -1.0 },// T2
-                        { 1.5, -1.0, -1.0, 1.7  },// Counter
-                        { 0.5, -1.0, -1.0, -1.0 } // Drop-off
+                        {-1.0, 0.3, 2.3, -1.0},// T1
+                        {-1.0, -1.0, 2.0, -1.0},// T2
+                        {1.5, -1.0, -1.0, 1.7},// Counter
+                        {0.5, -1.0, -1.0, -1.0} // Drop-off
                 };
         return distance[origin.ordinal()][destination.ordinal()];
     }

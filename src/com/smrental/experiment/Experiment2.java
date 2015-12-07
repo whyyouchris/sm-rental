@@ -2,11 +2,19 @@ package com.smrental.experiment;
 
 import cern.jet.random.engine.RandomSeedGenerator;
 import com.smrental.procedures.Seeds;
+import com.sun.xml.internal.rngom.digested.DDataPattern;
 import outputAnalysis.ConfidenceInterval;
 import smrental.Parameters;
 import smrental.SMRental;
 
 public class Experiment2 {
+    public static class ExperimentResult {
+        Parameters params;
+        double[] serviceLevels;
+        double[] costs;
+    }
+
+
     private static final double START_TIME = 0.0;
     private static final double END_TIME = 270;
     private static final int NUMRUNS = 40;
@@ -64,14 +72,14 @@ public class Experiment2 {
 
         int numOfAgent = 0;
 
+        // Set number of van to the max and find the optimal number of agent
         while (numOfAgent <= MAX_NUM_AGENT) {
             numOfAgent++;
-            Parameters params = new Parameters.Builder()
-                    .numberOfAgents(numOfAgent)
-                    .numberOfVans(MAX_NUM_VAN)
-                    .customerIncrease(isCustomerIncrease)
-                    .typeOfVan(typeOfVan)
-                    .build();
+            Parameters params = new Parameters();
+            params.numberOfAgents = numOfAgent;
+            params.numberOfVans = MAX_NUM_VAN;
+            params.customerIncrease = isCustomerIncrease;
+            params.typeOfVan = typeOfVan;
 
             for (int i = 0; i < NUMRUNS; i++) {
                 SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, false);
@@ -84,18 +92,18 @@ public class Experiment2 {
             }
         }
 
+        // use the number of agent found in the previous step and find the optimal number of van
         int numOfVan = 0;
-        while(numOfVan <= MAX_NUM_VAN ) {
+        while (numOfVan <= MAX_NUM_VAN) {
             numOfVan++;
 
-            Parameters params = new Parameters.Builder()
-                    .numberOfAgents(numOfAgent)
-                    .numberOfVans(numOfVan)
-                    .customerIncrease(isCustomerIncrease)
-                    .typeOfVan(typeOfVan)
-                    .build();
+            Parameters params = new Parameters();
+            params.numberOfAgents = numOfAgent;
+            params.numberOfVans = numOfVan;
+            params.customerIncrease = isCustomerIncrease;
+            params.typeOfVan = typeOfVan;
 
-            for (int i=0; i < NUMRUNS; i++) {
+            for (int i = 0; i < NUMRUNS; i++) {
                 SMRental model = new SMRental(START_TIME, END_TIME, sds[i], params, false);
                 model.runSimulation();
                 serviceLevels[i] = (double) model.output.numOfSatisfiedCustomer / model.output.numOfServed;
@@ -115,17 +123,17 @@ public class Experiment2 {
 
     private static void printExperimentResult(int typeOfVan, boolean isIncrease, ExperimentResult result, String caseNumer) {
 
-        ConfidenceInterval sl20 = new ConfidenceInterval(slice(result.serviceLevels, 20),CONF_LEVEL);
-        ConfidenceInterval sl30 = new ConfidenceInterval(slice(result.serviceLevels, 30),CONF_LEVEL);
-        ConfidenceInterval sl40 = new ConfidenceInterval(slice(result.serviceLevels, 40),CONF_LEVEL);
+        ConfidenceInterval sl20 = new ConfidenceInterval(slice(result.serviceLevels, 20), CONF_LEVEL);
+        ConfidenceInterval sl30 = new ConfidenceInterval(slice(result.serviceLevels, 30), CONF_LEVEL);
+        ConfidenceInterval sl40 = new ConfidenceInterval(slice(result.serviceLevels, 40), CONF_LEVEL);
 
-        ConfidenceInterval c20 = new ConfidenceInterval(slice(result.costs, 20),CONF_LEVEL);
-        ConfidenceInterval c30 = new ConfidenceInterval(slice(result.costs, 30),CONF_LEVEL);
-        ConfidenceInterval c40 = new ConfidenceInterval(slice(result.costs, 40),CONF_LEVEL);
+        ConfidenceInterval c20 = new ConfidenceInterval(slice(result.costs, 20), CONF_LEVEL);
+        ConfidenceInterval c30 = new ConfidenceInterval(slice(result.costs, 30), CONF_LEVEL);
+        ConfidenceInterval c40 = new ConfidenceInterval(slice(result.costs, 40), CONF_LEVEL);
 
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.printf("|  Case#: %3s     %d-seat van      numberOfAgents: %d       numberOfVans: %d     customerIncrease: %5s    |\n",
-                caseNumer, typeOfVan, result.params.getNumberOfAgents(), result.params.getNumberOfVans(), isIncrease);
+                caseNumer, typeOfVan, result.params.numberOfAgents, result.params.numberOfVans, isIncrease);
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.println("|        |              Satisfaction Level                |                    Cost                        |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
@@ -145,8 +153,7 @@ public class Experiment2 {
         printLines(1);//   --------------------------------------------------------------------------------------------------------
     }
 
-    private static void printLines(int numLines)
-    {
+    private static void printLines(int numLines) {
         for (int i = 0; i < numLines; i++)
             System.out.println("+--------+------------------------------------------------+------------------------------------------------+");
     }

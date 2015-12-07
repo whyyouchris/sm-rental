@@ -6,15 +6,15 @@ import com.smrental.procedures.Seeds;
 import smrental.Parameters;
 import smrental.SMRental;
 
-public class Experiment {
+
+public class Experiment1 {
 
     // Please make sure you have JDK 8 installed in order to run the project
     private static final double START_TIME = 0.0;
     private static final double END_TIME = 270;
-    private static final double NUMRUNS = 270;
+    private static final int NUMRUNS = 40;
 
     public static void main(String[] args) {
-        int NUMRUNS = 10;
 
         Seeds[] sds = new Seeds[NUMRUNS];
 
@@ -23,18 +23,17 @@ public class Experiment {
 
         for (int i = 0; i < NUMRUNS; i++) sds[i] = new Seeds(rsg);
 
-        // Experiment Params
+        // Experiment1 Params
         int typeOfVan = VanType.SEAT12.getSeats();
-        int numberOfAgents = 13;
+        int numberOfAgents = 11;
         int numberOfVans = 5;
         boolean customerIncrease = false;
 
-        Parameters params = new Parameters.Builder()
-                .typeOfVan(typeOfVan)
-                .numberOfAgents(numberOfAgents)
-                .numberOfVans(numberOfVans)
-                .customerIncrease(customerIncrease)
-                .build();
+        Parameters params = new Parameters();
+        params.typeOfVan = typeOfVan;
+        params.numberOfAgents = numberOfAgents;
+        params.numberOfVans = numberOfVans;
+        params.customerIncrease = customerIncrease;
 
         for (int i = 0; i < NUMRUNS; i++) {
             System.out.println("configuration" + params);
