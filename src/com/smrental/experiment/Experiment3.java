@@ -1,6 +1,5 @@
 package com.smrental.experiment;
 
-import com.apple.eawt.AppEvent;
 import com.smrental.experiment.Experiment2.ExperimentResult;
 import outputAnalysis.ConfidenceInterval;
 

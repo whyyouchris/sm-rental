@@ -2,7 +2,6 @@ package com.smrental.experiment;
 
 import cern.jet.random.engine.RandomSeedGenerator;
 import com.smrental.procedures.Seeds;
-import com.sun.xml.internal.rngom.digested.DDataPattern;
 import outputAnalysis.ConfidenceInterval;
 import smrental.Parameters;
 import smrental.SMRental;
