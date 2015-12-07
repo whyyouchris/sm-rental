@@ -11,7 +11,7 @@ public class Experiment2 {
     private static final double END_TIME = 270;
     private static final int NUMRUNS = 40;
 
-    private static final double CONF_LEVEL = 0.975;
+    private static final double CONF_LEVEL = 0.9;
 
     private static final int MAX_NUM_VAN = 10;
     private static final int MAX_NUM_AGENT = 15;

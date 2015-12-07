@@ -3,7 +3,7 @@ package com.smrental.experiment;
 import outputAnalysis.ConfidenceInterval;
 
 public class Experiment3 {
-    private static final double CONF_LEVEL = 0.975;
+    private static final double CONF_LEVEL = 0.9;
 
     private static final double SERVICE_LEVEL_85 = 0.85;
     private static final double SERVICE_LEVEL_90 = 0.90;
