@@ -21,36 +21,33 @@ public class Experiment2 {
 
     public static void main(String[] args) {
         ExperimentResult result1 = doExperiment(12, false, SERVICE_LEVEL_85);
-        printExperimentResult(12, false, result1);
-        ExperimentResult result2 = doExperiment(12, true, SERVICE_LEVEL_85);
-        printExperimentResult(12, true, result2);
-
+        printExperimentResult(12, false, result1, "1A");
         ExperimentResult result3 = doExperiment(12, false, SERVICE_LEVEL_90);
-        printExperimentResult(12, false, result3);
+        printExperimentResult(12, false, result3, "1B");
+        ExperimentResult result2 = doExperiment(12, true, SERVICE_LEVEL_85);
+        printExperimentResult(12, true, result2, "1AI");
         ExperimentResult result4 = doExperiment(12, true, SERVICE_LEVEL_90);
-        printExperimentResult(12, true, result4);
+        printExperimentResult(12, true, result4, "1BI");
 
 
         ExperimentResult result5 = doExperiment(18, false, SERVICE_LEVEL_85);
-        printExperimentResult(18, false, result5);
-        ExperimentResult result6 = doExperiment(18, true, SERVICE_LEVEL_85);
-        printExperimentResult(18, true, result6);
-
+        printExperimentResult(18, false, result5, "2A");
         ExperimentResult result7 = doExperiment(18, false, SERVICE_LEVEL_90);
-        printExperimentResult(18, false, result7);
+        printExperimentResult(18, false, result7, "2B");
+        ExperimentResult result6 = doExperiment(18, true, SERVICE_LEVEL_85);
+        printExperimentResult(18, true, result6, "2AI");
         ExperimentResult result8 = doExperiment(18, true, SERVICE_LEVEL_90);
-        printExperimentResult(18, true, result8);
+        printExperimentResult(18, true, result8, "2BI");
 
 
         ExperimentResult result9 = doExperiment(30, false, SERVICE_LEVEL_85);
-        printExperimentResult(30, false, result9);
-        ExperimentResult result10 = doExperiment(30, true, SERVICE_LEVEL_85);
-        printExperimentResult(30, true, result10);
-
+        printExperimentResult(30, false, result9, "3A");
         ExperimentResult result11 = doExperiment(30, false, SERVICE_LEVEL_90);
-        printExperimentResult(30, false, result11);
+        printExperimentResult(30, false, result11, "3B");
+        ExperimentResult result10 = doExperiment(30, true, SERVICE_LEVEL_85);
+        printExperimentResult(30, true, result10, "3AI");
         ExperimentResult result12 = doExperiment(30, true, SERVICE_LEVEL_90);
-        printExperimentResult(30, true, result12);
+        printExperimentResult(30, true, result12, "3BI");
     }
 
     private static ExperimentResult doExperiment(final int typeOfVan, final boolean isCustomerIncrease, final double serviceLevel) {
@@ -116,7 +113,7 @@ public class Experiment2 {
         return result;
     }
 
-    private static void printExperimentResult(int typeOfVan, boolean isIncrease, ExperimentResult result) {
+    private static void printExperimentResult(int typeOfVan, boolean isIncrease, ExperimentResult result, String caseNumer) {
 
         ConfidenceInterval sl20 = new ConfidenceInterval(slice(result.serviceLevels, 20),CONF_LEVEL);
         ConfidenceInterval sl30 = new ConfidenceInterval(slice(result.serviceLevels, 30),CONF_LEVEL);
@@ -127,8 +124,8 @@ public class Experiment2 {
         ConfidenceInterval c40 = new ConfidenceInterval(slice(result.costs, 40),CONF_LEVEL);
 
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-         System.out.printf("|            %d-seat van    numberOfAgents: %d    numberOfVans: %d    customerIncrease: %5s               |\n",
-                typeOfVan, result.params.getNumberOfAgents(), result.params.getNumberOfVans(), isIncrease);
+         System.out.printf("|  Case#: %3s     %d-seat van      numberOfAgents: %d       numberOfVans: %d     customerIncrease: %5s    |\n",
+                caseNumer, typeOfVan, result.params.getNumberOfAgents(), result.params.getNumberOfVans(), isIncrease);
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.println("|        |              Satisfaction Level                |                    Cost                        |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
