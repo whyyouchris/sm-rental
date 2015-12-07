@@ -10,8 +10,8 @@ import static smrental.Constants.*;
 public class Drive extends ConditionalActivity{
 
 	private SMRental model;
-	private Location origin;
-	private Location destination;
+	private Location originLocId;
+	private Location destinationLocId;
 	private int vanId;
 
 	public Drive(SMRental model) {
@@ -23,53 +23,53 @@ public class Drive extends ConditionalActivity{
 	}
 
 	@Override public void startingEvent() {
-		this.origin = this.model.udp.getDriveLocation();
-        if (this.origin == Location.DROP_OFF) {
+		this.originLocId = this.model.udp.getDriveLocation();
+        if (this.originLocId == Location.DROP_OFF) {
             this.vanId = this.model.qVanLines[VANLINE_DROPOFF].remove(0);
-        } else if (this.origin == Location.COUNTER) {
+        } else if (this.originLocId == Location.COUNTER) {
             this.vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].remove(0);
-        } else if (this.origin == Location.T1) {
+        } else if (this.originLocId == Location.T1) {
             this.vanId = this.model.qVanLines[VANLINE_T1].remove(0);
-        } else if (this.origin == Location.T2) {
+        } else if (this.originLocId == Location.T2) {
             this.vanId = this.model.qVanLines[VANLINE_T2].remove(0);
         }
 
-		this.destination = this.model.udp.getDestination(this.origin, vanId);
-        if (this.origin == Location.COUNTER
-                && this.destination == Location.T1) {
+		this.destinationLocId = this.model.udp.getDestination(this.originLocId, vanId);
+        if (this.originLocId == Location.COUNTER
+                && this.destinationLocId == Location.T1) {
         	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_COUNTER_T1;
-        } else if (this.origin == Location.COUNTER
-                && this.destination == Location.DROP_OFF) {
+        } else if (this.originLocId == Location.COUNTER
+                && this.destinationLocId == Location.DROP_OFF) {
         	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_COUNTER_DROP_OFF;
-        } else if (this.origin == Location.DROP_OFF
-                && this.destination == Location.T1) {
+        } else if (this.originLocId == Location.DROP_OFF
+                && this.destinationLocId == Location.T1) {
         	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_DROP_OFF_T1;
-        } else if (this.origin == Location.T1
-                && this.destination == Location.T2) {
+        } else if (this.originLocId == Location.T1
+                && this.destinationLocId == Location.T2) {
         	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_T1_T2;
-        } else if (this.origin == Location.T2
-                && this.destination == Location.COUNTER) {
+        } else if (this.originLocId == Location.T2
+                && this.destinationLocId == Location.COUNTER) {
         	this.model.rqVans[this.vanId].status = VanStatus.DRIVING_T2_COUNTER;
         }
 	}
 
 	@Override protected double duration() {
-		return this.model.dvp.calculateTime(this.origin, this.destination);
+		return this.model.dvp.calculateTime(this.originLocId, this.destinationLocId);
 	}
 
     @Override protected void terminatingEvent() {
-        if (this.destination == Location.COUNTER && !this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
+        if (this.destinationLocId == Location.COUNTER && !this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
             this.model.qVanLines[VANLINE_COUNTER_DROPOFF].add(this.vanId);
-        } else if (this.destination == Location.DROP_OFF){
+        } else if (this.destinationLocId == Location.DROP_OFF){
             this.model.qVanLines[VANLINE_DROPOFF].add(this.vanId);
-        } else if (this.destination == Location.COUNTER){
+        } else if (this.destinationLocId == Location.COUNTER){
             this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);
-        } else if (this.destination == Location.T1) {
+        } else if (this.destinationLocId == Location.T1) {
             this.model.qVanLines[VANLINE_T1].add(this.vanId);
-        } else if (this.destination == Location.T2) {
+        } else if (this.destinationLocId == Location.T2) {
             this.model.qVanLines[VANLINE_T2].add(this.vanId);
         }
-        this.model.output.totalMilesTraveledByVans += this.model.udp.distance(origin, destination);
+        this.model.output.totalMilesTraveledByVans += this.model.udp.distance(originLocId, destinationLocId);
         this.model.rqVans[this.vanId].status = VanStatus.IDLE;
     }
 }

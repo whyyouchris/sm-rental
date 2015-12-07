@@ -6,8 +6,6 @@ import com.smrental.entities.Customer.CustomerType;
 import simulationModelling.ConditionalActivity;
 import smrental.SMRental;
 
-import java.util.List;
-
 import static smrental.Constants.*;
 
 public class Serving extends ConditionalActivity {
@@ -21,10 +19,10 @@ public class Serving extends ConditionalActivity {
 
 	public static boolean precondition(SMRental model) {
 		boolean result = false;
-		List<Customer> customerLine = model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING];
 		int numOfCustomersAtCounter = model.rgCounter.getN();
 		int numberOfAgents = model.rgCounter.numberOfAgent;
-		if (customerLine.size() > 0 && (numOfCustomersAtCounter < numberOfAgents)) {
+		if (model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_SERVING].size() > 0
+				&& (numOfCustomersAtCounter < numberOfAgents)) {
 			result = true;
 		}
 		return result;
