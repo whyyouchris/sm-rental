@@ -72,7 +72,7 @@ public class Experiment3 {
         System.out.println("+------------------------------------------------------------------------------------------+");
         System.out.println("|                                       Cost                                               |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-        System.out.println("|Comparison |  Point estimate (ybar(n))   s(n)    z(n)    |z(n)/yb(n)|    CI Min    CI Max |");
+        System.out.println("|Comparison |  Point estimate (ybar(n))   s(n)    zeta    |zeta/yb(n)|    CI Min    CI Max |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
     }
 
@@ -80,7 +80,7 @@ public class Experiment3 {
         System.out.println("+------------------------------------------------------------------------------------------+");
         System.out.println("|                                     Satisfaction Level                                   |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-        System.out.println("|Comparison |  Point estimate (ybar(n))   s(n)    z(n)    |z(n)/yb(n)|    CI Min    CI Max |");
+        System.out.println("|Comparison |  Point estimate (ybar(n))   s(n)    zeta    |zeta/yb(n)|    CI Min    CI Max |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
     }
 
@@ -89,7 +89,7 @@ public class Experiment3 {
         ConfidenceInterval sl1 = new ConfidenceInterval(result1.serviceLevels,CONF_LEVEL);
         ConfidenceInterval sl2 = new ConfidenceInterval(result2.serviceLevels, CONF_LEVEL);
 
-        System.out.printf("|%11s |%7.3f %11.3f %11.3f %12.4f    |\n",
+        System.out.printf("|%9s  |%7.3f %11.3f %11.3f %12.4f %12.4f %12.4f |\n",
                 caseNumber,
                 sl2.getPointEstimate() - sl1.getPointEstimate(),
                 sl2.getStdDev() - sl1.getStdDev(),
@@ -106,7 +106,7 @@ public class Experiment3 {
         ConfidenceInterval c1 = new ConfidenceInterval(result1.costs, CONF_LEVEL);
         ConfidenceInterval c2 = new ConfidenceInterval(result2.costs, CONF_LEVEL);
 
-        System.out.printf("|%11s |%7.3f %11.3f %11.3f %12.4f    |\n",
+        System.out.printf("|%9s  |%7.3f %11.3f %11.3f %12.4f %12.4f %12.4f |\n",
                 caseNumber,
                 c2.getPointEstimate() - c1.getPointEstimate(),
                 c2.getStdDev() - c1.getStdDev(),
@@ -121,6 +121,6 @@ public class Experiment3 {
     private static void printLines(int numLines)
     {
         for (int i = 0; i < numLines; i++)
-            System.out.println("+-----------+--------------------------------------------------------------------------+");
+            System.out.println("+-----------+------------------------------------------------------------------------------+");
     }
 }

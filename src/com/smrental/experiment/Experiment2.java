@@ -129,7 +129,7 @@ public class Experiment2 {
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.println("|        |              Satisfaction Level                |                    Cost                        |");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
-        System.out.printf("|   n    |  yb(n)        s(n)       z(n)      z(n)/yb(n)  |   yb(n)      s(n)       z(n)       z(n)/yb(n)  |\n");
+        System.out.printf("|   n    |  yb(n)        s(n)       z(n)      z(n)/yb(n)  |   yb(n)      s(n)       zeta       zeta/yb(n)  |\n");
         printLines(1);//   --------------------------------------------------------------------------------------------------------
         System.out.printf("|%7d |%7.3f %11.3f %11.3f %12.4f    | %9.3f %8.3f %9.3f %12.4f      |\n",
                 20, sl20.getPointEstimate(), sl20.getStdDev(), sl20.getZeta(), sl20.getZeta() / sl20.getPointEstimate(),
