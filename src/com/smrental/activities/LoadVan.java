@@ -12,7 +12,7 @@ public class LoadVan extends ConditionalActivity {
     private SMRental model;
     private int vanId;
     private Customer icCustomer;
-    private Location loadingLocation;
+    private Location loadingLocId;
 
     public LoadVan(SMRental model) {
         this.model = model;
@@ -29,14 +29,14 @@ public class LoadVan extends ConditionalActivity {
 
     @Override
     public void startingEvent() {
-        this.loadingLocation = this.model.udp.getLoadingLocation();
-        this.icCustomer = this.model.udp.getCanBoardCustomer(this.loadingLocation);
+        this.loadingLocId = this.model.udp.getLoadingLocation();
+        this.icCustomer = this.model.udp.getCanBoardCustomer(loadingLocId);
         this.icCustomer.customerStatus = CustomerStatus.BOARDING;
-        if (this.loadingLocation == Location.COUNTER) {
+        if (this.loadingLocId == Location.COUNTER) {
             this.vanId = this.model.qVanLines[VANLINE_COUNTER_PICKUP].get(0);
-        } else if (this.loadingLocation == Location.T1) {
+        } else if (this.loadingLocId == Location.T1) {
             this.vanId = this.model.qVanLines[VANLINE_T1].get(0);
-        } else if (this.loadingLocation == Location.T2) {
+        } else if (this.loadingLocId == Location.T2) {
             this.vanId = this.model.qVanLines[VANLINE_T2].get(0);
         }
         this.model.rqVans[vanId].status = VanStatus.LOADING;
@@ -44,17 +44,17 @@ public class LoadVan extends ConditionalActivity {
 
     @Override
     protected void terminatingEvent() {
-        if (this.loadingLocation == Location.COUNTER) {
-            this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].remove(this.icCustomer);
+        if (this.loadingLocId == Location.COUNTER) {
+            this.model.qCustomerLines[CUSTOMERLINE_WAIT_FOR_PICKUP].remove(icCustomer);
         }
-        if (this.loadingLocation == Location.T1) {
-            this.model.qCustomerLines[CUSTOMERLINE_T1].remove(this.icCustomer);
+        if (this.loadingLocId == Location.T1) {
+            this.model.qCustomerLines[CUSTOMERLINE_T1].remove(icCustomer);
         }
-        if (this.loadingLocation == Location.T2) {
-            this.model.qCustomerLines[CUSTOMERLINE_T2].remove(this.icCustomer);
+        if (this.loadingLocId == Location.T2) {
+            this.model.qCustomerLines[CUSTOMERLINE_T2].remove(icCustomer);
         }
-        this.model.rqVans[this.vanId].onBoardCustomers.add(this.icCustomer);
-        this.model.rqVans[this.vanId].numOfSeatTaken = this.model.rqVans[this.vanId].numOfSeatTaken + this.icCustomer.numberOfAdditionalPassenager + 1;
+        this.model.rqVans[vanId].onBoardCustomers.add(icCustomer);
+        this.model.rqVans[vanId].numOfSeatTaken = this.model.rqVans[vanId].numOfSeatTaken + icCustomer.numberOfAdditionalPassenager + 1;
     }
 
 }

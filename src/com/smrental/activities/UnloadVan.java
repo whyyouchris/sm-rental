@@ -14,7 +14,7 @@ public class UnloadVan extends ConditionalActivity {
 
     private SMRental model;
     private int vanId;
-    private Location unloadingLocation;
+    private Location unLoadingLocId;
     private Customer icCustomer;
 
     public UnloadVan(SMRental model) {
@@ -32,8 +32,8 @@ public class UnloadVan extends ConditionalActivity {
 
     @Override
     public void startingEvent() {
-        this.unloadingLocation = this.model.udp.getUnloadingLocation();
-        this.vanId = this.model.udp.getUnloadingVan(this.unloadingLocation);
+        this.unLoadingLocId = this.model.udp.getUnloadingLocation();
+        this.vanId = this.model.udp.getUnloadingVan(this.unLoadingLocId);
         this.model.rqVans[this.vanId].status = VanStatus.UNLOADING;
         this.icCustomer = this.model.rqVans[this.vanId].onBoardCustomers.get(0);
         this.icCustomer.customerStatus = CustomerStatus.UNBOARDING;
@@ -58,7 +58,7 @@ public class UnloadVan extends ConditionalActivity {
             this.icCustomer = null;
         }
 
-        if (this.unloadingLocation == Location.COUNTER
+        if (this.unLoadingLocId == Location.COUNTER
                 && this.model.rqVans[this.vanId].onBoardCustomers.isEmpty()) {
             this.model.qVanLines[VANLINE_COUNTER_DROPOFF].remove(new Integer(this.vanId));
             this.model.qVanLines[VANLINE_COUNTER_PICKUP].add(this.vanId);

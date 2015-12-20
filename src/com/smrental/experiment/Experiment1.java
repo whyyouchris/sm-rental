@@ -1,7 +1,7 @@
 package com.smrental.experiment;
 
 import cern.jet.random.engine.RandomSeedGenerator;
-import com.smrental.entities.VanType;
+import com.smrental.entities.Van.VanType;
 import com.smrental.procedures.Seeds;
 import smrental.Parameters;
 import smrental.SMRental;
