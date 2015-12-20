@@ -261,13 +261,13 @@ public class RVPs {
      * @param numberOfPassengers
      * @return double - uBoardingTime
      */
-    public double uBoardingTime(int numberOfPassengers) {
+    public double uBoardingTime(int numberOfAdditionalPassengers) {
         double boardingTime = 0;
         // Customer himself should also be considered as an passenger
-        numberOfPassengers++;
-        while (numberOfPassengers > 0) {
+        numberOfAdditionalPassengers++;
+        while (numberOfAdditionalPassengers > 0) {
             boardingTime += this.boardingTimeDist.nextDouble();
-            numberOfPassengers--;
+            numberOfAdditionalPassengers--;
         }
         return boardingTime / 60;
     }
@@ -282,13 +282,13 @@ public class RVPs {
      * @param numberOfPassengers
      * @return double - uExitingTime
      */
-    public double uExitingTime(int numberOfPassengers) {
+    public double uExitingTime(int numberOfAdditionalPassengers) {
         double exitingTime = 0;
         // Customer himself should also be considered as an passenger
-        numberOfPassengers++;
-        while (numberOfPassengers > 0) {
+        numberOfAdditionalPassengers++;
+        while (numberOfAdditionalPassengers > 0) {
             exitingTime += this.exitingTimeDist.nextDouble();
-            numberOfPassengers--;
+            numberOfAdditionalPassengers--;
         }
         return exitingTime / 60;
     }
